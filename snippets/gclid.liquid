@@ -1,0 +1,48 @@
+{% if settings.google_click_identifier_key %}
+  <script>
+    (() => {
+      function updateCartAttrs(attributes) {
+        return fetch(window.Shopify.routes.root + 'cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({attributes}),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+
+      function getGclidFromUrl(gclidKey) {
+        // Get the full URL
+        var url = window.location.href;
+
+        // Use URLSearchParams to parse the query string
+        var params = new URLSearchParams(window.location.search);
+
+        // Get the value of the 'gclid' parameter
+        var gclid = params.get(gclidKey);
+
+        // Log the value of gclid (for debugging purposes)
+        // console.log('gclidKey:', gclidKey);
+        // console.log('gclid:', gclid);
+
+        return gclid;
+      }
+
+      var gclidKey = '{{ settings.google_click_identifier_key }}';
+      // Example usage: call the function and store the result
+      var gclidValue = getGclidFromUrl(gclidKey);
+      if(gclidValue) {
+        updateCartAttrs({
+          gclid: gclidValue
+        })/* .then(data => console.log(data)) */;
+      }
+    })();
+  </script>
+{% endif %}
+

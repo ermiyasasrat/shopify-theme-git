@@ -1,0 +1,53 @@
+{% comment %}
+This snippet is written by Atiqur. It adds a label overlay on product images.
+{% endcomment %}
+
+{% assign label = '' %}
+
+{% for product_logo_object in shop.metaobjects.product_logo_object.values %}
+  {% if product.vendor == product_logo_object.vendor.value %}
+    {% assign label = product_logo_object.image.value | image_url %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% assign url_parts = label | split: '?' %}
+{% assign base_url = url_parts[0] %}
+{% assign params = url_parts[1] %}
+
+{% assign url_parts_by_dot = base_url | split: '.' %}
+{% assign base_url_without_extension = '' %}
+{% assign checkNum = url_parts_by_dot.size | minus: 1 %}
+{% if url_parts_by_dot.last == 'png' or url_parts_by_dot.last == 'jpg' or url_parts_by_dot.last == 'webp' or url_parts_by_dot.last == 'avif' or url_parts_by_dot.last == 'svg' %}
+  {% for part in url_parts_by_dot  %}
+    {% unless forloop.last == true %}
+      {% if forloop.index < checkNum %}
+        {% assign base_url_without_extension = base_url_without_extension | append: part | append: '.' %}
+      {% else %}
+        {% assign base_url_without_extension = base_url_without_extension | append: part %}
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+  {% assign extension_and_parameters = url_parts_by_dot.last | append: '?' | append: params %}
+  {% if base_url_without_extension != blank %}
+    <span class="product-overlay">
+      <img src="{{base_url_without_extension | append: '_140x.' | append: extension_and_parameters }}"
+           loading="lazy"
+           srcset="{{base_url_without_extension | append: '_140x.' | append: extension_and_parameters }} 480w,
+                  {{base_url_without_extension | append: '_160x.' | append: extension_and_parameters }} 540w,
+                 {{base_url_without_extension | append: '_210x.' | append: extension_and_parameters }} 720w,
+                 {{base_url_without_extension | append: '_240x.' | append: extension_and_parameters }} 900w,
+                 {{base_url_without_extension | append: '_130x.' | append: extension_and_parameters }} 1080w,
+                 {{base_url_without_extension | append: '_160x.' | append: extension_and_parameters }} 1296w,
+                 {{base_url_without_extension | append: '_160x.' | append: extension_and_parameters }} 3024w"
+           alt="{{ product.title }}"
+      />
+    </span>
+  {% endif %}
+{% else %}
+  {% if label != blank %}
+    <span class="product-overlay">
+      <img src="{{label}}" alt="{{ product.title }}"/>
+    </span>
+  {% endif %}
+{% endif %}
+

@@ -1,0 +1,126 @@
+{% schema %}
+    {
+        "name": "Help and Guidance",
+        "settings": [
+            {
+                "type": "text",
+                "id": "help_guidance_title",
+                "label": "Title"
+            },
+            {
+                "type": "richtext",
+                "id": "help_guidance_text",
+                "label": "Content"
+            },
+            {
+                "type": "url",
+                "id": "help_guidance_link",
+                "label": "Link"
+            },
+            {
+                "type": "text",
+                "id": "help_guidance_link_text",
+                "label": "Link Text"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "guidance_item",
+                "name": "Guidance Item",
+                "settings":  [
+                    {
+                        "type": "url",
+                        "id": "help_guidance_block_link",
+                        "label": "Link"
+                    },
+                    {
+                        "type": "text",
+                        "id": "help_guidance_block_link_text",
+                        "label": "Link Text"
+                    },
+                    {
+                        "type": "select",
+                        "id": "help_guidance_block_icon",
+                        "label": "Icon",
+                        "options": [
+                            {
+                                "value": "icon-kitchen",
+                                "label": "Kitchen"
+                            },
+                            {
+                                "value": "icon-office",
+                                "label": "Office"
+                            },
+                            {
+                                "value": "icon-bedroom",
+                                "label": "Bedroom"
+                            },
+                            {
+                                "value": "icon-living-room",
+                                "label": "Living Room"
+                            },
+                            {
+                                "value": "icon-hallway",
+                                "label": "Hallway"
+                            },
+                            {
+                                "value": "icon-bathroom",
+                                "label": "Bathroom"
+                            },
+                            {
+                                "value": "icon-conservatory",
+                                "label": "Conservatory"
+                            },
+                            {
+                                "value": "icon-dining-room",
+                                "label": "Dining Room"
+                            }
+                        ]
+                    }
+                ]
+            }
+		],
+		"presets": [
+			{
+				"name": "Help & Guidance",
+				"category": "Home Page"
+			}
+		]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.help_guidance_title == blank
+    and section.settings.help_guidance_text == blank
+    and section.settings.help_guidance_link == blank
+    and section.settings.help_guidance_link_text == blank
+    and section.blocks == blank
+%}
+    <div class="help-guidance">
+        <div class="site-wrap">
+            <h2 class="title title--small help-guidance__title">
+                {{ section.settings.help_guidance_title }}
+            </h2>
+            <div class="wysiwyg">
+                {{ section.settings.help_guidance_text }}
+            </div>
+            <a href="{{ section.settings.help_guidance_link }}" class="help-guidance__link-arrow link link--arrow">
+                {{ section.settings.help_guidance_link_text }}
+            </a>
+            {% if section.blocks %}
+                <ul class="help-guidance__links">
+                    {% for item in section.blocks %}
+                        <li class="help-guidance__link">
+                            <a href="{{ item.settings.help_guidance_block_link }}" class="button button--grey button--less-pad">
+                                {% include 'inline-icon-text' with {
+                                    icon: item.settings.help_guidance_block_icon,
+                                    text: item.settings.help_guidance_block_link_text
+                                } %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endunless %}

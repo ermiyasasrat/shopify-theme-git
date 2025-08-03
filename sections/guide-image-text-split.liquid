@@ -1,0 +1,115 @@
+{% unless
+    section.settings.guide_split_text_title == blank
+    and section.settings.guide_split_text_content == blank
+    and section.settings.guide_split_text_link_one == blank
+    and section.settings.guide_split_text_link_text_one == blank
+    and section.settings.guide_split_text_link_two == blank
+    and section.settings.guide_split_text_link_text_two == blank
+%}
+    <section class="image-text-split image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.guide_split_text_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--switch">
+						<img
+							src="{{ section.settings.guide_split_text_image | img_url: 'master' }}"
+							class=""
+							alt="{{ section.settings.guide_split_text_image_alt }}"
+						/>
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.guide_split_text_title == blank
+                    and section.settings.guide_split_text_content == blank
+                    and section.settings.guide_split_text_link_one == blank
+                    and section.settings.guide_split_text_link_text_one == blank
+                    and section.settings.guide_split_text_link_two == blank
+                    and section.settings.guide_split_text_link_text_two == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--switch">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.guide_split_text_title == blank %}
+                                    <h2 class="title image-text-split__title">
+                                        {{- section.settings.guide_split_text_title -}}
+                                    </h2>
+                                {% endunless %}
+                                {% unless section.settings.guide_split_text_content == blank %}
+                                    <div class="para image-text-split__para">
+                                        {{- section.settings.guide_split_text_content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless section.settings.guide_split_text_link_one == blank and section.settings.guide_split_text_link_two == blank %}
+                                    <div class="image-text-split__buttons">
+                                        {% unless section.settings.guide_split_text_link_one == blank and section.settings.guide_split_text_link_text_one == blank %}
+                                            <a class="button button--secondary" href="{{- section.settings.guide_split_text_link_one -}}">
+                                                {{- section.settings.guide_split_text_link_text_one -}}
+                                            </a>
+                                        {% endunless %}
+                                        {% unless section.settings.guide_split_text_link_two == blank and section.settings.guide_split_text_link_text_two == blank %}
+                                            <a class="button button--secondary" href="{{- section.settings.guide_split_text_link_two -}}">
+                                                {{- section.settings.guide_split_text_link_text_two -}}
+                                            </a>
+                                        {% endunless %}
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}
+
+
+
+
+{% schema %}
+    {
+        "name": "Guide split text",
+        "settings": [
+            {
+                "type": "text",
+                "id": "guide_split_text_title",
+                "label": "Guide split title"
+            },
+            {
+                "type": "richtext",
+                "id": "guide_split_text_content",
+                "label": "Guide split content"
+            },
+            {
+                "type": "url",
+                "id": "guide_split_text_link_one",
+                "label": "Guide split link one"
+            },
+            {
+                "type": "text",
+                "id": "guide_split_text_link_text_one",
+                "label": "Guide split link text one"
+            },
+            {
+                "type": "url",
+                "id": "guide_split_text_link_two",
+                "label": "Guide split link two"
+            },
+            {
+                "type": "text",
+                "id": "guide_split_text_link_text_two",
+                "label": "Guide split link text two"
+            },
+            {
+                "type": "image_picker",
+                "id": "guide_split_text_image",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1540."
+            },
+            {
+                "type": "text",
+                "id": "guide_split_text_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}

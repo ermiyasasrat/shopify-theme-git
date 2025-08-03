@@ -1,0 +1,92 @@
+{%- if collection.metafields.faqs.titles != blank -%}
+	<link rel="preload" href="{{ 'FAQAccordion.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<div class="faq-accordion-outer-container">
+      <div class="site-wrap">
+		<h3 class="faq-accordion-section-title">
+			{{ 'sections.collection_template.faq_title' | t }}
+		</h3>
+		<div class="faq-accordion-inner-container">
+          {%- for faqTitle in collection.metafields.faqs.titles.value -%}
+            <div class="faq-accordion-question">
+              <h4 class="faq-accordion-title">
+                {{ faqTitle }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
+                  <g clip-path="url(#clip0_2597_26950)">
+                    <path d="M5.57201 9.62659C5.8052 9.85978 6.1948 9.85978 6.42858 9.62659L11.8229 4.24611C12.059 4.00993 12.059 3.62692 11.8229 3.39134C11.5867 3.15516 11.2031 3.15516 10.9669 3.39134L6.00003 8.3444L1.03375 3.39074C0.796977 3.15456 0.41396 3.15456 0.177184 3.39074C-0.0589948 3.62692 -0.0589948 4.00993 0.177184 4.24551L5.57201 9.62659Z" fill="#1B2C3D"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2597_26950">
+                      <rect width="12" height="12" fill="white" transform="translate(0 0.507568)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </h4>
+              <div class="faq-answer-container">
+                <p class="faq-accordion-text">
+                  {{ collection.metafields.faqs.content.value[forloop.index0] }}
+                </p>
+              </div>
+            </div>
+          {%- endfor -%}
+          <div class="faq-accordion-button">     
+            <a href="{{ section.settings.button_link }}">
+              {{ section.settings.button_text }}
+            </a>
+          </div>
+		</div>
+      </div>
+	</div>
+    <script>
+        let questionButton = document.querySelectorAll('.faq-accordion-question .faq-accordion-title');
+      
+        questionButton.forEach((elem)=>{
+          elem.addEventListener("click",()=>{
+            elem.classList.toggle("show");
+          })
+        })
+    </script>
+	<script type="application/ld+json">
+		{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {%- for faqTitle in collection.metafields.faqs.titles.value -%}
+              {
+                "@type": "Question",
+                "name": "{{faqTitle}}",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "{{ collection.metafields.faqs.content.value[forloop.index0] }}"
+                }
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+		}
+	</script>
+{%- endif -%}
+
+{% schema %}
+	{
+      "name": "FAQ Accordion",
+      "class": "section--collection-faq-accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+      ],
+      "presets": [
+        {
+          "name": "FAQ Accordion",
+          "category": "Collection Page",
+          "settings": {}
+        }
+      ]
+	}
+{% endschema %}

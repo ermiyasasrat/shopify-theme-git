@@ -1,0 +1,31 @@
+{{ 'main-search-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="bc-sf-search-container">
+	<h1 class="bc-sf-search-result-header">
+		Search Results for "{{ search.terms | escape }}"
+	</h1>
+	<form class="bc-sf-search-form" action="/search" method="get" role="search">
+	  <input class="bc-sf-search-box" type="search" name="q" value="{{ search.terms | escape }}">
+	  <input type="hidden" name="type" value="product" />
+	  <button type="submit" class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+		{% render 'icon-search' %}
+	  </button>
+	</form>
+	<p class="bc-sf-search-result-number"></p>
+</div>
+
+{% schema %}
+	{
+		"name": "Search Banner",
+		"class": "section",
+		"settings": [
+		],
+		"presets": [
+			{
+				"name": "Search Banner",
+				"category": "Search",
+				"settings": {}
+			}
+		]
+	}
+{% endschema %}

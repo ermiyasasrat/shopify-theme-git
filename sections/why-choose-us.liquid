@@ -1,0 +1,63 @@
+<section class="why-choose">
+  <div class="site-wrap">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="why-boxes">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'why_choose' %}
+          <div class="advantage-box">
+            <div class="icon">
+              <img width="32" height="32" loading="lazy" src="{{ block.settings.advantage_icon | image_url: width: 32, height: 32 }}" alt="{{ block.settings.advantage_icon.alt }}">
+            </div>
+            <h3>{{ block.settings.advantage_text }}</h3>
+            <p>{{ block.settings.advantage_content }}</p>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+  {
+    "name": "Why Choose Us",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+      },
+    ],
+    "blocks": [
+      {
+        "type": "why_choose",
+        "name": "Advantage Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "advantage_icon",
+            "label": "Advantage Icon",
+          },
+          {
+            "type": "text",
+            "id": "advantage_text",
+            "label": "Advantage Text",
+          },
+          {
+            "type": "text",
+            "id": "advantage_content",
+            "label": "Advantage Content",
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Why Choose Us",
+      }
+    ]
+  }
+{% endschema %}

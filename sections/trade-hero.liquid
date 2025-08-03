@@ -1,0 +1,145 @@
+{% schema %}
+    {
+        "name": "Trade hero",
+        "settings": [
+            {
+                "type": "text",
+                "id": "trade_hero_title",
+                "label": "Trade hero title"
+            },
+            {
+                "type": "html",
+                "id": "trade_hero_content",
+                "label": "Trade hero content"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "trade_gallery_image",
+                "name": "Trade gallery image",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "trade_gallery_image",
+                        "label": "Image",
+                        "info": "Recommended image size: 1920 x 1600."
+                    },
+                    {
+                        "type": "text",
+                        "id": "trade_gallery_image_text",
+                        "label": "Image Text"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.trade_hero_title == blank
+    and section.settings.trade_hero_content == blank
+    and section.settings.trade_hero_link == blank
+    and section.settings.trade_hero_link_text == blank
+%}
+    <section id="hero" class="image-text-split image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.blocks == blank %}
+                    <div class="image-text-split__image image-text-split__image--hero">
+                        <div id="trade-hero-gallery" class="glide">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    {% for galleryItem in section.blocks %}
+                                        <li class="glide__slide">
+                                            {% assign image_small_1x = galleryItem.settings.trade_gallery_image | img_url: '360x260' %}
+                                            {% assign image_small_2x = galleryItem.settings.trade_gallery_image | img_url: '720x520' %}
+                                            {% assign image_medium_1x = galleryItem.settings.trade_gallery_image | img_url: '683x520' %}
+                                            {% assign image_medium_2x = galleryItem.settings.trade_gallery_image | img_url: '1366x1040' %}
+                                            {% assign image_large_1x = galleryItem.settings.trade_gallery_image | img_url: '960x800' %}
+                                            {% assign image_large_2x = galleryItem.settings.trade_gallery_image | img_url: '1920x1600' %}
+                                            {% include 'picture',
+                                                small1x: image_small_1x,
+                                                small2x: image_small_2x,
+                                                medium1x: image_medium_1x,
+                                                medium2x: image_medium_2x,
+                                                large1x: image_large_1x,
+                                                large2x: image_large_2x,
+                                                alt: galleryItem.settings.trade_gallery_image_text
+                                            %}
+                                            {% unless galleryItem.settings.trade_gallery_image_text == blank %}
+                                                <div class="image-text-split__image-text">
+                                                    <span class="image-text-split__image-text-icon"></span>{{- galleryItem.settings.trade_gallery_image_text -}}
+                                                </div>
+                                            {% endunless %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="glide__bullets" data-glide-el="controls[nav]">
+                                {% for galleryItem in section.blocks %}
+                                    <button class="glide__bullet" data-glide-dir="={{- forloop.index0 -}}"></button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.trade_hero_title == blank
+                    and section.settings.trade_hero_content == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--trade">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.trade_hero_title == blank %}
+                                    <h1 class="title title--large image-text-split__title image-text-split__title--home">
+                                        {{- section.settings.trade_hero_title -}}
+                                    </h1>
+                                {% endunless %}
+                                {% unless section.settings.trade_hero_content == blank %}
+                                    <div class="para image-text-split__para">
+                                        {{- section.settings.trade_hero_content -}}
+                                    </div>
+                                {% endunless %}
+                                <div class="image-text-split__form">
+                                    {% form 'customer_login' %}
+                                        <input type="hidden" name="checkout_url" value="/pages/trade-portal-sign-up">
+                                        {%- if form.errors -%}
+                                            <div class="account-form-errors">
+                                                {{ form.errors | default_errors }}
+                                            </div>
+                                        {%- endif -%}
+                                        <div class="account-form__field">
+                                            <label class="account-form__label account-form__label--white" for="CustomerEmail">Email address</label>
+                                            <input type="email" name="customer[email]" id="CustomerEmail" class="input input-text account-form__input{% if form.errors contains 'email' %} input--error{% endif %}" autocorrect="off" autocapitalize="off" autofocus>
+                                        </div>
+                                        {% if form.password_needed %}
+                                            <div class="account-form__field">
+                                                <label class="account-form__label account-form__label--white" for="CustomerPassword">Password</label>
+                                                <input type="password" value="" name="customer[password]" id="CustomerPassword" class="input input-text account-form__input{% if form.errors contains 'password' %} input--error{% endif %}">
+                                            </div>
+                                        {% endif %}
+                                        <div class="account-form__flex">
+                                            <button class="button button--solid" type="submit">
+                                                <span class="button__text">
+                                                    Log in
+                                                </span>
+                                            </button>
+                                            <div class="account-form__links">
+                                                <p class="account-form__field">
+                                                    <a href="/account/login#recover" id="RecoverPassword">Forgot your password?</a>
+                                                </p>
+                                                <p>
+                                                    <a href="/pages/trade-portal-sign-up">Apply for an account</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endform %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

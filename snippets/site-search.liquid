@@ -1,0 +1,84 @@
+{% render 'prepare-style', file: 'component-predictive-search.css', rel: 'preload' %}
+{% render 'prepare-script', file: 'search-form.js', rel: 'prefetch' %}
+{% render 'prepare-script', file: 'predictive-search.js', rel: 'prefetch' %}
+<style>
+	/**************************************
+    ** Site Search Inline Style
+    ***************************************/
+	.predictive-search{display:none}predictive-search[loading] .predictive-search,predictive-search[open] .predictive-search{display:block}.site-header__inner{-webkit-box-pack:justify;-ms-flex-pack:justify;display:-webkit-box;display:-ms-flexbox;display:flex;justify-content:space-between;width:100%;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.site-header__inner .field input,.site-header__inner .field__input{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-color:#d9e1e1;border:.1rem solid hsla(0,0%,100%,.3);border-radius:30px;-webkit-box-sizing:border-box;box-sizing:border-box;color:#1b2c3d;font-size:1.6rem;height:4.5rem;padding:1.5rem 6rem 1.7rem 2.5rem;position:relative;-webkit-transition:-webkit-box-shadow var(--duration-short) ease;transition:-webkit-box-shadow var(--duration-short) ease;transition:box-shadow var(--duration-short) ease;transition:box-shadow var(--duration-short) ease,-webkit-box-shadow var(--duration-short) ease;width:100%}.site-header__inner .field:before{border-radius:var(--inputs-radius-outset);bottom:0;-webkit-box-shadow:var(--inputs-shadow-horizontal-offset) var(--inputs-shadow-vertical-offset) var(--inputs-shadow-blur-radius) rgba(var(--color-base-text),var(--inputs-shadow-opacity));box-shadow:var(--inputs-shadow-horizontal-offset) var(--inputs-shadow-vertical-offset) var(--inputs-shadow-blur-radius) rgba(var(--color-base-text),var(--inputs-shadow-opacity));content:"";left:0;pointer-events:none;position:absolute;right:0;top:0;z-index:-1}.site-header__inner .field:after{border:.1rem solid transparent;border-radius:var(--inputs-radius);bottom:var(--inputs-border-width);-webkit-box-shadow:0 0 0 var(--inputs-border-width) rgba(var(--color-foreground),var(--inputs-border-opacity));box-shadow:0 0 0 var(--inputs-border-width) rgba(var(--color-foreground),var(--inputs-border-opacity));content:"";left:var(--inputs-border-width);pointer-events:none;position:absolute;right:var(--inputs-border-width);top:var(--inputs-border-width);-webkit-transition:-webkit-box-shadow var(--duration-short) ease;transition:-webkit-box-shadow var(--duration-short) ease;transition:box-shadow var(--duration-short) ease;transition:box-shadow var(--duration-short) ease,-webkit-box-shadow var(--duration-short) ease;z-index:1}.search__button{right:5px}.reset__button,.search__button{background:none;border:none;bottom:0;-webkit-box-shadow:none;box-shadow:none;cursor:pointer;margin-bottom:auto;margin-top:auto;position:absolute;top:0;z-index:2}.reset__button{display:none;right:40px}.reset__button .icon-close{height:20px}@media only screen and (min-width:1280px){.site-header__inner .field input,.site-header__inner .field__input{border-bottom:none!important}}
+</style>
+<div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+	<div class="modal-overlay"></div>
+	<div class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}" tabindex="-1">
+	{%- if settings.predictive_search_enabled -%}
+		<predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+			{%- else -%}
+			<search-form class="search-modal__form">
+				{%- endif -%}
+				<form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+					<div class="field">
+						<input class="search__input field__input"
+							   id="Search-In-Modal"
+							   type="search"
+							   name="q"
+							   value="{{ search.terms | escape }}"
+							   placeholder="{{ 'general.search.search' | t }}"
+							{%- if settings.predictive_search_enabled -%}
+								role="combobox"
+								aria-expanded="false"
+								aria-owns="predictive-search-results"
+								aria-controls="predictive-search-results"
+								aria-haspopup="listbox"
+								aria-autocomplete="list"
+								autocorrect="off"
+								autocomplete="off"
+								autocapitalize="off"
+								spellcheck="false"
+							{%- endif -%}
+						>
+						<input type="hidden" name="options[prefix]" value="last">
+						<button type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}">
+							<svg class="icon icon-close" aria-hidden="true" focusable="false">
+								<use xlink:href="#icon-reset">
+							</svg>
+						</button>
+						<button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+							{% render 'search-new' %}
+						</button>
+					</div>
+
+					{%- if settings.predictive_search_enabled -%}
+						<div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+							<div class="predictive-search__loading-state">
+								<svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+									<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+								</svg>
+							</div>
+						</div>
+
+						<span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+					{%- endif -%}
+				</form>
+				{%- if settings.predictive_search_enabled -%}
+		</predictive-search>
+	{%- else -%}
+		</search-form>
+		{%- endif -%}
+	</div>
+</div>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		resourceManager.loadResourceOnInteractive([
+			{ "name": "script", "url": "{{ 'search-form.js' | asset_url }}" },
+			{ "name": "script", "url": "{{ 'predictive-search.js' | asset_url }}" },
+		], {
+			triggerEvents: {
+				readyInteractive: false,
+				baseEvents: {
+					'focus': '#Search-In-Modal',
+					'click': '#site-search-mobile-btn',
+				}
+			}
+		});
+	});
+</script>

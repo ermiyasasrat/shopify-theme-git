@@ -1,0 +1,53 @@
+.app-section-reviews {
+	background: #fafafa;
+	padding-top: 3rem;
+}
+.rapid_reviews_items .r_tabs .r_tab{
+	padding: 1.5rem 1.5rem;
+}
+.rapid_reviews_items.rrm .r_prompt_links {
+	margin-bottom: 2rem;
+}
+.rapid_reviews_items .r_prompt_links > a{
+	padding: 1rem 1rem;
+	background: #ff877a;
+	text-align: center;
+	color: #131F2A;
+	font-weight: 400;
+	min-width: auto;
+	cursor: pointer;
+	text-decoration: none;
+	overflow: hidden;
+	box-shadow: initial;
+	border: none;
+	border-radius: 2.3rem;
+	transition: background .4s,color .4s,opacity .4s,box-shadow .4s,-webkit-box-shadow .4s;
+}
+#rapid_reviews_items {
+	max-width: 1300px;
+	margin: 0 auto;
+	padding: 0;
+}
+#rapid_reviews_items > .r_inner {
+	max-width: 100%;
+	border-color: #ffffff40;
+	padding: 3.2rem 2rem;
+	background-color: #fff;
+	border-radius: 0.8rem;
+}
+#rapid_reviews_items .r_sort_filter {
+	font-size: 14px;
+}
+#rapid_reviews_items .r_ago span {
+	opacity: 1;
+}
+@media (min-width: 48em) {
+	#rapid_reviews_items {
+		padding: 0 5rem;
+	}
+}
+@media (min-width: 80em) {
+	#rapid_reviews_items {
+		padding: 0 5%;
+	}
+}

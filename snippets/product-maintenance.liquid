@@ -1,0 +1,28 @@
+<div class="product-faqs">
+	{%- if wysiwygMaintenance != blank -%}
+		<div class="product-image-text-content product-image-text-content-reverse">
+			{% if wysiwygMaintenanceImage != blank %}
+				<div class="product-image-text-content__image">
+					<img
+						src="{{ wysiwygMaintenanceImage | img_url: '420x' }}"
+						srcset="{{ wysiwygMaintenanceImage | img_url: '420x' }} 480w,
+                {{ wysiwygMaintenanceImage | img_url: '480x' }} 540w,
+               {{ wysiwygMaintenanceImage | img_url: '660x' }} 720w,
+               {{ wysiwygMaintenanceImage | img_url: '750x' }} 900w,
+               {{ wysiwygMaintenanceImage | img_url: '425x' }} 1080w,
+               {{ wysiwygMaintenanceImage | img_url: '510x' }} 1296w,
+               {{ wysiwygMaintenanceImage | img_url: '510x' }} 3024w"
+						loading="lazy"
+						class=""
+						alt="{{ wysiwygTitle }}"
+					/>
+				</div>
+			{% endif %}
+            <div class="product-image-text-content__text">
+                <div class="wysiwyg">
+                    {{ wysiwygMaintenance | replace: '[Product]', product.title | replace: '[product]', product.title }}
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+</div>

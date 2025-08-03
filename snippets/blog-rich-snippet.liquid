@@ -1,0 +1,303 @@
+{% assign article_words = article.content | strip_html | strip_newlines | downcase | replace: 'and','' | replace: 'the','' | split:' ' %}
+
+
+{% assign blogType = article.metafields.schema.type %}
+
+{% assign Schema_Alternative_Headline = article.metafields.schema-new.alternative-headline %}
+
+{%- if article.metafields.schema-new.genre == blank -%}
+	{%- assign Schema_Blog_Genre = "Flooring" -%}
+{%- else -%}
+	{%- assign Schema_Blog_Genre = article.metafields.schema-new.genre -%}
+{%- endif -%}
+
+{% assign Schema_Proficiency_Level = article.metafields.schema-new.proficiency_level %}
+{% assign Schema_Blog_Keywords = article.metafields.schema-new.keywords %}
+{% assign Schema_Blog_Description = article.metafields.schema-new.description %}
+
+
+{% assign Schema_FAQ_Question1 = article.metafields.schema.FAQ_Question1 %}
+{% assign Schema_FAQ_Question2 = article.metafields.schema.FAQ_Question2 %}
+{% assign Schema_FAQ_Question3 = article.metafields.schema.FAQ_Question3 %}
+
+{% assign Schema_FAQ_Answer1 = article.metafields.schema.FAQ_Answer1 %}
+{% assign Schema_FAQ_Answer2 = article.metafields.schema.FAQ_Answer2 %}
+{% assign Schema_FAQ_Answer3 = article.metafields.schema.FAQ_Answer3 %}
+
+
+{% assign Schema_HowTo_Step_Title1 = article.metafields.schema.HowTo_Step_Title1 %}
+{% assign Schema_HowTo_Step_Title2 = article.metafields.schema.HowTo_Step_Title2 %}
+{% assign Schema_HowTo_Step_Title3 = article.metafields.schema.HowTo_Step_Title3 %}
+{% assign Schema_HowTo_Step_Title4 = article.metafields.schema.HowTo_Step_Title4 %}
+{% assign Schema_HowTo_Step_Title5 = article.metafields.schema.HowTo_Step_Title5 %}
+
+{% assign Schema_HowTo_Step_Instruction1 = article.metafields.schema.HowTo_Step_Instruction1 %}
+{% assign Schema_HowTo_Step_Instruction2 = article.metafields.schema.HowTo_Step_Instruction2 %}
+{% assign Schema_HowTo_Step_Instruction3 = article.metafields.schema.HowTo_Step_Instruction3 %}
+{% assign Schema_HowTo_Step_Instruction4 = article.metafields.schema.HowTo_Step_Instruction4 %}
+{% assign Schema_HowTo_Step_Instruction5 = article.metafields.schema.HowTo_Step_Instruction5 %}
+
+{% assign HowTo_Total_Cost = article.metafields.schema.HowTo_Total_Cost %}
+{% assign HowTo_Total_Time = article.metafields.schema.HowTo_Total_Time %}
+
+
+
+
+
+{% assign articleContent = article.content | strip_html | replace: "’ll", " will" %}
+{% assign articleContent = articleContent | replace: "didn’t", "did not" %}
+{% assign articleContent = articleContent | replace: "doesn’t", "does not" %}
+{% assign articleContent = articleContent | replace: "won’t", "will not" %}
+{% assign articleContent = articleContent | replace: "there’s", "there is" %}
+{% assign articleContent = articleContent | replace: "that’s", "that is" %}
+{% assign articleContent = articleContent | replace: "'s", " is" %}
+
+
+
+
+
+
+{% case blogType %}
+  {% when 'Article' %}
+      <script type="application/ld+json">
+      { "@context": "https://schema.org", 
+       "@type": "Article",
+       "headline": "{{article.title}}",
+       "alternativeHeadline": "{{Schema_Alternative_Headline}}",
+       "image": "{{ article.image.src | img_url: '500x' }}",
+       "author": "{{article.author}}", 
+       "editor": "{{article.author}}", 
+       "genre": "{{Schema_Blog_Genre}}", 
+       "keywords": "{{Schema_Blog_Keywords}}", 
+       "wordcount": "{{ article_words | size }}",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Stories Flooring",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+            "width": "128px",
+            "height": "49px"
+          }
+        },
+       "url": "https://storiesflooring.co.uk/{{article.url}}",
+       "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://storiesflooring.co.uk/{{article.url}}"
+        },
+        "datePublished": "{{article.published_at}}",
+        "dateModified": "{{article.updated_at}}",
+		"description": "{{Schema_Blog_Description}}",
+		"abstract": "{{ article.excerpt }}",
+        "articleBody": "{{ articleContent | escape }}"
+       }
+      </script>
+  {% when 'NewsArticle' %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https"
+        },
+       "headline": "{{article.title}}",
+        "description": "{{Schema_Blog_Description}}",
+       "image": "{{ article.image.src | img_url: '500x' }}",
+       "author": "{{article.author}}", 
+       "editor": "{{article.author}}", 
+       "genre": "{{Schema_Blog_Genre}}", 
+       "keywords": "{{Schema_Blog_Keywords}}", 
+       "wordcount": "{{ article_words | size }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Stories Flooring",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+              "width": "128px",
+              "height": "49px"
+            }
+          },
+        "datePublished": "{{article.published_at}}",
+		"dateModified": "{{article.updated_at}}",
+		"abstract": "{{ article.excerpt }}",
+        "articleBody": "{{ articleContent | escape }}"
+      }
+      </script>
+  {% when 'BlogPosting' %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https"
+        },
+       "headline": "{{article.title}}",
+        "description": "{{Schema_Blog_Description}}",
+       "image": "{{ article.image.src | img_url: '500x' }}",
+       "author": "{{article.author}}", 
+       "editor": "{{article.author}}", 
+       "genre": "{{Schema_Blog_Genre}}", 
+       "keywords": "{{Schema_Blog_Keywords}}", 
+       "wordcount": "{{ article_words | size }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Stories Flooring",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+              "width": "128px",
+              "height": "49px"
+            }
+          },
+        "datePublished": "{{article.published_at}}",
+		"dateModified": "{{article.updated_at}}",
+		"abstract": "{{ article.excerpt }}",
+        "articleBody": "{{ articleContent | escape }}"
+      }
+      </script>
+  {% when 'FAQPage' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "{{Schema_FAQ_Question1}}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{Schema_FAQ_Answer1}}"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "{{Schema_FAQ_Question2}}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{Schema_FAQ_Answer2}}"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "{{Schema_FAQ_Question3}}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{Schema_FAQ_Answer3}}"
+          }
+        }
+      ],
+      
+      "wordcount": "{{ article_words | size }}",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Stories Flooring",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+            "width": "128px",
+            "height": "49px"
+          }
+        },
+        "datePublished": "{{article.published_at}}",
+        "dateModified": "{{article.updated_at}}"
+    }
+    </script>
+  {% when 'HowTo' %}
+
+	<div class="some"></div>
+
+	{{article.metafields.how-to.how-to-html}}
+
+	{% comment %} Removed as per Will's request on 27th August, 2021
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/", 
+      "@type": "HowTo", 
+      "name": "{{article.title}}",
+      "description": "{{Schema_Blog_Description}}",
+      "image": "{{ article.image.src | img_url: '500x' }}",
+      "totalTime": "{{HowTo_Total_Time}}",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "GBP",
+        "value": "{{HowTo_Total_Cost}}"
+      },
+        "step": [
+        {
+          "@type": "HowToStep",
+          "text": "{{Schema_HowTo_Step_Instruction1}}",
+          "name": "{{Schema_HowTo_Step_Title1}}"
+        },{
+          "@type": "HowToStep",
+          "text": "{{Schema_HowTo_Step_Instruction2}}",
+          "name": "{{Schema_HowTo_Step_Title2}}"
+        },{
+          "@type": "HowToStep",
+          "text": "{{Schema_HowTo_Step_Instruction3}}",
+          "name": "{{Schema_HowTo_Step_Title3}}"
+        },{
+          "@type": "HowToStep",
+          "text": "{{Schema_HowTo_Step_Instruction4}}",
+          "name": "{{Schema_HowTo_Step_Title4}}"
+        },{
+          "@type": "HowToStep",
+          "text": "{{Schema_HowTo_Step_Instruction5}}",
+          "name": "{{Schema_HowTo_Step_Title5}}"
+        }
+      ],
+      
+      "wordcount": "{{ article_words | size }}",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Stories Flooring",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+            "width": "128px",
+            "height": "49px"
+          }
+        },
+        "datePublished": "{{article.published_at}}",
+        "dateModified": "{{article.updated_at}}"
+    }
+    </script>
+	{% endcomment %}
+
+  {% else %}
+      <script type="application/ld+json">
+      { "@context": "https://schema.org", 
+       "@type": "Article",
+       "headline": "{{article.title}}",
+       "alternativeHeadline": "{{Schema_Alternative_Headline}}",
+       "image": "{{ article.image.src | img_url: '500x' }}",
+       "author": "{{article.author}}", 
+       "editor": "{{article.author}}", 
+       "genre": "{{Schema_Blog_Genre}}", 
+       "keywords": "{{Schema_Blog_Keywords}}", 
+       "wordcount": "{{ article_words | size }}",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Stories Flooring",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Logo.png",
+            "width": "128px",
+            "height": "49px"
+          }
+        },
+       "url": "https://storiesflooring.co.uk/{{article.url}}",
+       "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://storiesflooring.co.uk/{{article.url}}"
+        },
+        "datePublished": "{{article.published_at}}",
+        "dateModified": "{{article.updated_at}}",
+		"description": "{{Schema_Blog_Description}}",
+		"abstract": "{{ article.excerpt }}",
+        "articleBody": "{{ articleContent | escape }}"
+       }
+      </script>
+{% endcase %}

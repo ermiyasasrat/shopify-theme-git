@@ -1,0 +1,21 @@
+{% assign width = image.width | divided_by: 2 %}
+{% assign height = image.height | divided_by: 2 %}
+
+<picture>
+  <source srcset="{{ image | img_url: '480x' }}" media="(max-width: 480px)">
+  <source srcset="{{ image | img_url: '768x' }}" media="(max-width: 768px)">
+  <source srcset="{{ image | img_url: '1024x' }}" media="(max-width: 1024px)">
+  <source srcset="{{ image | img_url: '1280x' }}" media="(max-width: 1280px)">
+  <source srcset="{{ image | img_url: '1440x' }}" media="(max-width: 1440px)">
+  <source srcset="{{ image | img_url: '1920x' }}" media="(max-width: 1920px)">
+  <img id="image-{{ image.id }}"
+       width="{{ width }}"
+       height="{{ height }}"
+       src="{{ image | img_url: '768x' }}"
+       class="responsive-image {{ image_class }}"
+       tabindex="-1"
+       title="{{alt}}"
+       alt="{{ alt }}"
+       {{ image_attributes }}
+  >
+</picture>

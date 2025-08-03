@@ -1,0 +1,287 @@
+{% if shop.customer_accounts_enabled %}
+  {% if customer %}
+    {% assign accountLink = '/account' %}
+  {% else %}
+    {% assign accountLink = '/account/login' %}
+  {% endif %}
+{% endif %}
+{% render 'prepare-style', file: 'megamenu-main.css' %}
+<header class="site-header" id="site-header">
+ <!-- {% assign menu_handle = 'top-links-in-header' %} -->
+  <!-- <div class="site-header__top__menu {{ menu_handle }}">
+    <div class="site-wrap site-wrap--head">
+      <div class="inner-wrapper-header">
+        <div class="klarna-banner-wrapper">
+          <div class="klarna-banner">
+            <a href="https://storiesflooring.co.uk/pages/finance-options" title="Klarna finance options">
+            <div class="text-wrap">
+              <strong>0% interest</strong>
+              Buy Now, Pay Later with
+            </div>
+            <div class="img-wrap">
+              <img width="80.3" height="17.9" class="nolazyload" src="https://cdn.shopify.com/s/files/1/0418/4568/6426/files/logo_klarna_1.svg?v=1697807892" alt="klarna logo" title="Klarna Logo">
+            </div>
+            </a>
+          </div>
+        </div>
+        {% render 'luis-header-top-links' %}
+      </div>
+    </div>
+  </div> -->
+  {% unless section.settings.announcement_text == blank %}
+  <div class="announcement_bar">
+    <div class="site-wrap">
+      <p>{{ section.settings.announcement_text }}</p>
+    </div>
+  </div>
+  {% endunless %}
+  <div class="site-header__top">
+    <div class="site-wrap site-wrap--head">
+      <div class="site-header__inner">
+        <div class="site-logo">
+          <a
+            href="/"
+            title="{% if template.name contains 'collection' %}Stories Flooring - Leading Retailers of {{ collection.title | escape }} {% else %} {{ shop.name | escape }} - Leading Online Flooring Retailer in the UK {% endif %}"
+          >
+            <span class="visuallyhidden">{{- shop.name -}}</span>
+            <img
+              src="{{ 'logo-white.svg' | asset_url }}"
+              class="site-logo__image"
+              width="112"
+              height="42.88"
+              alt="{% if template.name contains 'collection' %}Stories Flooring - Leading Retailers of {{ collection.title | escape }} {% else %} {{ shop.name | escape }} - Leading Online Flooring Retailer in the UK {% endif %}"
+              title="{% if template.name contains 'collection' %}Stories Flooring - Leading Retailers of {{ collection.title | escape }} {% else %} {{ shop.name | escape }} - Leading Online Flooring Retailer in the UK {% endif %}"
+            >
+          </a>
+
+        </div>
+        <div class="site-header__inline-icon site-search-outer-container">
+          <site-search>
+            <button id="site-search-mobile-btn" class="site-header__search-mobile" aria-label="Search for products...">
+              {% render 'search-white' %}
+            </button>
+            <div class="site-header__icon site-header__search site-header__search-desktop">
+              {% render 'site-search' %}
+            </div>
+          </site-search>
+        </div>
+        <div class="site-header__toolbar">
+          {% comment %}
+          <div class="site-header__inline-icon trustpilot-outer-container large-show">
+              {% render 'trustpilot-wd-badge' %}
+          </div>
+          {% endcomment %}
+          {% unless accountLink == blank %}
+            <div class="site-header__inline-icon large-hide">
+              <div class="site-header__icon site-header__phone">
+                <a rel="nofollow" href="tel:{{ '0113 320 0223' | remove: ' ' }}" title="Call us">
+                  {%
+                    include 'inline-icon-text' with {
+                    icon: 'icon-telephone-new'
+                    }
+                  %}
+                </a>
+              </div>
+            </div>
+          {% endunless %}
+          <div class="site-header__inline-icon large-show">
+            <div class="site-header__icon site-header__phone">
+              <a rel="nofollow" href="tel:{{ '0113 320 0223' | remove: ' ' }}" title="Call us">
+                {%
+                  include 'inline-icon-text' with {
+                  icon: 'icon-telephone-new',
+                  text: '0113 320 0223'
+                  }
+                %}
+              </a>
+            </div>
+          </div>
+          {% unless accountLink == blank %}
+            <div class="site-header__inline-icon large-show">
+              <div class="site-header__icon site-header__account">
+                <a rel="nofollow" href="{{ accountLink }}" title="My account">
+                  {%
+                    include 'inline-icon-text' with {
+                    icon: 'icon-account-new',
+                    }
+                  %}
+                </a>
+              </div>
+            </div>
+          {% endunless %}
+          <div class="site-header__inline-icon">
+            <a
+              id="cart-icon-bubble"
+              rel="nofollow"
+              href="/cart"
+              data-cart="button"
+              class="site-header__icon site-header__cart{% if cart.item_count > 0 %} site-header__cart--has-items{% endif %}"
+              title="View basket"
+            >
+              {% render 'icon-cart-new' %}
+              <div id="CartCount" class="site-header__cart-count">
+                <span data-cart="count" data-count="{{ cart.item_count }}">
+                  {%- if cart.item_count > 0 -%}
+                    {% assign countItems = 0 %}
+                    {% for xItem in cart.items %}
+                      {% assign countItems = countItems | plus: 1 %}
+                    {% endfor %}
+                    {{- countItems -}}
+                  {%- endif -%}
+                </span>
+                <span data-cart="wording" class="large-show">
+                  {%- if cart.item_count > 0 -%}
+                    item{% if cart.item_count > 1 %}s{% endif -%}
+                  {%- endif -%}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="site-header__inline-icon site-header__inline-icon-menu-toggle xlarge-hide">
+            <button class="site-header__nav-activator" id="site-toggle-nav">
+              <span>Toggle navigation</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% render 'site-navigation' %}
+
+  {%- if settings.cart_type == 'page' -%}
+    {%- render 'cart-notification-new' -%}
+  {%- endif -%}
+</header>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var siteToggleNav = document.getElementById('site-toggle-nav');
+        var siteNav = document.getElementById('site-navigation');
+        if (siteToggleNav) {
+            siteToggleNav.addEventListener('click', function () {
+                this.classList.toggle('is-active');
+                siteNav.classList.toggle('is-active');
+                siteNav.classList.toggle('show-full-active');
+            });
+        }
+
+        var siteSearchMobileBtn = document.getElementById('site-search-mobile-btn');
+        if (siteSearchMobileBtn) {
+            siteSearchMobileBtn.addEventListener('click', function () {
+                var searchContainer = document.querySelector('.site-header__search');
+                searchContainer.classList.toggle('site-header__search-desktop');
+                searchContainer.classList.toggle('site-header__search-mobile-container');
+            });
+        }
+    });
+</script>
+{% schema %}
+   {
+	"name": "Header",
+	"class": "section-header",
+	"settings": [
+		{
+			"type": "url",
+			"id": "klarna-link",
+			"label": "Klarna Link"
+		},
+        {
+			"type": "text",
+			"id": "announcement_text",
+			"label": "Announcement Text"
+		},
+		{
+			"type": "link_list",
+			"id": "main-menu",
+			"label": "Main Desktop Menu"
+		},
+		{
+			"type": "checkbox",
+			"id": "mega-menu-images",
+			"label": "Images in Mega Menu",
+			"default": true
+		}
+	],
+ 
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Linklist"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image 1"
+        },
+        {
+          "type": "text",
+          "id": "caption_1",
+          "label": "Caption 1"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image 2"
+        },
+        {
+          "type": "text",
+          "id": "caption_2",
+          "label": "Caption 2"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image 3"
+        },
+        {
+          "type": "text",
+          "id": "caption_3",
+          "label": "Caption 3"
+        },
+        {
+          "type": "url",
+          "id": "link_3",
+          "label": "Link 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Image 4"
+        },
+        {
+          "type": "text",
+          "id": "caption_4",
+          "label": "Caption 4"
+        },
+        {
+          "type": "url",
+          "id": "link_4",
+          "label": "Link 4"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

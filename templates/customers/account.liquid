@@ -1,0 +1,104 @@
+<div class="account">
+    <div class="site-wrap">
+        <div class="account-page">
+            <div class="account__log-out">
+                {{ 'Log out' | customer_logout_link }}
+            </div>
+            <h1 class="account-title">
+                My account
+            </h1>
+            <div class="account-grid">
+                <div class="account-grid__item">
+                    <h2 class="title-sans--small account-title-small">
+                        Order history
+                    </h2>
+                    {% paginate customer.orders by 20 %}
+                        {% if customer.orders.size != 0 %}
+                            <table class="order-table">
+                                <thead>
+                                    <tr>
+                                        <th class="order-table__th">
+                                            Order
+                                        </th>
+                                        <th class="order-table__th">
+                                            Date
+                                        </th>
+                                        <th class="order-table__th">
+                                            Payment Status
+                                        </th>
+                                        <th class="order-table__th">
+                                            Fulfillment Status
+                                        </th>
+                                        <th class="order-table__th">
+                                            Total
+                                        </th>
+                                        <th class="order-table__th"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in customer.orders %}
+                                        <tr>
+                                            <td data-title="Order" class="order-table__cell order-table__cell--order-number">
+                                                <a title="{{ order.name }}"
+                                                    href="{{ order.customer_url }}" class="link">
+                                                    {{ order.name }}
+                                                </a>
+                                            </td>
+                                            <td data-title="Date" class="order-table__cell">
+                                                {{ order.created_at | date: '%d %B %Y' }}
+                                            </td>
+                                            <td data-title="Payment Status" class="order-table__cell">
+                                                {{ order.financial_status_label }}
+                                            </td>
+                                            <td data-title="Fulfillment Status" class="order-table__cell">
+                                                {{ order.fulfillment_status_label }}
+                                            </td>
+                                            <td data-title="Total" class="order-table__cell">
+                                                {{ order.total_price | money }}
+                                            </td>
+                                            <td class="order-table__cell order-table__cell--last">
+                                                <a title="View Order" href="{{ order.customer_url }}" class="link link--arrow">
+                                                    View order
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p>
+                                You haven't placed any orders yet.
+                            </p>
+                        {% endif %}
+                        {% if paginate.pages > 1 %}
+                            <div class="account-pagination pagination">
+                                {{ paginate | default_pagination }}
+                            </div>
+                        {% endif %}
+                    {% endpaginate %}
+                </div>
+                <div class="account-grid__item account-grid__item--small">
+                    <h2 class="title-sans--small account-title-small">
+                        {{ customer.first_name }} {{ customer.last_name}}
+                    </h2>
+                    <div class="wysiwyg">
+                        {% if customer.email %}
+                            <p>
+                                {{ customer.email }}
+                            </p>
+                        {% endif %}
+                        {% if customer.default_address %}
+                            {{ customer.default_address | format_address }}
+                        {% endif %}
+                    </div>
+                    <a class="button button--solid" href="/account/addresses">
+                        <span class="button__text">
+                            View addresses
+                            ({{ customer.addresses_count }})
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

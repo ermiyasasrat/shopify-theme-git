@@ -1,0 +1,59 @@
+{% paginate blog.articles by 18 %}
+    {% if paginate.current_page == 1 %}
+        {% if settings.featured_blog %}
+            {% assign featuredBlog = articles[settings.featured_blog] %}
+            <section class="image-text-split image-text-split--beige">
+                <div class="site-wrap site-wrap--max">
+                    <div class="image-text-split__wrap">
+                        {% unless featuredBlog.image == blank %}
+                            <div class="image-text-split__image image-text-split__image--switch">
+                                {% assign image_small_1x = featuredBlog.image | img_url: '360x360' %}
+                                {% assign image_small_2x = featuredBlog.image | img_url: '720x720' %}
+                                {% assign image_medium_1x = featuredBlog.image | img_url: '683x670' %}
+                                {% assign image_medium_2x = featuredBlog.image | img_url: '1366x1340' %}
+                                {% assign image_large_1x = featuredBlog.image | img_url: '960x770' %}
+                                {% assign image_large_2x = featuredBlog.image | img_url: '1920x1540' %}
+                                {% include 'picture',
+                                    small1x: image_small_1x,
+                                    small2x: image_small_2x,
+                                    medium1x: image_medium_1x,
+                                    medium2x: image_medium_2x,
+                                    large1x: image_large_1x,
+                                    large2x: image_large_2x,
+                                    alt: featuredBlog.image_alt
+                                %}
+                            </div>
+                        {% endunless %}
+                        <div class="image-text-split__content image-text-split__content--hero image-text-split__content--switch">
+                            <div class="image-text-split__content__container">
+                                <div class="image-text-split__content__inner">
+                                    <div class="blog-list__additional">
+                                        {{ featuredBlog.published_at | date: "%d.%m.%y" }}
+                                        {% if featuredBlog.tags.first %}
+                                            <span class="blog-list__splitter blog-list__splitter--dark"></span>
+                                            Article Type
+                                        {% endif %}
+                                    </div>
+                                    <h2 class="title-sans title-sans--small image-text-split__title">
+                                        {{- featuredBlog.title -}}
+                                    </h2>
+                                    <div class="image-text-split__buttons">
+                                        <a class="button button--secondary" href="{{- featuredBlog.url -}}">
+                                            Read more
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    {% endif %}
+{% endpaginate %}
+{% schema %}
+{
+    "name": "blog-featured",
+    "tag": "section"
+}
+{% endschema %}

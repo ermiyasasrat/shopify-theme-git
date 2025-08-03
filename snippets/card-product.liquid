@@ -1,0 +1,259 @@
+{{ 'card-product.css' | asset_url | stylesheet_tag }}
+
+{% comment %} Soldout {% endcomment %}
+{% assign sold_out = false %}
+{% assign sold_out_class = '' %}
+{% unless card_product.available %}
+  {% assign sold_out = true %}
+  {% assign sold_out_class = 'sold-out' %}
+{% endunless %}
+
+{% comment %} On Sale {% endcomment %}
+{%- assign on_sale = false -%}
+{%- assign sale_class = '' -%}
+{%- if card_product.compare_at_price > card_product.price -%}
+  {%- assign on_sale = true -%}
+  {%- assign sale_class = 'on-sale' -%}
+{%- endif -%}
+
+{% comment %} Product Image Url {% endcomment %}
+{% assign main_img_url = 'bc-sf-filter-no-image.gif' | asset_url %}
+{% if card_product.featured_image.src == blank %}
+  {% if card_product.images[0] %}
+    {% assign main_img_url = card_product.images[0] %}
+  {% endif %}
+  {% if card_product.images[1] %}
+    {% assign swap_img_url = card_product.images[1] %}
+  {% endif %}
+{% else %}
+  {% assign main_img_url = card_product.featured_image %}
+  {% if card_product.images[1] %}
+    {% assign swap_img_url = card_product.images[1] %}
+  {% endif %}
+{% endif %}
+
+{%- assign sampleVariantId = '' -%}
+{%- for variant in card_product.variants -%}
+  {%- if variant.title contains 'Sample' and variant.price == 0 -%}
+    {%- assign sampleVariantId = variant.id -%}
+  {%- elsif variant.title contains 'sample' and variant.price == 0 -%}
+    {%- assign sampleVariantId = variant.id -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{% assign current_variant = card_product.selected_or_first_available_variant %}
+{% assign productType = card_product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+{% assign productUpsells = card_product.metafields.product_upsells.product | split: '|' %}
+{% assign productRelated = card_product.metafields.related_products.product | split: '|' %}
+{% if card_product.variants.size > 1 %}
+  {% assign productPrice = current_variant.price | money_without_currency %}
+  {% assign productComparePrice = current_variant.compare_at_price | money_without_currency %}
+  {% assign productPricePerMetresSquared = current_variant.metafields.product_config.price_per_metres_squared %}
+  {% assign productComparePricePerMetresSquared = current_variant.metafields.product_config.compare_price_per_metres_sq %}
+  {% assign productWarranty = current_variant.metafields.product_attribute.warranty %}
+  {% assign productRollWidth = current_variant.metafields[productType].roll_width %}
+{% else %}
+  {% assign productPrice = card_product.price | money_without_currency %}
+  {% assign productComparePrice = card_product.compare_at_price | money_without_currency %}
+  {% assign productPricePerMetresSquared = card_product.metafields.product_config.price_per_metres_squared %}
+  {% assign productComparePricePerMetresSquared = card_product.metafields.product_config.compare_price_per_metres_sq %}
+  {% assign productWarranty = card_product.metafields.product_attribute.warranty %}
+  {% assign productRollWidth = card_product.metafields[productType].roll_width %}
+{% endif %}
+
+{% assign productNumber = current_variant.metafields.product_config.product_number %}
+{% assign productMinQty = current_variant.metafields.product_config.minimum_qty %}
+{% assign productRrp = current_variant.metafields.filters.rrp %}
+{% assign productLength = current_variant.metafields.filters.length %}
+{% assign productWidth = current_variant.metafields.product_attribute.width %}
+{% assign productPackSize = current_variant.metafields.product_attribute.pack_size %}
+
+{% assign default_default_size = 'medium' %}
+{% assign default_sizes = '50vw' %}
+{% assign default_image = card_product.featured_image %}
+{% assign lazy_load = false %}
+{%- if forloop.index > 2 -%}
+  {%- assign lazy_load = true -%}
+{%- endif -%}
+
+{% comment %} removed discount tag on product image {%- if on_sale or sold_out -%}
+  {% render 'product-discount-tag', on_sale: on_sale, sold_out: sold_out %}
+{%- endif -%} {% endcomment %}
+
+{%- assign sampleIndex = '' -%}
+{%- assign firstVariant = '' -%}
+{%- for variant in card_product.variants -%}
+  {%- if variant.title contains 'Sample' and variant.price == 0 -%}
+    {%- assign sampleIndex = forloop.index -%}
+  {%- elsif variant.title contains 'sample' and variant.price == 0 -%}
+    {%- assign sampleIndex = forloop.index -%}
+  {%- elsif forloop.index == 1 -%}
+    {%- assign firstVariant = variant -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if sampleIndex == '' and product.available == true -%}
+  {%- assign productUrl = card_product.first_available_variant.url -%}
+{%- elsif sampleIndex == '' and product.available == false -%}
+  {%- assign productUrl = card_product.url -%}
+{%- elsif firstVariant != '' -%}
+  {%- assign productUrl = firstVariant.url -%}
+{%- else -%}
+  {%- assign productUrl = card_product.url -%}
+{%- endif -%}
+
+<a href="{{ productUrl }}" class="main-collection-image-anchor" title="View {{ card_product.title }}">
+  {% render 'card-product-picture',
+    image: card_product.featured_image,
+    lazy: true,
+    image_class: 'main-collection-product-grid-image',
+    alt: card_product.title
+  %}
+
+  {% if swap_img_url %}
+    {% render 'card-product-picture',
+      image: swap_img_url,
+      lazy: lazy_load,
+      image_class: 'main-collection-product-grid-image hover-image',
+      alt: card_product.title | append: ' - Hover'
+    %}
+  {% endif %}
+
+  {%- assign productOverlay = blank -%}
+  {% for product_logo_object in shop.metaobjects.product_logo_object.values %}
+    {% if card_product.vendor == product_logo_object.vendor.value %}
+      {% assign productOverlay = product_logo_object.image.value | image_url: width: 140 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% if productOverlay == blank %}
+    {%- assign productOverlay = collection.metafields.collection_overlay.overlay -%}
+  {% endif %}
+
+  {%- if productOverlay != blank -%}
+    <div class="main-collection-product-overlay-container">
+      <img
+        src="{{ productOverlay }}"
+        class="main-collection-product-overlay"
+        alt="{{ collection.title }} Overlay"
+      >
+    </div>
+  {%- endif -%}
+</a>
+<div class="main-collection-grid-details">
+  <div class="collection-product-title-fixed-height">
+    {% render 'collection-grid-new', product: card_product %}
+    {% unless hide_features %}
+      <!-- {% render 'collection-grid', product: card_product %} -->
+    {% endunless %}
+    {% render 'trustpilot-wd-prod-mini', product_sku: current_variant.sku %}
+    {%- if collection.template_suffix == 'h3' -%}
+      <h3>
+        <a
+          class="collection-product-title"
+          href="{{ productUrl }}"
+          title="View {{ card_product.title }}"
+        >
+          {{ card_product.title }}
+        </a>
+      </h3>
+    {%- else -%}
+      <a
+        class="collection-product-title"
+        href="{{ productUrl }}"
+        title="View {{ card_product.title }}"
+      >
+        {{ card_product.title }}
+      </a>
+    {%- endif -%}
+
+    {% liquid
+      assign avg = card_product.metafields.rapid_reviews.counts.value.r.rating.avg
+      unless avg
+        assign avg = 0
+      endunless
+      assign count = card_product.metafields.rapid_reviews.counts.value.r.counts.core.total
+      unless count
+        assign count = 0
+      endunless
+    %}
+    {% if count > 0 %}
+      {% comment %} <div class="rapid_reviews_stars_badge" data-avg="{{ avg }}" data-count="{{ count }}" data-url="{{ card_product.url }}"></div> {% endcomment %}
+    {% endif %}
+
+    {% comment %}
+      {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true, product: product %}
+    {% endcomment %}
+  </div>
+
+  {% assign productwoolOfflive = card_product.metafields.product_config.offline_product | downcase %}
+  {%- if productwoolOfflive == 'true' -%}
+  {%- else -%}
+    {%- assign product_in_collects = '[' -%}
+    {%- for collection in card_product.collections -%}
+      {%- assign product_in_collects = product_in_collects
+        | append: '{"collection_id":"'
+        | append: collection.id
+        | append: '","product_id":"'
+        | append: card_product.id
+        | append: '"'
+        | append: ',"product_handle":"'
+        | append: card_product.handle
+        | append: '"}'
+      -%}
+      {% if forloop.last == false %}
+        {%- assign product_in_collects = product_in_collects | append: ',' -%}
+      {% endif %}
+    {%- endfor -%}
+    {%- assign product_in_collects = product_in_collects | append: ']' -%}
+    {% comment %} <span class="col_clct" clct="{{product_in_collects}}"></span> {% endcomment %}
+
+    {% render 'collection-price',
+      product: card_product,
+      productPricePerMetresSquared: productPricePerMetresSquared,
+      on_sale: on_sale,
+      productPackSize: productPackSize
+    %}
+  {%- endif -%}
+  <div class="collection-buttons-container">
+    {% assign noSample = true %}
+    {% for tag in card_product.tags %}
+      {% if tag contains 'sample-available_Yes' %}
+        {% assign noSample = false %}
+      {% endif %}
+    {% endfor %}
+
+    {% if sold_out %}
+      <a
+        {% if noSample == true %}
+        {% endif %}
+        href="{{ productUrl }}"
+        class="button"
+        title="View {{ card_product.title | escape }}"
+      >
+        View Product
+      </a>
+    {% else %}
+      <a
+        {% if noSample == true %}
+        {% endif %}
+        href="{{ productUrl }}"
+        class="button"
+        title="View {{ card_product.title | escape }}"
+      >
+        {{ 'products.product.view_product' | t }}
+      </a>
+    {% endif %}
+    {% if noSample == false %}
+      {%- form 'product', card_product, novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+        {% if settings.optimize_new_sample_app_enabled %}
+          {% render 'product-samples-button', product: card_product %}
+        {% else %}
+          <div class="js-product-samples" data-sample="{{ card_product | json | url_encode }}"></div>
+        {% endif %}
+      {%- endform -%}
+    {% endif %}
+  </div>
+  {% render 'storeify-quote', product: card_product %}
+</div>

@@ -1,0 +1,166 @@
+@media only screen and (max-width: 47.999em) {
+    .blog-detail {
+        padding: 0 5%;
+    }
+}
+.blog-detail {
+    margin: 7rem auto 5rem;
+    max-width: 102rem;
+}
+@media (min-width: 48em) {
+    .blog-detail {
+        margin-bottom: 7rem;
+    }
+}
+.blog-detail__intro {
+    margin: 0 -3rem 5rem;
+    max-width: 78rem;
+    color: #24486d;
+    text-align: center;
+}
+@media (min-width: 48em) {
+    .blog-detail__intro {
+        margin: 0 auto 9rem;
+    }
+}
+.blog-detail__additional {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+.blog-detail__additional--center {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.blog-detail__title {
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    line-height: 1.1;
+}
+@media (min-width: 48em) {
+    .blog-detail__title {
+        margin-bottom: 3rem;
+        font-size: 4rem;
+    }
+}
+.blog-detail__splitter {
+    width: 0.1rem;
+    margin: 0 1.2rem;
+    border-left: 0.1rem solid #ff877a;
+}
+.blog-detail__featured-image {
+    margin: 0 -3rem 5rem;
+}
+@media (min-width: 48em) {
+    .blog-detail__featured-image {
+        margin: 0 0 5rem;
+    }
+}
+@media (min-width: 48em) {
+    .blog-detail__grid {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+}
+.blog-detail__content {
+    margin-bottom: 5rem;
+}
+@media (min-width: 48em) {
+    .blog-detail__content {
+        -ms-flex-preferred-size: 70%;
+        flex-basis: 70%;
+        max-width: 70%;
+        margin-bottom: 0rem;
+    }
+}
+.blog-detail__related {
+    margin-bottom: 5rem;
+}
+@media (min-width: 48em) {
+    .blog-detail__related {
+        -ms-flex-preferred-size: 28%;
+        flex-basis: 28%;
+        max-width: 28%;
+        margin-left:2%;
+    }
+}
+.blog-detail__related-title {
+    margin-bottom: 3rem;
+    color: #24486d;
+    font-size: 1.9rem;
+    font-family: Bogue-Light, "sans-serif";
+}
+.blog-detail__related-item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 0.1rem solid #c6d5d5;
+}
+.blog-detail__related-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    color: #24486d;
+    text-decoration: none;
+}
+.blog-detail__related-image {
+    margin-right: 4rem;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+.blog-detail__related-post-title {
+    font-size: 1.6rem;
+    line-height: 1.4;
+    letter-spacing: -0.01rem;
+}
+.social-share {
+    margin-top: 4rem;
+}
+.social-share__title {
+    margin-bottom: 2rem;
+    color: #24486d;
+    font-size: 1.2rem;
+    font-family: Bogue-Bold, "sans-serif";
+}
+.social-share__list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.social-share__item {
+    margin-right: 2rem;
+}
+.social-share__link:hover .icon-fill {
+    fill: #ff877a;
+}
+.social-share__link .icon-fill {
+    -webkit-transition: fill 0.4s;
+    transition: fill 0.4s;
+}
+
+table.WoolBlogTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 1px;
+  border-color: #dedede;
+  border-style: solid;
+  color: #1c1c1c;
+}
+
+table.WoolBlogTable td, table.WoolBlogTable th {
+  border-width: 1px;
+  border-color: #dedede;
+  border-style: solid;
+  padding: 15px;
+}
+
+table.WoolBlogTable thead {
+  background-color: #24486d;
+  color: #fff;
+}

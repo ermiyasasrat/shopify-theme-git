@@ -1,0 +1,77 @@
+{% assign title_splits = link.title | split: "[" %}
+  {% assign renderer_title = title_splits[0] %}
+{%- assign TOP_MENU_SHOP_BY_ROOM = 'Shop by Room' -%}
+{% assign icon_map = 
+  "Brushed:menu-icon-brushed.svg,Distressed:menu-icon-distressed.svg,Handscraped:menu-icon-handscraped.svg,Lacquered:menu-icon-lacquered.svg,Oiled:menu-icon-oiled.svg,Smoked:menu-icon-smoked.svg,Unfinished:menu-icon-unfinished.svg,Standard Plank:menu-icon-standard.svg,Chevron:menu-icon-chevron.svg,Herringbone:menu-icon-herringbone.svg,Light:menu-icon-light.svg,Medium:menu-icon-medium.svg,Dark:menu-icon-dark.svg,White:menu-icon-white.svg,Gray:menu-icon-gray.svg" | split: ',' %}
+  <ul class="mega-menu-element-body-container {{ canshowImage }}">
+  {%- for sublink in link.links -%}
+    <li {% if sublink.title contains "[heading]" %}style="margin:0;"{% endif %} class="mega-menu-element-body-attribute-container">
+      {%- assign splittedTitle = sublink.title | split: '[' -%}
+      {%- assign sublinkTitle = splittedTitle[0] -%}
+
+          {%- assign icon_found = false -%}
+            {% assign icon_name = "" %}
+            {% assign sublinkTitleStripped = sublinkTitle | strip %}
+            {% for pair in icon_map %}
+              {% assign parts = pair | split: ':' %}
+              {% if sublinkTitleStripped == parts[0] %}
+                {% assign icon_name = parts[1] %}
+                {%- assign icon_found = true -%}
+              {% endif %}
+            {% endfor %}
+
+    
+      {%- if sublink.title contains ".png" -%}
+        {%- assign secondHalfUrl = splittedTitle[1] | split: ']' | replace: ' ', '' -%}
+        {%- assign imageUrl = secondHalfUrl | replace: '[', '' | replace: ']', '' | replace: '"', '' -%}
+      {%- else -%}
+        {%- assign imageUrl = sublinkTitle | append: '.png' | replace: " ", "_" -%}
+      {%- endif -%}
+
+      {%- assign noFollow = true -%}
+      {%- if sublink.type == "collection_link" -%}
+        {%- assign noFollow = false -%}
+      {%- endif -%}
+
+      <a href="{% if sublink.url contains shop.url %}{{ sublink.url }}{% else %}{{ shop.url }}{{ sublink.url }}{% endif %}"
+          {% if noFollow == true %}rel="nofollow"{% endif %}
+          title="{{ sublinkTitle | replace: "[noicon]", "" }}">
+        {%- unless renderer_title == TOP_MENU_SHOP_BY_ROOM -%}
+          {% render 'luis-menu-third-link-image', link: link, sublink: sublink, imageUrl: imageUrl %}
+        {%- endunless -%}
+        {%- if sublink.title contains "[heading]" -%}
+          <div class="mega-menu-element-title-container">
+            <h3>
+              {{ 'general.navigation.title_prefix' | t }} {{ sublinkTitle | replace: "[heading]", "" }}
+            </h3>
+          </div>
+        {%- elsif sublinkTitle contains "[collection]" or sublinkTitle contains "[product]" -%}
+          {%- if sublinkTitle contains "[collection]" -%}
+            {%- assign objectImage = sublink.object.image -%}
+          {%- else -%}
+            {%- assign objectImage = sublink.object.featured_image -%}
+          {%- endif -%}
+          <div>
+            {% render 'responsive-image', image: objectImage, image_class: 'mega-menu-element-extra-product-image',
+                    alt: sublink.object.title, lazy: false %}
+            <div class="mega-menu-element-extra-product-text">
+              <span>{{ sublink.object.title }}</span>
+              {%- if sublinkTitle contains "[product]" -%}
+                <span>{{ sublink.object.price | money_with_currency }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- else -%}
+         {%- if icon_found -%}
+            {%- unless sublinkTitleStripped contains "Planks" -%}
+              <!-- changed the width and height to 30px -->
+              <img src="{{ icon_name | asset_url }}" alt="{{ sublinkTitleStripped }} icon" class="mega-menu-icon" style="width: 30px; height: 30px; margin-right: 8px; display: inline-block; vertical-align: middle;" />
+            {%- endunless -%}
+          {%- endif -%}
+          {{ sublinkTitle | replace: '[i]', '' }}
+        {%- endif -%}
+      </a>
+    </li>
+  {%- endfor -%}
+</ul>
+

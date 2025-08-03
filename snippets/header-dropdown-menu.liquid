@@ -1,0 +1,78 @@
+{%- assign menu_handle = 'engineered-wood' -%}  
+
+{%- for link in linklists[menu_handle].links -%}
+  {%- if link.links != blank -%}  
+    {%- for sub_link in link.links -%}
+      {%- assign sub_link_title = sub_link.title %}
+      {%- assign sub_link_url = sub_link.url %}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign menu_handle1 = 'engineered-wood-1' -%} 
+
+{%- for link1 in linklists[menu_handle1].links -%}
+  {%- if link1.links != blank -%}  
+    {%- for sub_link1 in link1.links -%}
+      {%- assign sub_link_title1 = sub_link1.title -%}
+      {%- assign sub_link_url1 = sub_link1.url -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    
+    {% for link in section.settings.main-menu.links %}
+      {% assign mega_menu = false %}
+      {% for block in section.blocks %}
+        {% if block.settings.title == link.title %}
+          {% assign mega_menu = true %}
+          <li class="mega-menu-list">
+      <a href="#" class="header__menu-item list-menu__item link link--text focus-inset">
+        {{link.title}}
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="10px" width="10px" version="1.1" id="Layer_1" viewBox="0 0 407.437 407.437" xml:space="preserve">
+          <polygon points="386.258,91.567 203.718,273.512 21.179,91.567 0,112.815 203.718,315.87 407.437,112.815 "/>
+        </svg>
+      </a>
+      <div class="mega-menu-wrapper">
+        <div class="mega-menu-row">
+          {% for child_link in block.settings.linklist.links -%}
+            {% assign reminder = forloop.index | modulo: 2 %}
+            {% if reminder == 1%}
+               <div class="mega-menu-column">
+               {% endif %}
+                    <div class="menu-item-inner">
+                        <h3>{{child_link.title}}</h3>
+                        <ul>
+                         {% for sub_child_link in child_link.links %}
+                            <li><a href="{{ sub_child_link.url }}">{{ sub_child_link.title }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% if reminder == 0 %}
+                    </div>
+                     {% endif %}
+               {% endfor %}
+               <div class="mega-menu-view-collection-card">
+              <div class="view-collection-image" style="background-image: url('{{ 'menu-colleciton.svg' | asset_url }}');">
+                <div class="view-collection-overlay">
+                  <div class="view-collection-text" style="text-align:center; font-size:2rem; font-weight:600;">
+                <span style="display:block;">View the</span>
+                <span style="display:block; margin-top:8px;">full collection</span>
+              </div>
+                  <a href="/collections/all" class="view-collection-btn">Shop Now</a>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </li>
+        {% endif %}
+      {% endfor %}
+      {% if mega_menu == false %}
+        <li><a href="{{link.url}}" class="header__menu-item list-menu__item link link--text focus-inset ">{{link.title}}</a></li>
+      {% endif %}
+    {% endfor %}
+</ul>
+</nav>

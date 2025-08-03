@@ -1,0 +1,52 @@
+<script type="text/javascript">
+
+// window.dataLayer = window.dataLayer || [];
+
+// window.appStart = function(){
+
+// 	{% assign template_name = template.name %}
+
+// 	function gtag(){
+// 		dataLayer.push(arguments);
+// 	}
+
+// 	window.productPageHandle = function() {
+
+// 		window.dataLayer = window.dataLayer || [];
+// 		gtag('js', new Date());
+// 		gtag('config', 'G-FVJV9Z9VMK');
+// 		var productName = "{{ product.title | remove: "'" | remove: '"' }}";
+// 		var productId = "{{ product.id }}";
+// 		var productPrice = "{{ product.price | money_without_currency }}";
+// 		var productBrand = "{{ product.vendor | remove: "'" | remove: '"' }}";
+// 		var productCollection = "{{ product.collections.first.title | remove: "'" | remove: '"' }}";
+// 		var currency = "GBP";
+
+// 		gtag("event", "view_item", {
+// 			currency: currency,
+// 			totalValue: productPrice,
+// 			items: [
+// 				{
+// 					item_id: productId,
+// 					item_name: productName,
+// 					price: productPrice,
+// 					item_brand: productBrand,
+// 					item_category: productCollection
+// 				}
+// 			]
+// 		});
+// 	};
+
+// 	{% case template_name %}
+
+// 	{% when 'product' %}
+
+// 		productPageHandle()
+
+// 	{% endcase %}
+
+// }
+
+// appStart();
+
+</script>

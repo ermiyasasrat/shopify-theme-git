@@ -1,0 +1,415 @@
+
+<!-- modal contents-->
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class='empty-cart' style="display:none">
+      <h1 
+        style="text-align:center; font-size: 22px"
+      >
+        Your Cart Is Empty
+      </h1>
+      <a 
+        href="#" 
+        class="button btn-conti"
+      >
+        Continue Shopping
+      </a>
+    </div>
+    <div class="modal-inside-all">
+      <span class="close">&times;</span>
+      <h1>Your Cart</h1>
+      <div class="resp-table">
+      	<table id="modal-cart">
+        <tbody id="cart-items">
+        </tbody>
+      </table>
+      </div>
+      
+      <div class="subtotal-btm-cart">
+        <p id="sub-total"></p>
+        <div class="dn-total-area">
+          <a 
+            href="javascript:void(0)" 
+            class="button btn-conti" 
+            id="close-me"
+          >
+            Continue Shopping
+          </a>
+            <a 
+              href="/checkout" 
+              class="button btn-conti" 
+              id="modal-checkout"
+            >
+              Checkout
+            </a>
+        </div>
+        
+      </div>
+    </div><!--/..modal-inside-all-->
+    
+  </div>
+
+</div>
+
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+
+// btn.onclick = function() {
+//   modal.style.display = "block";
+// }
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+var close_me = document.getElementById("close-me");
+close_me.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+var btn = document.getElementById("myBtn");
+  btn.addEventListener('click',function(){
+    console.log('modal open');
+    getCart();
+    
+//     setTimeout(function(){ 
+// 		modal.style.display = "none";
+// 	}, 15000);
+    
+  })
+
+  //     function for populating the cart
+
+  //     function for getting the cart
+  async function getCart(){
+    await fetch('/cart.js')
+    .then(res=>res.json())
+    .then(data=> populateCart(data))
+  }
+
+  //     function for updating cart
+  async function changeCart(id){
+    let item = {
+      id: id,
+      quantity: 0
+    }
+    jQuery.ajax({
+      type: 'post',
+      url: '/cart/change.js',
+      data: item,
+      success: function(data){populateCart(data)},
+      dataType: 'json'
+    });
+  }
+
+  function populateCart(cart){
+    console.log('inside cart population');
+    if(cart.item_count > 0){
+      let tbody = document.getElementById('cart-items');
+      let table = document.getElementById('modal-cart');
+      let subTotal = document.getElementById('sub-total');
+      let checkout  = document.getElementById('modal-checkout');
+      document.querySelector('.modal-inside-all').style.display = 'block';
+      document.querySelector('.empty-cart').style.display = 'none';
+      subTotal.innerHTML = `Sub-total: <span class="dn-price">£${cart.total_price/100}</span>`
+      checkout.innerText = `Checkout`
+      tbody.innerHTML = '<tr class="dn-cart-header"><td></td><td>Product Title</td><td class="hide-mobile">Unit Price</td><td class="hide-mobile">Quantity</td><td class="hide-mobile">Total</td></tr>';
+      cart.items.map(item=>{
+        console.log('printing item', item);
+        let row = document.createElement('tr')
+        row.id = `row-${item.id}`;
+        row.innerHTML =  `
+        <td style="width: 65px">
+        <img class="cart-product__img" src="${item.image}" alt="${item.title}">
+          </td>
+        <td style="width: 250px">
+        <h4>${item.title}</h4>
+		
+		<p class="mobile-only">
+		<span>£${item.price/100} x ${item.quantity} packs</span>
+  		<span class="total"> £${item.line_price /100} </span>
+  		</p>
+
+        </td>
+        <td class="hide-mobile">
+        <span class="total">£${item.price/100}</span>
+          </td>
+        <td class="hide-mobile">
+        <span class="quantity">
+        ${item.quantity} packs
+          </span>
+          </td>
+        <td class="hide-mobile">
+        <span class="total">
+        £${item.line_price /100}
+          </span>
+          </td>
+        <td>
+        <a data-id='${item.id}' href="javascript:void(0)" class="remove_item">&times;</a>
+          </td>
+
+        `
+        tbody.appendChild(row);
+
+      })
+      $('.remove_item').on('click',function(){
+        let id = $(this).attr('data-id');
+        $('#row-'+id).remove();
+        changeCart(id);
+      })
+
+    }
+    else{
+      document.querySelector('.modal-inside-all').style.display = 'none';
+      document.querySelector('.empty-cart').style.display = 'block'
+
+    }
+  }
+  
+  //fadeout function
+  function fadeOutEffect() {
+      var fadeTarget = document.getElementById("myModal");
+      var fadeEffect = setInterval(function () {
+          if (!fadeTarget.style.opacity) {
+              fadeTarget.style.opacity = 1;
+          }
+          if (fadeTarget.style.opacity > 0) {
+              fadeTarget.style.opacity -= 0.1;
+          } else {
+              clearInterval(fadeEffect);
+          }
+      }, 100);
+  }
+
+
+</script>
+
+
+
+
+<style>
+#myBtn{ display:none }
+a.remove_item {
+    text-decoration: none;
+    color: red;
+    font-size: 30px;
+}
+tr.dn-cart-header td {
+    font-weight: 600;
+    font-size: 15px;
+}
+span.dn-price {
+    font-size: 20px;
+}
+a#modal-checkout {
+    background: #23486d;
+    color: #fff;
+}  
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999999998; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-bottom:20px;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+  
+  
+  .quantity input[type=number]::-webkit-inner-spin-button,
+.quantity input[type=number]::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+  
+  .modal-content {
+    max-width: 700px;
+}
+
+.modal-inside-all h1 {
+    text-align: center;
+    padding-top: 30px;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.modal-inside-all table img {
+    max-width: 60px;
+}
+
+.modal-inside-all table tr {
+border-bottom:.1rem solid #979797;
+}
+
+.modal-inside-all table {
+    width: 100%;
+    max-width: 95%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.modal-inside-all table h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 20px;
+    font-family: Averta-Semibold,"sans-serif";
+    color: #1b2c3d;
+    /* font-weight: 500; */
+}
+
+.modal-inside-all table td {
+    padding: 5px;
+}
+
+.quantity {
+    display: flex;
+    position: relative;
+    max-width: 100px;
+    align-items: center;
+}
+
+.quantity input {
+    width: 50px;
+    text-align: center;
+    outline: 0;
+    width: 3.2rem;
+    /* height: 4.7rem; */
+    text-align: center;
+    border: .1rem solid #bcbcbc;
+    border-radius: .4rem;
+    padding: 7.5px 10px;
+    border: 0;
+    border-top: 2px solid #ebebeb;
+    border-bottom: 2px solid #ebebeb;
+}
+
+.quantity-button {
+    display: inline-block;
+    background: #ebebeb;
+    padding: 7px 10px;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 20px;
+}
+
+.modal-inside-all table td .del {
+    font-size: 20px;
+  text-decoration: unset;
+}
+  
+  .subtotal-btm-cart {
+    width: 100%;
+    max-width: 95%;
+    margin: auto;
+    text-align: right;
+}
+
+.modal-inside-all table td {
+
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+  .modal-inside-all table td .total {
+    font-weight: 600;
+}
+  .subtotal-btm-cart {
+    padding-top: 20px;
+}
+
+.subtotal-btm-cart p {
+    font-weight: 600;
+  padding-bottom:15px;
+}
+.subtotal-btm-cart .button {margin-top: 15px;}
+  
+.mobile-only{ display: none; }
+  
+  @media (max-width:767px){
+    .cart-items{ overflow-x: hidden; }
+    .modal-content{
+      width:96%;
+    }
+    .resp-table{
+      overflow:auto;
+    }
+
+    td.hide-mobile {
+      display: none;
+      padding: 0 !important;
+      width: 0 !important;
+      margin: 0 !important;
+    }
+    .mobile-only{ display: block; }
+    p.mobile-only span {
+        display: block;
+        padding: 3px 0;
+    }
+    .dn-total-area a{
+        display: block;
+    }
+    
+  }
+ 
+  @media (min-width:767px){
+    .resp-table table{
+      min-width:600px;
+    }  
+  }
+  
+</style>

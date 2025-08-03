@@ -1,0 +1,117 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": ".collection--new-template",
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs-section",
+      "settings": {}
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "background_accent": "#1B2C3D",
+        "color_scheme": "background-2"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 9,
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "collapse_on_larger_devices": false,
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "d382af70-bbde-43ae-a3f5-8c699da74a1b": {
+      "type": "FAQAccordion",
+      "settings": {
+        "button_text": "See all our questions",
+        "button_link": "#"
+      }
+    },
+    "blog_list_product_tDrnb3": {
+      "type": "blog-list-product",
+      "settings": {
+        "title": "Inspiration",
+        "blog": "stories",
+        "post_limit": 3
+      }
+    },
+    "newsletter_BrT78C": {
+      "type": "newsletter",
+      "settings": {
+        "image": "shopify://shop_images/Group_6065_3.svg",
+        "heading": "Subscribe to our newsletter"
+      }
+    },
+    "advantages_BRW9wB": {
+      "type": "advantages",
+      "blocks": {
+        "advantages_boxes_h9aNDB": {
+          "type": "advantages_boxes",
+          "settings": {
+            "advantage_icon": "shopify://shop_images/handshake_7_1_4.svg",
+            "advantage_text": "Price Match Guarantee",
+            "advantage_content": "Thousands of happy customers"
+          }
+        },
+        "advantages_boxes_gdMWfw": {
+          "type": "advantages_boxes",
+          "settings": {
+            "advantage_icon": "shopify://shop_images/draws_1_3.svg",
+            "advantage_text": "free samples available",
+            "advantage_content": "UK’s fastest & Largest Samples"
+          }
+        },
+        "advantages_boxes_FcwcBx": {
+          "type": "advantages_boxes",
+          "settings": {
+            "advantage_icon": "shopify://shop_images/delivery_6_1_4.svg",
+            "advantage_text": "Fast & Reliable Delivery",
+            "advantage_content": "Lorem Ipsum dolor summit"
+          }
+        },
+        "advantages_boxes_PczpVn": {
+          "type": "advantages_boxes",
+          "settings": {
+            "advantage_icon": "shopify://shop_images/package_3_1_3.svg",
+            "advantage_text": "30-day returns",
+            "advantage_content": "No-hassle returns. anytime."
+          }
+        }
+      },
+      "block_order": [
+        "advantages_boxes_h9aNDB",
+        "advantages_boxes_gdMWfw",
+        "advantages_boxes_FcwcBx",
+        "advantages_boxes_PczpVn"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "banner",
+    "product-grid",
+    "d382af70-bbde-43ae-a3f5-8c699da74a1b",
+    "blog_list_product_tDrnb3",
+    "newsletter_BrT78C",
+    "advantages_BRW9wB"
+  ]
+}

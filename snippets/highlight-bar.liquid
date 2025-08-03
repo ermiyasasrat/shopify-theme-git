@@ -1,0 +1,24 @@
+<div class="highlight__container">
+  <div class="highlight__inner-wrapper">
+    {% for highlight in shop.metaobjects.highlight_object.values %}
+      <a href="{{ highlight.url.value }}"
+        class="highlight__item {% if highlight.sort_order.value != blank %} order-{{ highlight.sort_order.value }}{% endif %}"
+        {% if highlight.url_target.value != blank %} target="{{ highlight.url_target.value }}"{% endif %}
+        {% if highlight.url_rel.value != blank %} rel="{{ highlight.url_rel.value }}"{% endif %}
+        title="{{ highlight.title.value }}">
+        <div class="highlight__item-inner">
+          <div class="highlight__item-head">
+            <img
+              src="{{ highlight.icon.value | image_url: width: 48, height: 48 }}"
+              alt="Free Samples"
+              width="48"
+              height="48"
+            />
+            <h2 class="highlight__item-title">{{ highlight.title.value }}</h2>
+          </div>
+          <h3 class="highlight__item-slogan">{{ highlight.slogan.value }}</h3>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>

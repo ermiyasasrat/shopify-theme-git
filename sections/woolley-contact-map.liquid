@@ -1,0 +1,32 @@
+{% schema %}
+    {
+        "name": "Contact Map",
+        "settings": [            
+            {
+                "type": "text",
+                "id": "contact_map_directions",
+                "label": "Directions link"
+            },
+            {
+                "type": "text",
+                "id": "contact_map_embedd",
+                "label": "Map Embedd URL"
+            }
+        ]
+    }
+{% endschema %}
+
+    <section id="contact-us-map" class="contact-map">
+        <div class="site-wrap site-wrap--max contact-map__wrap">
+            
+                <div class="contact-map__map-container">
+                    <iframe src="{{- section.settings.contact_map_embedd -}}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+          {% if section.settings.contact_map_directions == true %}
+          <a href="{{ section.settings.contact_map_directions }}" class="link">
+            Get directions
+          </a>
+          {% endif %}
+      
+        </div>
+    </section>

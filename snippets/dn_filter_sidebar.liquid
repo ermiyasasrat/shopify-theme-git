@@ -1,0 +1,460 @@
+{% assign allCollections = collection.all_tags | join: ' + ' %}
+
+
+ <div id="mobileFilters" class="dn_filter_sidebar mobile-show-collapse">  
+ 
+{% if current_tags %} 
+  <div class="dn_current_filter_container single-filter-group">
+    <h4>
+      Refined By
+    </h4>
+  {% for tag in current_tags %}
+    {% assign xTag = tag | split: '_' %}
+    <p class="dn_current_filter active">
+      <span>
+        {{ xTag[0] }}:
+      </span>
+      {{ xTag[1] | link_to_remove_tag: tag }}
+    </p>
+  {% endfor %}
+    <p class="dn_filter_clear">
+      <a 
+        title="{{ collection.title }}" 
+        href="{{ shop.url }}/collections/{{ collection.handle }}"
+      >
+        Clear x
+      </a>
+    </p>
+  </div>
+{% endif %}
+   
+
+   
+{% if collection.handle contains 'flooring-accessories' or collection.handle contains 'parquet-flooring' or collection.handle contains 'clearance' %}
+    <div class="single-filter-group">
+      <h4>Type</h4>
+      <ul>
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'type' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+        	
+          {% endif %}
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}"> 
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+        {% endif %}
+       {% endfor %}
+      </ul>
+    </div>
+{% endif %}     
+     
+    {%- assign ColHandle = collection.handle -%}
+    {%- assign meDo = linklists[ColHandle].links -%}
+    {% if meDo != blank %}
+    <div class="single-filter-group">
+      <h4>Filter by Range</h4>
+      <ul>
+        {%- for link in meDo -%}
+        <li class="filter-item-tag filter-shade">
+          <a href="{{ link.url }}"
+             class="filter-item-link"
+             {% if link.current %} aria-current="page" {% endif %} title="{{ link.title }}">
+            <span class="site-navigation__link-text">
+              {{ link.title }}
+            </span>
+            {% if link.links != blank %}
+            <span class="site-navigation__link-arrow">
+              {% include 'icon-nav-arrow' %}
+            </span>
+            {% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+     </div>
+    {% endif %}  
+   
+   
+     
+	<div class="single-filter-group">
+      <h4>Price (Per M2)</h4>
+     	{% include 'dn_price_filter' %}
+	</div>
+   
+
+ 
+
+{% if allCollections contains 'for-use-with' %}
+    <div class="single-filter-group">
+      <h4>For use with</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'for-use-with' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}">
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        	  </li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>    
+{% endif %}   
+   
+{% include 'common_sidebar_filters' %}
+   
+{% if allCollections contains 'finish' %}
+    <div class="single-filter-group">
+      <h4>Finish</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'finish' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}">
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>
+{% endif %}
+   
+{% if allCollections contains 'rating' %}
+    <div class="single-filter-group">
+      <h4>Rating</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'rating' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}"> 
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>
+{% endif %}   
+
+{% if allCollections contains 'effect' %}
+    <div class="single-filter-group">
+      <h4>Effect</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'effect' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}">
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-'  }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>
+{% endif %}    
+
+    
+{% if allCollections contains 'underfloor' %}
+    <div class="single-filter-group">
+      <h4>Underfloor Heating</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'underfloor' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}"> 
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>
+{% endif %}    
+   
+{% if allCollections contains 'wear-layer' %}
+    <div class="single-filter-group">
+      <h4>Wear Layer</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'wear-layer' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}"> 
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' | replace: '.', '-' | replace: '/', '-' }}+{{ tag | replace: ' ', '-' | replace: '.', '-' | replace: '/', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' | replace: '.', '-' | replace: '/', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>   
+{% endif %}
+
+   
+   
+   
+
+   
+   
+   
+   
+{% if allCollections contains 'species' %}
+    <div class="single-filter-group">
+      <h4>Wood Species</h4>
+      <ul>
+
+       {% for tag in collection.all_tags %}
+        {% if tag contains 'species' %}
+          {% comment %} Count Tag items{% endcomment %}
+          {% assign tagCount = 0 %}
+          {% paginate collection.products by 500  %}
+            {% for product in collection.products %}
+              {% for productTag in product.tags %}
+                {% if productTag == tag %}
+                   {% assign tagCount = tagCount | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endpaginate %}
+
+          {% comment %}Detect Active Tag{% endcomment %}
+          {% assign dn_active_tag = '' %}
+          {% if current_tags contains tag %}
+            {% assign dn_active_tag = 'dn_active_tag' %}
+          {% endif %}
+
+          {% comment %}Print Tags{% endcomment %}
+          {% if tagCount > 0 %}
+              {% assign showPlus = '' %}
+              {% comment %}{% if tagCount > 49 %}{% assign showPlus = '+' %}{% endif %}{% endcomment %}
+
+                  {% assign xTag = tag | split: '_' %}
+
+              <li class="filter-item-tag filter-shade {{dn_active_tag}}">
+                {% if current_tags %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ current_tags | join: '+' | replace: ' ', '-' }}+{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% else %}
+                		<a title="{{ xTag[1] }}" href="{{ shop.secure_url }}/collections/{{collection.handle}}/{{ tag | replace: ' ', '-' }}" rel="nofollow">{{ xTag[1] }} ({{ tagCount }})</a>
+                {% endif %}
+        		</li>
+          {% endif %}
+
+        {% endif %}
+       {% endfor %}
+
+      </ul>
+    </div>    
+{% endif %}
+</div>  

@@ -1,0 +1,38 @@
+<menu-navigation class="top"
+	data-width=""
+	data-height=""
+>
+	<nav class="site-navigation site-wrap site-wrap--nav" id="site-navigation">
+		<div class="site-navigation__menu">
+			<ul class="site-navigation__ul">
+				{%- for link in linklists[section.settings.main-menu].links -%}
+					{% render 'full-navigation', link: link %}
+				{%- endfor -%}
+			</ul>
+			{% comment %}<ul class="site-navigation__ul mobile-only">
+				{%- for link in linklists[section.settings.mobile-menu].links -%}
+					{% render 'full-navigation', link: link, is_mobile: true %}
+				{%- endfor -%}
+			</ul>{% endcomment %}
+		</div>
+	</nav>
+</menu-navigation>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		$(document).on('click', '.site-navigation-brand-submenu-container', function (event) {
+			var $el = $(this);
+			var $target = $(event.target);
+			if($target.hasClass('site-navigation-brand-submenu-container') || $target.hasClass('site-navigation__link--has-third')) {
+				if($target.hasClass('site-navigation__link--has-third')){
+					event.preventDefault();
+				}
+				if(!$el.hasClass('is-active')) {
+					$('.site-navigation-brand-submenu-container.is-active').removeClass('is-active');
+				}
+				if(!$target.hasClass('site-navigation__li--brand-subelement')) {
+					$el.toggleClass('is-active');
+				}
+			}
+		});
+	});
+</script>

@@ -1,0 +1,197 @@
+<div class="account">
+    <div class="site-wrap">
+        <div class="account-page">
+            <a 
+                title="Back"
+                class="link account__return-link" 
+                href="/account"
+            >
+                Back
+            </a>
+            <h1 class="account-title">
+                Order {{ order.name }}<span class="account-title__sub">- {{ order.created_at | date: "%b %d %Y, %I:%M%p" }}</span>
+            </h1>
+            {% if order.cancelled %}
+                <div class="cart-order-note">
+                    <p>Order cancelled on {{ order.cancelled_at | date: "%b %d %Y, %I:%M%p" }}</p>
+                    <p>Reason: {{ order.cancel_reason }}</p>
+                </div>
+            {% endif %}
+            <div class="account-grid">
+                <div class="account-grid__item">
+                    <h3 class="title-sans--small account-title-small">
+                        Billing address
+                    </h3>
+                    <div class="wysiwyg">
+                        <p>
+                            Payment status: {{ order.financial_status_label }}
+                        </p>
+                        {{ order.billing_address | format_address }}
+                    </div>
+                </div>
+            
+                <div class="account-grid__item">
+                    <h3 class="title-sans--small account-title-small">
+                        Shipping address
+                    </h3>
+                    <div class="wysiwyg">
+                        <p>
+                            Fulfillment status: {{ order.fulfillment_status_label }}
+                        </p>
+                        {{ order.shipping_address | format_address }}
+                    </div>
+                </div>
+            </div>
+            <table class="order-table order-table--full-width">
+                <thead>
+                    <tr>
+                        <th class="order-table__th">
+                            Item
+                        </th>
+                        <th class="order-table__th">
+                            Price
+                        </th>
+                        <th class="order-table__th">
+                            Quantity
+                        </th>
+                        <th class="order-table__th">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line_item in order.line_items %}
+                    {% comment %} Wholesale_Club_Line_Item_Prices Start {% endcomment %}
+                        {% if line_item.product %}{% assign base_product = line_item.product %}{% else %}{% assign base_product = line_item %}{% endif %}
+                        {% if line_item.variant %}{% assign base_variant = line_item.variant %}{% else %}{% assign base_variant = line_item.selected_or_first_available_variant %}{% endif %}
+
+                        {% if shop.metafields.sawholesale['base_price'] == blank %}
+                        {% assign base_price = 'compare_at_price' %}
+                        {% else %}
+                        {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+                        {% endif %}
+
+                        {% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+                        {% if customer.tags != blank %}
+                        {% for mf in base_product.metafields.sawholesale %}
+                            {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+                            {% if customer.tags contains product_customer_tag %}
+                            {% assign saw_has_discount = true %}
+                            {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+                            {% assign price_key = product_customer_tag | prepend: 'price_' %}
+                            {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+                        {% assign saw_discount = 1 | minus: saw_discount %}
+
+                        {% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+                        {% assign saw_variant_compare_at_price = base_variant.price %}
+                        {% else %}
+                        {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+                        {% endif %}
+
+                        {% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+                        {% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+                        {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+                        {% else %}
+                        {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+                        {% endif %}
+
+                        {% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+                        {% assign WCLineItem_OriginalPrice = line_item.original_price %}
+                        {% assign WCLineItem_FinalPrice = line_item.final_price %}
+                        {% assign WCLineItem_Price = line_item.price %}
+                        {% assign WCLineItem_PriceMin = line_item.price_min %}
+                        {% assign WCLineItem_PriceMax = line_item.price_max %}
+                        {% assign WCLineItem_CompareAtPrice = line_item.compare_at_price %}
+                        {% assign WCLineItem_CompareAtPriceMin = line_item.compare_at_price_min %}
+                        {% assign WCLineItem_CompareAtPriceMax = line_item.compare_at_price_max %}
+                        {% assign WCLineItem_OriginalLinePrice = line_item.original_line_price %}
+                        {% assign WCLineItem_FinalLinePrice = line_item.final_line_price %}
+                        {% assign WCLineItem_LinePrice = line_item.line_price %}
+                        {% else %}
+                        {% assign WCLineItem_OriginalPrice = saw_variant_compare_at_price %}
+                        {% assign WCLineItem_FinalPrice = saw_variant_price %}
+                        {% assign WCLineItem_Price = saw_variant_price %}
+                        {% assign WCLineItem_PriceMin = line_item.price_min | times: saw_discount %}
+                        {% assign WCLineItem_PriceMax = line_item.price_max | times: saw_discount %}
+                        {% assign WCLineItem_CompareAtPrice = saw_variant_compare_at_price %}
+                        {% if base_product.compare_at_price_min != 0 %}{% assign WCLineItem_CompareAtPriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCLineItem_CompareAtPriceMin = base_product.price_min %}{% endif %}
+                        {% if base_product.compare_at_price_max != 0 %}{% assign WCLineItem_CompareAtPriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCLineItem_CompareAtPriceMax = base_product.price_max %}{% endif %}
+                        {% assign WCLineItem_OriginalLinePrice = WCLineItem_OriginalPrice | round | times: line_item.quantity %}
+                        {% assign WCLineItem_FinalLinePrice = WCLineItem_FinalPrice | round | times: line_item.quantity %}
+                        {% assign WCLineItem_LinePrice = WCLineItem_Price | round | times: line_item.quantity %}
+                        {% endif %}
+                    {% comment %} Wholesale_Club_Line_Item_Prices End {% endcomment %}
+
+                        <tr id="{{ line_item.key }}">
+                            <td data-title="Item" class="order-table__cell order-table__cell--full">
+                                {{ line_item.title | link_to: line_item.product.url }}
+                                {% if line_item.fulfillment %}
+                                    <div class="cart-order-note">
+                                        Fulfilled {{ line_item.fulfillment.created_at | date: '%B %d, %Y' }}
+                                        <div>
+                                            {% if line_item.fulfillment.tracking_url %}
+                                                <a 
+                                                    title="Track Shipment"
+                                                    href="{{ line_item.fulfillment.tracking_url }}" 
+                                                    class="link"
+                                                >
+                                                    Track shipment
+                                                </a>
+                                            {% endif %}
+                                            <div>
+                                                {{ line_item.fulfillment.tracking_company }}
+                                                {% if line_item.fulfillment.tracking_number %} #{{ line_item.fulfillment.tracking_number }} {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td data-title="Price" class="order-table__cell order-table__cell--full">
+                                {{ WCLineItem_Price | money }}
+                            </td>
+                            <td data-title="Quantity" class="order-table__cell order-table__cell--full">
+                                {{ line_item.quantity }}
+                            </td>
+                            <td data-title="Total" class="order-table__cell order-table__cell--full">
+                                {{ line_item.quantity | times: WCLineItem_Price | money }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="order-table__foot-title">Subtotal</td>
+                        <td class="order-table__foot-value">{{ order.subtotal_price | money }}</td>
+                    </tr>
+                    {% for discount in order.discounts %}
+                        <tr class="order_summary discount">
+                            <td colspan="3" class="order-table__foot-title">{{ discount.code }} Discount</td>
+                            <td class="order-table__foot-value">{{ discount.savings | money }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% for shipping_method in order.shipping_methods %}
+                        <tr>
+                            <td colspan="3" class="order-table__foot-title">Shipping method ({{ shipping_method.title }})</td>
+                            <td class="order-table__foot-value">{{ shipping_method.price | money }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% for tax_line in order.tax_lines %}
+                        <tr>
+                            <td colspan="3" class="order-table__foot-title">Tax ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+                            <td class="order-table__foot-value">{{ tax_line.price | money }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3" class="order-table__foot-title">Total</td>
+                        <td class="order-table__foot-value order-table__foot-value--bold">{{ order.total_price | money }} {{ order.currency }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

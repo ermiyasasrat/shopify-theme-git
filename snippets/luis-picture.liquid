@@ -1,0 +1,53 @@
+{%- comment -%}
+    All image sizes should be provided at 'sections' or 'templates' level.
+    Ensure that all assets are correctly sized, providing a fallback
+    if required. E.g If no specific 'medium' asset is provided,
+    provide a resized version of 'large'. An empty 'alt' tag is fine
+    and should be encouraged if for decorative purposes only.
+    Output of this would be alt="".
+
+    Pass in lazy (boolean) as option to lazy load the images.
+{%- endcomment -%}
+{% assign small1x = mobile_image | img_url: '600x1000' %}
+{% assign small2x = mobile_image | img_url: '600x1000' %}
+{% assign medium1x = image | img_url: '1500x750' %}
+{% assign medium2x = image | img_url: '1500x750' %}
+{% assign large1x = image | img_url: '2000x1000' %}
+{% assign large2x = image | img_url: '2000x1000' %}
+{% assign alt = image.alt %}
+
+
+{% if image_link %}
+<a class="image-text-split__link" href="{{ image_link }}" aria-label="{{ slide_title }}">
+{% endif %}
+    <picture>
+        {% if lazy %}
+            {% if small1x %}
+                <source data-srcset="{{ small1x }} 1x{% if small2x %},
+                    {{ small2x }} 2x{% endif %}"
+                        media="(max-width: 767px)">
+            {% endif %}
+            {% if medium1x %}
+                <source data-srcset="{{ medium1x }} 1x{% if medium2x %},
+                    {{ medium2x }} 2x{% endif %}"
+                        media="(min-width: 768px)">
+            {% endif %}
+            <img data-src="{{ large1x }}" class="js-lazy-load-image {{ class }}" title="{{alt}}" alt="{{ alt }}"{% if draggable == false %} draggable="false"{% endif %}>
+        {% else %}
+            {% if small1x %}
+                <source srcset="{{ small1x }} 1x{% if small2x %},
+                    {{ small2x }} 2x{% endif %}"
+                        media="(max-width: 767px)">
+            {% endif %}
+            {% if medium1x %}
+                <source srcset="{{ medium1x }} 1x{% if medium2x %},
+                    {{ medium2x }} 2x{% endif %}"
+                        media="(min-width: 768px)">
+            {% endif %}
+
+            <img {% if indexFor == 1 %}{% else %}loading="lazy"{% endif %} src="{{ large1x }}"{% unless class == blank %} class="{{ class }}" {% endunless %} title="{{alt}}"  alt="{{ alt }}" {% if draggable == false %} draggable="false" {% endif %}>
+        {% endif %}
+    </picture>
+{% if image_link %}
+</a>
+{% endif %}

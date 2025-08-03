@@ -1,0 +1,194 @@
+{% paginate customer.addresses by 5 %}
+    <div class="account">
+        <div class="site-wrap">
+            <div class="account-page">
+                <a class="link account__return-link" href="/account">
+                    Back
+                </a>
+                <h1 class="account-title">
+                    Account Addresses
+                </h1>
+                <div class="account-forms">
+
+                    <button id="new-address-button" class="button button--solid" type="button">
+                        <span class="button__text">
+                            Add a new address
+                        </span>
+                    </button>
+                    {% comment %}
+                        Add address form, hidden by default
+                    {% endcomment %}
+                    <div class="account-form account-form--new-address" id="new-address-form">
+                        {% form 'customer_address', customer.new_address %}
+                            <h2 class="account-title-small">
+                                Add a new address
+                            </h2>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressFirstNameNew">First Name</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressFirstNameNew" name="address[first_name]" value="{{ customer.first_name }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressLastNameNew">Last Name</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressLastNameNew" name="address[last_name]" value="{{ customer.last_name }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressCompanyNew">Company</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressAddress1New">Address line 1</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressAddress2New">Address line 2</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressCityNew">City</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressCityNew" name="address[city]" value="{{ form.city }}">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressCountryNew">Country</label>
+                                <select class="input input-select account-form__input" id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+                            </div>
+                            <div id="AddressProvinceContainerNew" class="account-form__fields" style="display:none">
+                                <label class="account-form__label" for="AddressProvinceNew">Province</label>
+                                <select class="input--light input--outline account-form__input" id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}"></select>
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressZipNew">Postcode / ZIP</label>
+                                <input type="text" class="input input-text account-form__input" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+                            </div>
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="AddressPhoneNew">Phone</label>
+                                <input type="tel" class="input input-text account-form__input" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}">
+                            </div>
+                            <div class="account-form__field">
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id="address_default_address_{{ form.id }}" class="input-checkbox__input" name="address[default]" value="1">
+                                    <label class="input-checkbox__label" for="address_default_address_new">
+                                        Set as default address
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="button button--solid account-address__action" type="submit">
+                                    <span class="button__text">
+                                        Add address
+                                    </span>
+                                </button>
+                            </div>
+                            <a class="link" href="#cancel-address" id="new-address-cancel">Cancel</a>
+                        {% endform %}
+                    </div>
+
+                    {% if customer.addresses %}
+                        {% comment %}
+                            List all customer addresses with a unique edit form.
+                            Also add pagination in case they have a large number of addresses
+                        {% endcomment %}
+                        {% for address in customer.addresses %}
+                            <div class="account-address">
+                                <div class="account-address__inner">
+                                    <div class="account-address__address">
+                                        {% if address == customer.default_address %}
+                                            <h3 class="account-address__title title-sans--small">Default</h3>
+                                        {% endif %}
+                                        <div class="wysiwyg">
+                                            {{ address | format_address }}
+                                        </div>
+                                    </div>
+                                    <div class="account-address__actions">
+                                        <a class="button edit-address account-address__action" data-form-id="edit-address-{{ address.id }}" href="#edit-address">
+                                            Edit address
+                                        </a>
+                                        <form class="delete-address-form" method="post" action="/account/addresses/{{ address.id }}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <button id="address-delete" class="button button-reset" type="submit">
+                                                <span class="button__text">
+                                                    Delete address
+                                                </span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="edit-address-{{ address.id }}" class="account-form account-form--edit-address">
+                                    {% form 'customer_address', address %}
+                                        <h2 class="title-small">
+                                            Edit {% if address == customer.default_address %}default{% endif %} address
+                                        </h2>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressFirstName_{{ form.id }}">First name</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressLastName_{{ form.id }}">Last name</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressCompany_{{ form.id }}">Company</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressAddress1_{{ form.id }}">Address line 1</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressAddress2_{{ form.id }}">Address line 2</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressCity_{{ form.id }}">City</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressCountry_{{ form.id }}">Country</label>
+                                            <select class="input--light input--outline account-form__input" id="AddressCountry_{{ form.id }}" class="address-country-option" data-form-id="{{ form.id }}" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+                                        </div>
+                                        <div id="AddressProvinceContainer_{{ form.id }}" style="display:none">
+                                            <label for="AddressProvince_{{ form.id }}">Province</label>
+                                            <select class="input--light input--outline account-form__input" id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}"></select>
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressZip_{{ form.id }}">Postcode / ZIP</label>
+                                            <input type="text" class="input input-text account-form__input" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <label class="account-form__label" for="AddressPhone_{{ form.id }}">Phone</label>
+                                            <input type="tel" class="input--light input--outline account-form__input" id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}">
+                                        </div>
+                                        <div class="account-form__field">
+                                            <div class="input-checkbox">
+                                                {% if address == customer.default_address %}
+                                                    <input checked type="checkbox" id="address_default_address_{{ form.id }}" class="input-checkbox__input" name="address[default]" value="1">
+                                                {% else %}
+                                                    <input type="checkbox" id="address_default_address_{{ form.id }}" class="input-checkbox__input" name="address[default]" value="1">
+                                                {% endif %}
+                                                <label class="input-checkbox__label" for="address_default_address_{{ form.id }}">
+                                                    Set as default address
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="button button--solid account-address__action" type="submit">
+                                                <span class="button__text">
+                                                    Update address
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <a title="Cancel" class="link cancel-edit-address" data-form-id="edit-address-{{ form.id }}" href="#cancel-address">Cancel</a>
+                                    {% endform %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if paginate.pages > 1 %}
+                        <div class="account-pagination pagination">
+                            {{ paginate | default_pagination }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endpaginate %}

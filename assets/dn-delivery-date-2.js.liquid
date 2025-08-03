@@ -1,0 +1,78 @@
+document.addEventListener('DOMContentLoaded', function() {
+  
+  
+  var disabled_dates = '{{settings.disabled-dates}}';
+  var holidays = disabled_dates;
+  var today = new Date();
+  var ukDay = today.toLocaleDateString("en-GB");
+  var UkTime = today.toLocaleString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Europe/London",
+  });
+  
+  //formating time for custom function
+    var formattedTime = parseInt(UkTime.split(":").join(""));
+
+  $(function () {
+    //function for disabling the holidays
+    function disableHolidays (date) {
+      var dateString = jQuery.datepicker.formatDate("dd-mm-yy", date);
+      return [holidays.indexOf(dateString) == -1];
+      
+      var noWeekend = $.datepicker.noWeekends(date);
+      return !noWeekend[0] ? noWeekend : [true];
+    }
+    
+    
+    var bankHoliDays = [{{settings.disabled-dates}}];
+
+    function XdisableDates(date) {
+        var dt = $.datepicker.formatDate('dd-mm-yy', date);
+        var noWeekend = jQuery.datepicker.noWeekends(date);
+        return noWeekend[0] ? (($.inArray(dt, bankHoliDays) < 0) ? [true] : [false]) : noWeekend;
+    }
+    
+    
+    //function to disable previous days including sundays
+    function disableDays() {
+      var day = new Date();
+      var today = day.getDay();
+      // console.log(day);
+
+      if (today == 0 || today == 5) {
+        return "+4";
+      } else {
+        var deliveryDate =  (formattedTime >359) ? "+3" : "+4";
+        return deliveryDate;
+      }
+    }
+    
+    //getting the disabled days
+    var disabled = disableDays();
+    
+    $("#dn_date").datepicker({
+      onSelect: function(date){
+        $('#dn_delivery_date_input').val(date);
+      },
+      beforeShow: function (input, inst) {
+		$(this).attr("disabled", true);
+      },
+      beforeShowDay: XdisableDates,
+      minDate: disabled,
+      dateFormat: "dd-mm-yy",
+	});
+
+  var selectedDateInput = document.querySelector('#dn_delivery_date_input').value;
+	if ( selectedDateInput === "" ) {
+        $('.ui-state-active').removeClass('ui-state-active');
+	}
+	else {
+		console.log("Date Chosen");
+	}
+  });
+  //injecting the value inside the input box
+  
+  
+});

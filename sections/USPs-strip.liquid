@@ -1,0 +1,52 @@
+<section class="usp-banner">
+  <div class="site-wrap">
+    <div class="usp-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'slide' %}
+            <div class="usp-slide">
+              <div class="usp-slide-content">
+                <img width="18" height="18" src="{{ block.settings.usp_icon | img_url: 'master' }}" alt=""/>
+                <p>{{ block.settings.usp_label }}</p>
+              </div>
+            </div> 
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+  {
+    "name": "USPs Strip",
+    "max_blocks": 4,
+    "settings": [
+      
+    ],
+    "blocks": [
+      {
+        "name": "USP Block",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "usp_icon",
+            "label": "USP Icon"
+          },
+          {
+            "type": "text",
+            "id": "usp_label",
+            "label": "USP Label"
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "USPs Strip",
+      }
+    ]
+  }
+{% endschema %}

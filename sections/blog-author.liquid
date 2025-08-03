@@ -1,0 +1,69 @@
+{{ 'blog-author.css' | asset_url | stylesheet_tag }}
+
+{%- if article.author contains "Yarl" -%}
+	{%- assign authorImage = blog.metafields.author.yarl-image -%}
+	{%- assign authorBio = blog.metafields.author.yarl -%}
+	{%- assign authorLinkedin = blog.metafields.author.yarl-linkedin -%}
+{%- elsif article.author contains "Will" -%}
+	{%- assign authorImage = blog.metafields.author.will-image -%}
+	{%- assign authorBio = blog.metafields.author.will -%}
+	{%- assign authorLinkedin = blog.metafields.author.will-linkedin -%}
+{%- elsif article.author contains "Gareth" -%}
+	{%- assign authorImage = blog.metafields.author.gareth-image -%}
+	{%- assign authorBio = blog.metafields.author.gareth -%}
+	{%- assign authorLinkedin = blog.metafields.author.gareth-linkedin -%}
+{%- endif -%}
+
+{%- if authorBio != blank -%}
+
+	<div id="blogAuthor" class="blog-author-outer-container">
+		<div class="blog-author-inner-container">
+			<h2>
+				{{ 'blogs.author.title' | t }}
+			</h2>
+			<div class="blog-author-body-container">
+				<img
+					src="{{ authorImage | img_url: 'master' }}"
+					class="blog-author-image"
+					alt="{{ article.author }}"
+				/>
+				<div class="blog-author-text-container">
+					<div class="blog-author-name-container">
+						<h3>
+							{{ article.author }}
+						</h3>
+						<a 
+							class="blog-author-linkedin" 
+							href="{{ authorLinkedin }}" 
+							title="{{ article.author }}'s' LinkedIn Profile"
+							target="_blank"
+							rel="nofollow"
+						>
+							{% render 'icon-social-linkedin' %}
+						</a>
+					</div>
+					<p>
+						{{ authorBio }}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{%- endif -%}
+
+{% schema %}
+	{
+		"name": "Blog Author",
+		"class": "section",
+		"settings": [
+		],
+		"presets": [
+			{
+				"name": "Blog Author",
+				"category": "Blog",
+				"settings": {}
+			}
+		]
+	}
+{% endschema %}

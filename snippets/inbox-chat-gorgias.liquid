@@ -1,0 +1,40 @@
+{% render 'prepare-style', file: 'inbox-chat-gorgias.css' %}
+<link rel="prefetch" as="script" href="https://config.gorgias.chat/bundle-loader/01HP71FP8F8C54X7SR7Z0AYBRQ?source=shopify1click&shop={{ shop.permanent_domain }}">
+<link rel="prefetch" as="script" href="https://bundle.dyn-rev.app/loader.js?g_cvt_id=18f6bdfe-4745-41f4-be6f-4fa356d7bff9&shop={{ shop.permanent_domain }}">
+<div id="gorgias-chat-container-f" class="gorgias-chat-container-f">
+  <button data-testid="gorgias-chat-messenger-button" aria-label="Open or close gorgias live chat"
+          class="messenger-button-iframe-btn-f">
+    <span class="messenger-button-iframe-inner-f"></span>
+    <span class="messenger-button-iframe-text-f">Chat with us</span>
+  </button>
+</div>
+<style id="gorgias-chat-style-f">
+    .gorgias-chat-container-f {
+        display: none;
+    }
+
+    .gorgias-chat-container-f .messenger-button-iframe-inner-f {
+        background-image: url({{ 'icon_gorgias_chat_black.svg' | asset_url }});
+    }
+
+    .gorgias-chat-container-f.is-open-time .messenger-button-iframe-inner-f {
+        background-image: url({{ 'icon_gorgias_chat_white.svg' | asset_url }});
+    }
+
+    #gorgias-chat-container {
+        display: none !important;
+    }
+</style>
+<script src="{{ 'inbox-chat-gorgias-loader.js' | asset_url }}" defer="defer"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        prepareInboxChatGorgias({
+            permanent_domain: '{{ shop.permanent_domain }}',
+            businessHours: [
+                { "days": "1,2,3,4,5", "toTime": "17:00", "fromTime": "08:30" },
+                { "days": "6", "toTime": "13:00", "fromTime": "09:00" }
+            ],
+            nowUtc: "{{ 'now' | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+        });
+    });
+</script>

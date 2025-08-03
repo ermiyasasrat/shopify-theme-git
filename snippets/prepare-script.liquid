@@ -1,0 +1,4 @@
+{% if rel == blank or rel == '' %}
+   {% assign rel = 'preload' %}
+{% endif %}
+<link href="{{ file | asset_url }}" rel="{{ rel }}" as="script">

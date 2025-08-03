@@ -1,0 +1,41 @@
+<script>
+    var initGorgiasChatPromise = (window.GorgiasChat) ? window.GorgiasChat.init() : new Promise(function (resolve) { window.addEventListener('gorgias-widget-loaded', function () { resolve();})});
+
+    initGorgiasChatPromise.then(function() {
+        var chatDict = {
+            requireEmailCaptureIntro: `<span style="font-weight: bold">Please Note:</span>
+                - We do not offer a fitting service.
+                - We have a minimum order of 20m2.
+                - Free samples are only available on the products with the free sample button
+            `,
+        }
+        var sspDict = {
+            email: `Please put your email in the box below to start a live chat with one of our team members`
+        }
+
+        window.GORGIAS_CHAT_TEXTS = chatDict;
+        GorgiasChat.updateTexts(chatDict);
+        GorgiasChat.updateSSPTexts(sspDict);
+        GorgiasChat.hidePoweredBy(true);
+
+
+        GorgiasChat.on('widget:opened', function () {
+            var timer = setInterval(function () {
+                var gorgiasChatContainerEl, chatWindowEL, chatWindowHead;
+                if((gorgiasChatContainerEl = document.querySelector('#gorgias-chat-container'))
+                    && (chatWindowEL = gorgiasChatContainerEl.querySelector('#chat-window'))
+                    && (chatWindowHead = chatWindowEL.contentWindow.document.querySelector('head'))
+                ) {
+                    if (![...chatWindowHead.children].some(x => x.getAttribute("data-emotion"))) {
+                        return;
+                    }
+                    clearInterval(timer);
+
+                    var chatStyle = document.createElement('style');
+                    chatStyle.textContent = '.message-window-iframe-1m3avdt {font-weight: normal; }';
+                    chatWindowHead.appendChild(chatStyle);
+                }
+            }, 50);
+        });
+    });
+</script>

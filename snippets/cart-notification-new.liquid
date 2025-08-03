@@ -1,0 +1,94 @@
+{% render 'prepare-style', file: 'cart-notification-new.css' %}
+
+<div id="cartNotificationNew" class="cart-notification-new-none">
+	<div class="cart-notification-new-inner-container">
+		<p class="cart-notification-new-inner-container-heading">
+			{{ 'sections.cart-notification.heading' | t }}
+		</p>
+		<img
+			src="{{ 'icon-cross.svg' | asset_url }}"
+			class="cart-notification-new-modal-exit"
+			alt="Exit"
+			id="closeCartNotificationNew"
+		/>
+		<div class="cart-notification-new-body-container">
+			<div class="cart-notification-new-body-image-container">
+				<img
+					src="{{ product.featured_image | img_url: 'master' }}"
+					class="cart-notification-new-product-image"
+					loading="lazy"
+					alt="{% if product.title != blank %}{{ product.title }}{% else %}Cart Notification{% endif %}"
+					id="cartNotification-imageSrc"
+				/>
+			</div>
+			<div class="cart-notification-new-body-text-container">
+				<h4 id="cartNotification-productTitle">
+					{{ product.title }}
+				</h4>
+				<span id="cartNotification-variantTitle">
+				</span>
+			</div>
+		</div>
+		<div class="cart-notification-new-buttons-container">
+			<a href="/cart">
+				{{ 'sections.cart-notification.view-cart' | t }}
+			</a>
+			<form
+				action="{{ routes.cart_url }}"
+				method="POST"
+				id="cart-notification-form"
+			>
+				<button
+					class="cart-notification-new-checkout-button"
+					name="checkout"
+				>
+					{{ 'sections.cart.checkout' | t }}
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	document.addEventListener('click', function (event) {
+		if (event.target.id === 'closeCartNotificationNew') {
+			var cartNotificationNew = document.getElementById('cartNotificationNew');
+			if (cartNotificationNew) {
+				cartNotificationNew.classList.remove("cart-notification-new-outer-container");
+				cartNotificationNew.classList.add("cart-notification-new-none");
+			}
+		}
+	});
+</script>
+<script>
+(function(){
+    document.addEventListener("DOMContentLoaded", function() {
+        const cartNotificationNew = document.getElementById("cartNotificationNew");
+        const header = document.getElementById('shopify-section-header')
+
+        const stickyOffset = $('#shopify-section-header').height();
+        const media = window.matchMedia('(min-width: 80em)');
+        function handleScroll() {
+            if (window.pageYOffset > stickyOffset) {
+                cartNotificationNew.classList.add("sticky-element");
+            } else {
+                cartNotificationNew.classList.remove("sticky-element");
+            }
+        }
+        handleScroll();
+
+        if(media.matches) {
+            window.addEventListener("scroll", handleScroll);
+        }
+
+        function handleMediaChange() {
+            if(media.matches) {
+                window.addEventListener("scroll", handleScroll);
+            } else {
+                window.removeEventListener("scroll", handleScroll);
+            }
+        }
+
+        media.addEventListener("change", handleMediaChange);
+    });
+})();
+</script>

@@ -1,0 +1,74 @@
+{%- assign recom_products = product.metafields.recommend_alternate_collection -%}
+  {% assign productHandles = recom_products | split: "|" %}
+
+  <div class="out-of-stock-area">
+    <div class="product-relateds">    	
+				<h2 class="out-of-stock-heading">This product is discontinued.</h2>
+    {% if recom_products != blank %}
+      		<h2 class="title title--small product-related__heading">Similar recommended products:</h2>
+            <hr>
+          <div class="product-related__container">
+            <div class="product-related__listing js-recently-viewed-list">
+              {% for relatedHandle in productHandles %}
+                {% assign relatedProduct = all_products[relatedHandle] %}
+                {% assign relatedProductImage = relatedProduct.images.first %}
+                {% assign relatedProductComparePrice = relatedProduct.compare_at_price | money_without_currency %}
+                {% assign relatedProductPricePerMetresSquared = relatedProduct.metafields.product_config.price_per_metres_squared %}
+                {% assign relatedProductComparePricePerMetresSquared = relatedProduct.metafields.product_config.compare_price_per_metres_sq %}
+                    <div class="product-related__column">
+                <a class="product-related__slide-link" href="{{ relatedProduct.url }}" title="{{relatedProduct.title}}">
+					{% unless relatedProductImage == blank %}
+						<div class="product-related__slide-image">
+							{% render 'responsive-image',
+								image: relatedProduct.featured_image,
+								image_class: "product-related-iamge",
+								alt: relatedProduct.title
+							%}
+						</div>
+					{% endunless %}
+					<div class="product-related-text-container">
+						{% unless relatedProduct.title == blank %}
+							<h3 class="product-related__slide-title">
+								{{- relatedProduct.title -}}
+							</h3>
+						{% endunless %}
+						{% if relatedProductPricePerMetresSquared != blank or relatedProduct.price != blank %}
+							<div class="product-related__slide-price">
+								{%- if relatedProductPricePerMetresSquared -%}
+								{%- if relatedProductComparePricePerMetresSquared != blank -%}
+								<div class="product__compare-price">
+								£{{- relatedProductComparePricePerMetresSquared -}}/m²
+								</div>
+								{%- endif -%}
+								{%- if relatedProductPricePerMetresSquared != blank -%}
+								£{{- relatedProductPricePerMetresSquared -}}/m²
+								{%- endif -%}
+								{%- else -%}
+								{%- if relatedProductComparePrice != blank -%}
+								<div class="product__compare-price">
+								£{{- relatedProductComparePrice -}}
+								</div>
+								{%- endif -%}
+								{%- if relatedProduct.price != blank -%}
+								£{{- relatedProduct.price | money_without_currency -}}
+								{%- endif -%}
+								{%- endif -%}
+							</div>
+						{% endif %}
+					</div>
+				</a>
+				<div class="product-out-of-stock-cta-container">
+					<a href={{ relatedProduct.url }}>
+						{{ 'products.product.view_product' | t }}
+					</a>
+				</div>
+              </div>
+              {% endfor %}
+
+            </div>
+          </div>
+
+        {% endif %}
+    </div>
+  </div>
+

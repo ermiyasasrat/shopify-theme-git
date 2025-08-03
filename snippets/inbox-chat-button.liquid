@@ -1,0 +1,215 @@
+<div class="chat-button-wrapper"
+     id="chat-button-wrapper"
+     data-inbox-chat-loader-url="https://cdn.shopify.com/extensions/21dbd468-89c5-4d25-a004-44e21e26f1d7/inbox-196/assets/inbox-chat-loader.js">
+  <script
+      id="chat-button-container"
+      data-horizontal-position=bottom_right
+      data-vertical-position=lowest
+      data-icon=chat_bubble
+      data-text=live_chat
+      data-color=#202a36
+      data-secondary-color=#FFFFFF
+      data-ternary-color=#6A6A6A
+
+      data-greeting-message=Please+Note%3A%0AWe+don%27t+offer+a+fitting+service.%0AWe+only+offer+samples+on+products+with+a+%22Sample%22+button.%0AOur+minimum+order+quantity%C2%A0is%C2%A020m2.
+
+      data-domain=storiesflooring.co.uk
+      data-external-identifier=COXLhIKEEEP5Om4T8wFpAkoigVYKMhKG1-JSPJaqHnc
+      data-inbox-chat-script-url="https://cdn.shopify.com/extensions/21dbd468-89c5-4d25-a004-44e21e26f1d7/inbox-196/assets/shopifyChatV1Widget.js"
+  >
+  </script>
+</div>
+<div id="shopify-chat-f">
+  <inbox-online-store-chat-f title="Shopify online store chat" id="ShopifyChat-f"
+                             button-vertical-position="lowest"
+                             button-position="bottom_right"
+                             is-open="false"
+                             is-mobile="Android"
+                             style="position: fixed; bottom: 16px; z-index: 2147483646; right: 16px; height: 65px;">
+    <div class="chat-app-f chat-app--is-mobile-f">
+      <button type="button" data-spec="toggle-button"
+              aria-label="Chat window" aria-expanded="true" {% comment %}aria-controls="chat-ui"{% endcomment %}
+              class="chat-toggle-f chat-toggle--icon-button-f chat-toggle--bottom-right-f"
+              style="background-color: rgb(32, 42, 54);">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-spec="button-icon">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M4 9.78374C4 5.84433 4.81543 5 8.62 5H11.38C15.1846 5 16 5.84433 16 9.78374C16 13.7232 15.1846 14.9008 11.38 14.9008H10.8303C10.8025 14.9346 10.7703 14.9666 10.7336 14.9962L8.54286 16.86C8.12929 17.1935 7.5137 16.898 7.5137 16.3667V14.87C4.65254 14.6884 4 13.3078 4 9.78374ZM10 10.6667C10.3682 10.6667 10.6667 10.3682 10.6667 10C10.6667 9.63181 10.3682 9.33333 10 9.33333C9.63181 9.33333 9.33333 9.63181 9.33333 10C9.33333 10.3682 9.63181 10.6667 10 10.6667ZM13.3333 10C13.3333 10.3682 13.0349 10.6667 12.6667 10.6667C12.2985 10.6667 12 10.3682 12 10C12 9.63181 12.2985 9.33333 12.6667 9.33333C13.0349 9.33333 13.3333 9.63181 13.3333 10ZM7.33333 10.6667C7.70152 10.6667 8 10.3682 8 10C8 9.63181 7.70152 9.33333 7.33333 9.33333C6.96514 9.33333 6.66667 9.63181 6.66667 10C6.66667 10.3682 6.96514 10.6667 7.33333 10.6667Z" fill="white"></path>
+        </svg>
+        <span class="chat-title-f">Live chat</span>
+      </button>
+    </div>
+  </inbox-online-store-chat-f>
+</div>
+<style>
+    .chat-app-f {
+        color: #1b2c3d;
+        font: inherit;
+        font-size: 100%;
+        --secondary-color: #FFFFFF;
+        --ternary-color: #6A6A6A;
+        -webkit-font-smoothing: antialiased;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: 0;
+        line-height: normal;
+        text-transform: none;
+        margin: 0;
+    }
+
+    .chat-app-f svg:not(:root) {
+        overflow: hidden;
+    }
+
+    button.chat-toggle-f {
+        outline: none;
+        color: inherit;
+        font: inherit;
+        padding: 0;
+        overflow: visible;
+        text-transform: none;
+        -webkit-appearance: button;
+        border: 1px solid transparent;
+        border-radius: 30px;
+        cursor: pointer;
+        height: 60px;
+        margin: 0 6px;
+        width: 60px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        background-color: rgb(32, 42, 54);
+    }
+
+
+    button.chat-toggle-f svg {
+        flex-shrink: 0;
+        height: 58px;
+        width: auto;
+        overflow: hidden;
+    }
+
+    button.chat-toggle-f .chat-title-f {
+        font: inherit;
+        text-transform: none;
+        cursor: pointer;
+        color: #FFFFFF;
+        font-weight: 600;
+        line-height: 2rem;
+        font-size: 24px;
+        margin: 0 auto;
+        align-items: center;
+        max-height: 40px;
+        overflow: hidden;
+        white-space: nowrap;
+        display: none;
+    }
+
+    @media screen and (min-width: 480px) {
+        button.chat-toggle-f {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 0 5px rgba(0,0,0,.15);
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            font-weight: 600;
+            height: 60px;
+            line-height: 2rem;
+            max-width: fit-content;
+            padding: 0 12px 0 3px;
+            width: auto;
+            background-color: rgb(32, 42, 54);
+        }
+        button.chat-toggle-f .chat-title-f {
+            display: flex;
+        }
+        button.chat-toggle-f svg {
+            height: 48px;
+        }
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function getInboxChatUrl() {
+            var chatButton = document.getElementById('chat-button-container');
+            var buttonColor = encodeURIComponent(chatButton.getAttribute('data-color'));
+            var buttonSecondaryColor = encodeURIComponent(chatButton.getAttribute('data-secondary-color'));
+            var buttonTernaryColor = encodeURIComponent(chatButton.getAttribute('data-ternary-color'));
+            var shopDomain = chatButton.getAttribute('data-domain');
+            var externalIdentifier = chatButton.getAttribute('data-external-identifier');
+            var inboxChatScriptUrl = chatButton.getAttribute('data-inbox-chat-script-url');
+
+            return inboxChatScriptUrl + '?button_color=' + buttonColor +
+                '&sc=' + buttonSecondaryColor +
+                '&tc=' + buttonTernaryColor +
+                '&i=' + encodeURIComponent(chatButton.getAttribute('data-icon')) +
+                '&t=' + encodeURIComponent(chatButton.getAttribute('data-text')) +
+                '&p=' + encodeURIComponent(chatButton.getAttribute('data-horizontal-position')) +
+                '&vp=' + encodeURIComponent(chatButton.getAttribute('data-vertical-position')) +
+                '&shop_id=' + externalIdentifier +
+                '&shop=' + shopDomain;
+        }
+
+        var EVENT_LOAD_INBOX_CHAT_JS = 'load-inbox-chat';
+        var chatButtonWrapper = document.getElementById('chat-button-wrapper');
+        var inboxChatLoaderUrl = chatButtonWrapper ? chatButtonWrapper.getAttribute('data-inbox-chat-loader-url') : '';
+        var preloadResources = resourceManager.preloadResources([
+            { "name": "script", "url": inboxChatLoaderUrl, attrs: { crossOrigin: "anonymous"} },
+            { "name": "script", "url": getInboxChatUrl(), attrs: { crossOrigin: "anonymous"} },
+        ]);
+        function loadInboxChat() {
+            preloadResources.finally(function () {
+                resourceManager.loadResourcesInOrder([
+                    { "name": "script", "url": inboxChatLoaderUrl},
+                ]);
+                var checkInboxChatLoaderInterval = setInterval(function () {
+                    var $shopifyChat = $('#shopify-chat');
+                    if($shopifyChat.length) {
+                        $('#shopify-chat-f').remove();
+                        clearInterval(checkInboxChatLoaderInterval);
+                    }
+                }, 200);
+            });
+        }
+
+        $(document).one(EVENT_LOAD_INBOX_CHAT_JS, function () {
+            var isMobile = window.matchMedia("(max-width: 767px)");
+            if(isMobile.matches) {
+                var savedPosition = $(window).scrollTop();
+                $(window).on('scroll.inbox-chat-loader-fix-scroll', function (event) {
+                    $(window).scrollTop(savedPosition);
+                });
+                loadInboxChat();
+                setTimeout(function() {
+                    $(window).off('scroll.inbox-chat-loader-fix-scroll');
+                }, 200);
+            } else {
+                loadInboxChat();
+            }
+        });
+
+        var shopifyChatData = {}
+        try {
+            shopifyChatData = JSON.parse(localStorage.getItem('shopifyChatData'));
+        } catch (e) {
+            shopifyChatData = {}
+        }
+        if((shopifyChatData && shopifyChatData.isOpen) || $(window).scrollTop() > 0) {
+            $(document).trigger(EVENT_LOAD_INBOX_CHAT_JS);
+        } else {
+            $('#shopify-chat-f').on('click', function () {
+                $(document).trigger(EVENT_LOAD_INBOX_CHAT_JS);
+                var checkInboxChatLoaderInterval = setInterval(function () {
+                    var inboxOnlineStoreChat = $('inbox-online-store-chat')[0];
+                    if (inboxOnlineStoreChat && inboxOnlineStoreChat.shadowRoot) {
+                        var $chatbutton = $(inboxOnlineStoreChat.shadowRoot).find('button.chat-toggle');
+                        if(inboxOnlineStoreChat && $chatbutton.length) {
+                            $('#shopify-chat-f').remove();
+                            $chatbutton.click();
+                            clearInterval(checkInboxChatLoaderInterval);
+                        }
+                    }
+                }, 100);
+            });
+        }
+    });
+</script>

@@ -1,0 +1,90 @@
+<div class="product-related">
+    <div class="site-wrap">
+        <h2 class="title title--small product-related__heading">More options</h2>
+    </div>
+    <div class="site-wrap site-wrap--bleed">
+        <div class="product-related__container">
+            <div id="related-products" class="glide glide--related-products">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        {% for relatedHandle in productRelated %}
+                            {% assign relatedProduct = all_products[relatedHandle] %}
+                            {% assign relatedProductImage = relatedProduct.images.first %}
+                            {% assign relatedProductComparePrice = relatedProduct.compare_at_price | money_without_currency %}
+                            {% assign relatedProductPricePerMetresSquared = relatedProduct.metafields.product_config.price_per_metres_squared %}
+                            {% assign relatedProductComparePricePerMetresSquared = relatedProduct.metafields.product_config.compare_price_per_metres_sq %}
+                            <li class="glide__slide">
+                                <a class="product-related__slide-link" href="{{ relatedProduct.url }}">
+                                    {% unless relatedProductImage == blank %}
+                                        <div class="product-related__slide-image">
+                                            {% assign image_small_1x = relatedProductImage.src | img_url: '157x157' %}
+                                            {% assign image_small_2x = relatedProductImage.src | img_url: '314x314' %}
+                                            {% assign image_medium_1x = relatedProductImage.src | img_url: '255x255' %}
+                                            {% assign image_medium_2x = relatedProductImage.src | img_url: '510x510' %}
+                                            {% assign image_large_1x = relatedProductImage.src | img_url: '255x255' %}
+                                            {% assign image_large_2x = relatedProductImage.src | img_url: '510x510' %}
+                                            {% include 'picture',
+                                                small1x: image_small_1x,
+                                                small2x: image_small_2x,
+                                                medium1x: image_medium_1x,
+                                                medium2x: image_medium_2x,
+                                                large1x: image_large_1x,
+                                                large2x: image_large_2x,
+                                                alt: relatedProductImage.src.alt,
+                                                draggable: false,
+                                                lazy: true
+                                            %}
+                                        </div>
+                                    {% endunless %}
+                                    {% unless relatedProduct.title == blank %}
+                                        <h3 class="product-related__slide-title">
+                                            {{- relatedProduct.title -}}
+                                        </h3>
+                                    {% endunless %}
+                                    {% if relatedProductPricePerMetresSquared != blank or relatedProduct.price != blank %}
+                                        <div class="product-related__slide-price">
+                                            {%- if relatedProductPricePerMetresSquared -%}
+                                                {%- if relatedProductComparePricePerMetresSquared != blank -%}
+                                                    <div class="product__compare-price">
+                                                        £{{- relatedProductComparePricePerMetresSquared -}}/m²
+                                                    </div>
+                                                {%- endif -%}
+                                                {%- if relatedProductPricePerMetresSquared != blank -%}
+                                                    £{{- relatedProductPricePerMetresSquared -}}/m²
+                                                {%- endif -%}
+                                            {%- else -%}
+                                                {%- if relatedProductComparePrice != blank -%}
+                                                    <div class="product__compare-price">
+                                                        £{{- relatedProductComparePrice -}}
+                                                    </div>
+                                                {%- endif -%}
+                                                {%- if relatedProduct.price != blank -%}
+                                                    £{{- relatedProduct.price | money_without_currency -}}
+                                                {%- endif -%}
+                                            {%- endif -%}
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="glide__controls">
+                    <div class="glide__bullets glide__bullets--related-products" data-glide-el="controls[nav]">
+                        {% for relatedProduct in productRelated %}
+                            <button class="glide__bullet" data-glide-dir="={{- forloop.index0 -}}"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="glide__arrows" data-glide-el="controls">
+                        <button class="glide__arrow glide__arrow--left button-reset" data-glide-dir="<">
+                            <span class="glide__arrow-icon">{% include 'icon-nav-arrow' %}</span>
+                        </button>
+                        <button class="glide__arrow glide__arrow--right button-reset" data-glide-dir=">">
+                            <span class="glide__arrow-icon">{% include 'icon-nav-arrow' %}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

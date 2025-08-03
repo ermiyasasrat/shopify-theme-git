@@ -1,0 +1,26 @@
+{% schema %}
+{
+    "name": "Hidden Product",
+    "tag": "section",
+    "class": "section",
+    "settings": [],
+    "presets": [
+        {
+            "name": "Hidden Product",
+            "category": "Product",
+            "settings": {}
+        }
+    ]
+}
+{% endschema %}
+{% if request.page_type == 'product' and product.metafields.product_attribute.hide_product %}
+    <script>
+        (function(){
+            {% if product.metafields.product_attribute.hide_product_redirect != blank %}
+                window.location.href = '{{ product.metafields.product_attribute.hide_product_redirect }}';
+            {% else %}
+                window.location.href = '/';
+            {% endif %}
+        })();
+    </script>
+{% endif %}

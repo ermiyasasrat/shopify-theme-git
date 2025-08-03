@@ -1,0 +1,155 @@
+{%- comment -%}
+	Get main variant and make sure to avoid the free sample
+{%- endcomment -%}
+
+{%- assign mainVariant = product.selected_or_first_available_variant -%}
+{%- if product.variants.size == 2 -%}
+	{%- for variant in product.variants -%}
+		{%- if variant.title contains "Sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- elsif variant.title contains "sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- else -%}
+			{%- assign mainVariant = variant -%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endif -%}
+
+{%- assign productRRPVal = mainVariant.metafields.filters.rrp -%}
+
+{%- comment -%}
+	Get product type and sales metric e.g. Pack, Roll
+{%- endcomment -%}
+{%- assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 -%}
+{%- assign productSaleType = mainVariant.metafields.product_config.sale_metric -%}
+
+{%- comment -%}
+	Get product price, old price
+{%- endcomment -%}
+{%- assign productPrice = mainVariant.price | money_without_currency -%}
+{%- assign currentVariantProductComparePrice = mainVariant.compare_at_price | money_without_currency -%}
+{%- assign productComparePricePerMetresSquared = mainVariant.compare_at_price | divided_by: mainVariant.metafields.product_config.pack_size -%}
+{%- assign productComparePrice = product.compare_at_price | money_without_currency -%}
+
+{%- assign productPackSize = mainVariant.metafields.product_attribute.pack_size -%}
+{%- assign productRollWidth = mainVariant.metafields[productType].roll_width -%}
+
+{%- if productRollWidth == blank and mainVariant.metafields.product_config.sale_metric == "Roll" -%}
+	{%- assign productRollWidth = product.metafields[productType].roll_width -%}
+{%- endif -%}
+
+{%- if productRollWidth == blank and mainVariant.metafields.product_config.sale_metric == "Roll" -%}
+	{%- assign productRollWidth = mainVariant.metafields.product_attribute.width -%}
+{%- endif -%}
+
+<div class="collection-price-container">
+  	{%- if product.metafields.product_config.discontinued_product == true
+      or product.metafields.product_config.discontinued_product == "true"
+	  or product.metafields.product_config.discontinued_product == "TRUE" 
+	-%}
+  		<span class="collection-call-for-price">{{ 'products.product.products_states.discontinued' | t }}</span>
+  	{%- elsif product.metafields.product_config.offline_product == true
+      or product.metafields.product_config.offline_product == "true"
+	  or product.metafields.product_config.offline_product == "TRUE" 
+	-%}
+  		<span class="collection-call-for-price">{{ 'products.product.products_states.offline' | t }}</span>
+    {%- elsif product.available == false -%}
+    	<span class="collection-call-for-price">{{ 'products.product.products_states.sold_out' | t }}</span>
+    {%- else -%}
+	{% if on_sale or productRRPVal %}
+	  	{%- if mainVariant.metafields.product_config.sale_metric == 'Pack' or mainVariant.metafields.product_config.sale_metric == 'Roll' -%}
+			{%- assign squareMetrePence = mainVariant.price | divided_by: productPackSize -%}
+			<span class="collection-sale-price">
+				{{ squareMetrePence | money }}/m²
+			</span>
+			{%- if productRRPVal != blank -%}
+				<s>
+                  {% comment %} {{ 'products.product.rrp_label' | t }} {% endcomment %}  <span>{{ productRRPVal | times: 100 | money }}</span>/m²
+				</s>
+			{%- else -%}
+				<s>
+					{% comment %}{{ 'products.product.sale_was' | t }}{% endcomment %} <span>{{ productComparePrice | divided_by: productPackSize | times: 100 | money }}</span>/m²
+				</s>
+			{%- endif -%}
+			{%- if productRRPVal != blank -%}
+				{%- assign denominator = productRRPVal -%}
+			{%- elsif product.variants.size == 1 -%}
+				{%- assign denominator = product.compare_at_price | divided_by: productPackSize | divided_by: 100 -%}
+			{%- elsif mainVariant.compare_at_price == blank -%}
+				{%- assign denominator = product.compare_at_price | divided_by: productPackSize | divided_by: 100 -%}
+			{%- else -%}
+				{%- assign denominator = mainVariant.compare_at_price | divided_by: productPackSize | divided_by: 100 -%}
+			{%- endif -%}
+
+		
+			{%- assign numerator = squareMetrePence | times: 0.01 -%}
+
+			{%- assign newPriceMinusOld = numerator | minus: denominator -%}
+			{%- assign differenceDividedByOld = newPriceMinusOld | divided_by: denominator -%}
+			{%- assign differencePercentage = differenceDividedByOld | times: 100 -%}
+			{%- assign formatPercentage = differencePercentage | round: 0 | times: -1 -%}
+
+			{%- if mainVariant.compare_at_price != blank or productRRPVal != blank -%}
+				<div class="price-discount-tag-container">
+                    {% render 'discount-icon' %}
+					<span>
+						save {{ formatPercentage }}%
+					</span>
+				</div>
+			{%- endif -%}
+		{%- elsif mainVariant.metafields.product_config.sale_metric == 'Box' or mainVariant.metafields.product_config.sale_metric == 'Tile' -%}
+			<span class="collection-regular-price">{{ mainVariant.price | money }}</span>
+
+			{%- if productRRPVal != blank and productRRPVal != 0 -%}
+				<s>
+					{{ 'products.product.rrp_label' | t }} <span>{{ productRRPVal | times: 100 | money }}</span>
+				</s>
+			{%- else -%}
+				<s>
+					{{ 'products.product.sale_was' | t }} <span>{{ productComparePrice | replace: ',', '' | times: 100 | money }}</span>
+				</s>
+			{%- endif -%}
+			
+
+
+			{%- if productRRPVal != blank -%}
+				{%- assign denominator = productRRPVal -%}
+			{%- elsif product.variants.size == 1 -%}
+				{%- assign denominator = product.compare_at_price | divided_by: 100 -%}
+			{%- elsif mainVariant.compare_at_price == blank -%}
+				{%- assign denominator = product.compare_at_price | divided_by: 100 -%}
+			{%- else -%}
+				{%- assign denominator = mainVariant.compare_at_price | divided_by: 100 -%}
+			{%- endif -%}
+
+			{%- assign numerator = mainVariant.price | times: 0.01 -%}
+
+			{%- assign newPriceMinusOld = numerator | minus: denominator -%}
+			{%- assign differenceDividedByOld = newPriceMinusOld | divided_by: denominator -%}
+			{%- assign differencePercentage = differenceDividedByOld | times: 100 -%}
+			{%- assign formatPercentage = differencePercentage | round: 0 | times: -1 -%}
+
+			{%- if mainVariant.compare_at_price != blank or productRRPVal != blank -%}
+				<div class="price-discount-tag-container">
+                    {% render 'discount-icon' %}
+					<span>
+						{{ formatPercentage }}%
+					</span>
+				</div>
+			{%- endif -%}
+
+		{%- endif -%}
+	{% else %}
+        {% if mainVariant.price_varies %}
+          {{ section.settings.from }}
+		{% endif %}
+		{%- if productSaleType == "Pack" -%}
+			<span class="collection-regular-price">{{ mainVariant.price | divided_by: productPackSize | money }}/m²</span><br>
+		{%- elsif productSaleType == "Roll" -%}
+	  		<span class="collection-regular-price">{{ mainVariant.price | divided_by: productRollWidth | money }}</span>
+		{% else %}
+		  <span class="collection-regular-price">{{ mainVariant.price | money }}</span>
+		{% endif %}
+	{% endif %}
+{% endif %}
+</div>

@@ -1,0 +1,112 @@
+{% schema %}
+  {
+    "name": "Blog Filters",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "blog-filter-keys",
+        "label": "Blog Filter Keys",
+        "info": "Insert Blog Filter Keys comma separated."
+      }
+    ]
+  }
+  {% endschema %}
+  
+  <script src="{{ 'blog-filter.js' | asset_url }}" defer="defer"></script>
+  <div class="blog-container-tag">
+  {% paginate blog.articles by 24 %}
+  
+  
+  <div class="site-wrap">
+    <h1>Welcome to the Stories Flooring Blog</h1>
+    <div class="blog-filer-keys">
+      <h3>Filter By Type</h3>
+      <div class="blog-filter-key active" data-key="all">All</div>
+      {% assign filterKeys = section.settings.blog-filter-keys %}
+      {% assign BlogFilterKeys = filterKeys | split: ',' %}
+      
+      {% for filterKey in BlogFilterKeys %}
+        <div class="blog-filter-key" data-key="{{ filterKey | strip_html | replace: ' ', '-' }}">
+          {{ filterKey | strip_html }}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="blog-list">
+      {% assign shownArticles = "" %}
+      {% for article in blog.articles %}
+        {% assign thisTags = article.tags | join: ' ' %}
+        
+        {% unless shownArticles contains article.id %}
+          {% capture shownArticles %}{{ shownArticles }} {{ article.id }}{% endcapture %}
+          <div class="blog-list__item Type_all {{ thisTags | replace: 'How To', 'How-to' | replace: 'Filter By Flooring Type', 'Filter-By-Flooring-Type' }}">
+            <a href="{{ article.url }}" class="blog-list__item-link" title="{{ article.title }}">
+              {% if thisTags contains 'Type_' %}
+                <div class="custom-design-blogs">
+                  <div class="blog-detail__intro" style="background-image:url({{ article.image | img_url: '500x220', crop: 'center' }})">
+                    <div class="inside">
+                      <div class="tag-rot">
+                        {% for tag in article.tags %}
+                          {% if tag contains 'Type_' %}
+                            {% assign thisTag = tag | split: '_' %}
+                            {{ thisTag[1] }}
+                            {% break %}
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      <div class="blog-detail__additional blog-detail__additional--center">
+                        <h3 class="blog-detail__title">
+                          {{ article.title }}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                {% if article.image %}
+                  <div class="blog-list__image">
+                    <img src="{{ article.image | img_url: '234x222', crop: 'center' }}" alt="{{ article.title }}" title="{{ article.title }}" class="">
+                  </div>
+                {% endif %}
+              {% endif %}
+              <div class="blog-list__additional">
+                {{ article.published_at | date: "%d.%m.%y" }}
+                <span class="blog-list__splitter"></span>
+                 Article Type:
+                {% for tag in article.tags %}
+                  {% if tag contains 'Type_' %}
+                    {% assign thisTag = tag | split: '_' %}
+                    {{ thisTag[1] }},
+                  {% endif %}
+                {% endfor %}
+          
+              </div>
+              <h2 class="blog-list__title">
+                {{ article.title }}
+              </h2>
+            </a>
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+  
+  
+  
+  <div class="pagination pagination--center site-wrap">
+      {% if paginate.pages > 1 %}
+          {{ paginate | default_pagination }}
+          <div class="paginate_count" style="display:none;">
+            {% assign pageCount = paginate.pages %}
+            {% assign currentPageNumber = paginate.current_page %}
+            {% for i in (1..pageCount) %}
+              {% unless i == currentPageNumber %}
+                <a class="dn_paginated_target" href="https://storiesflooring.co.uk/blogs/stories?page={{forloop.index}}" title="Blog Page" rel="nofollow">https://storiesflooring.co.uk/blogs/stories?page={{forloop.index}}</a>
+        {% endunless %}
+            {% endfor %}
+          </div>
+      {% endif %}
+    
+    
+  </div>
+  {% endpaginate %}
+  </div>

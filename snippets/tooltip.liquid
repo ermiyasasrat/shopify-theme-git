@@ -1,0 +1,17 @@
+{% if placement == blank or placement == '' %}
+    {% assign placement = 'top' %}
+{% endif %}
+{% if arrowSize == blank or arrowSize == '' %}
+    {% assign arrowSize = '16' %}
+{% endif %}
+<div class="tooltip" data-placement="{{ placement }}">
+    <span class="tooltip__title">{{ title }}</span>
+    {% if content != blank %}
+    <div class="tooltip__content">
+        <p>
+            {{ content }}
+        </p>
+    </div>
+    {% endif %}
+    <div class="arrow" data-size="{{ arrowSize }}"></div>
+</div>

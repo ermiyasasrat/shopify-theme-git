@@ -1,0 +1,51 @@
+{% render 'blog-rich-snippet' %}
+
+<div class="site-wrap">
+    <div class="blog-detail">
+        <div class="blog-detail__intro">
+            <div class="blog-detail__additional blog-detail__additional--center">
+                {{ article.published_at | date: "%d.%m.%y" }}
+                {% if article.tags.first %}
+                    <span class="blog-detail__splitter"></span>
+           {{ article.tags | first | remove_first: 'Type_' }}
+
+                {% endif %}
+            </div>
+            <h1 class="blog-detail__title">
+                {{ article.title }}
+            </h1>
+           <a href="https://storiesflooring.com/pages/{{ article.author | downcase | handleize }}" title="{{ article.title }}">Written by: {{ article.author }}</a>
+        </div>
+        <div class="blog-detail__featured-image">
+            <img src="{{ article.image | img_url: '1020x', crop: 'center' }}"
+                srcset="
+                    {{ article.image | img_url: '385x', crop: 'center' }} 385w,
+                    {{ article.image | img_url: '668x', crop: 'center' }} 668w,
+                    {{ article.image | img_url: '770x', crop: 'center' }} 770w,
+                    {{ article.image | img_url: '1020x', crop: 'center' }} 1020w,
+                    {{ article.image | img_url: '1336x', crop: 'center' }} 1336w,
+                    {{ article.image | img_url: '2040x', crop: 'center' }} 2040w
+                "
+                sizes="
+                    (max-width: 425px) 385px,
+                    (max-width: 768px) 668px,
+                    1020px
+                "
+                alt="{{ article.title }}"
+                 title = "{{ article.title }}"
+                 >
+        </div>
+        <div class="blog-detail__grid">
+            <div class="blog-detail__content">
+                <div class="wysiwyg">
+                    {{ article.content }}
+                </div>
+                {% render 'social-share' with
+                    title: 'Share this article'
+                    post: article
+                %}
+            </div>
+            {% include 'related-articles' %}
+        </div>
+    </div>
+</div>

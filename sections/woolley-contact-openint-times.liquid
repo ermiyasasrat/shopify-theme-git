@@ -1,0 +1,71 @@
+{% schema %}
+    {
+        "name": "Woolley Contact Page",
+        "settings": [
+            {
+                "type": "text",
+                "id": "openingtimes_title",
+                "label": "Opening Times Title"
+            },
+			{
+                "type": "textarea",
+                "id": "openingtimes",
+                "label": "Opening Times"
+            },
+{
+                "type": "text",
+                "id": "special_openingtimes_title",
+                "label": "Special Opening Times Title"
+            },
+			{
+                "type": "textarea",
+                "id": "special_openingtimes",
+                "label": "Opening Times"
+            },
+			{
+                "type": "text",
+                "id": "openingtimesshowroom_title",
+                "label": "Showroom Opening Times Title"
+            },			
+            {
+                "type": "textarea",
+                "id": "openingtimesshowroom",
+                "label": "Showroom Opening Times"
+            },
+            {
+                "type": "textarea",
+                "id": "woolley_local_schema",
+                "label": "Woolley Schema"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless section.settings.openingtimes_title == blank or section.settings.openingtimes == blank %}
+<div class="openingtimes">
+  {% unless section.settings.openingtimes_title == blank %}
+  	<h4 class="woolcontact">{{- section.settings.openingtimes_title -}}</h4>
+  {% endunless %}
+  {{- section.settings.openingtimes -}}  
+  {% if section.settings.openingtimes_title %}
+    <h4 class="woolcontact" style="margin-top: 40px;">{{- section.settings.special_openingtimes_title -}}</h4>
+    {{- section.settings.special_openingtimes -}}
+  {% endif %}
+</div>
+{% endunless %}
+
+{% unless section.settings.openingtimesshowroom_title == blank or section.settings.openingtimesshowroom == blank %}
+<div class="openingtimes">
+  {% unless section.settings.openingtimesshowroom_title == blank %}
+  <h4 class="woolcontact">{{- section.settings.openingtimesshowroom_title -}}</h4>
+  {% endunless %}
+  {{- section.settings.openingtimesshowroom -}}
+</div>
+{% endunless %}
+
+
+{% unless section.settings.woolley_local_schema == blank %}
+<div class="woolley-local-schema">
+  {{- section.settings.woolley_local_schema -}}
+</div>
+{% endunless %}

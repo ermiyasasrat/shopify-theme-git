@@ -1,0 +1,111 @@
+{% schema %}
+    {
+        "name": "Contact Map",
+        "settings": [
+            {
+                "type": "text",
+                "id": "contact_map_title",
+                "label": "Title"
+            },
+            {
+                "type": "text",
+                "id": "contact_map_address_title",
+                "label": "Address title"
+            },
+            {
+                "type": "richtext",
+                "id": "contact_map_address_content",
+                "label": "Address"
+            },
+            {
+                "type": "url",
+                "id": "contact_map_directions",
+                "label": "Directions link"
+            },
+            {
+                "type": "text",
+                "id": "contact_map_opening_times_title",
+                "label": "Opening times title"
+            },
+            {
+                "type": "richtext",
+                "id": "contact_map_opening_times_content",
+                "label": "Opening times"
+            },
+            {
+                "type": "text",
+                "id": "contact_map_lat",
+                "label": "Map latitude"
+            },
+            {
+                "type": "text",
+                "id": "contact_map_long",
+                "label": "Map longitude"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.contact_map_title == blank
+    and section.settings.contact_map_address_title == blank
+    and section.settings.contact_map_address_content == blank
+    and section.settings.contact_map_directions == blank
+    and section.settings.contact_map_opening_times_title == blank
+    and section.settings.contact_map_opening_times_content == blank
+%}
+    <section id="contact-us-map" class="contact-map">
+        <div class="site-wrap site-wrap--max contact-map__wrap">
+            {% assign key = settings.google_maps_api_key %}
+            {% assign lat = section.settings.contact_map_lat %}
+            {% assign lng = section.settings.contact_map_long %}
+            {% unless key == blank
+                and lat == blank
+                and long == blank
+            %}
+                <div class="contact-map__map-container">
+                    <div class="contact-map__map js-google-map" data-google-map-config='{"key":"{{ key }}","lat":{{ lat }},"lng":{{ lng }}}'></div>
+                </div>
+            {% endunless %}
+            {% unless
+                section.settings.contact_map_title == blank
+                and section.settings.contact_map_address_title == blank
+                and section.settings.contact_map_address_content == blank
+                and section.settings.contact_map_directions == blank
+                and section.settings.contact_map_opening_times_title == blank
+                and section.settings.contact_map_opening_times_content == blank
+            %}
+                <div class="contact-map__item">
+                    <div class="">
+                        {% unless section.settings.contact_map_title == blank %}
+                            <h2 class="contact-map__title">
+                                {{- section.settings.contact_map_title -}}
+                            </h2>
+                        {% endunless %}
+                        <div class="contact-map__details">
+                            <div class="contact-map__details-item">
+                                {% unless section.settings.contact_map_address_title == blank %}
+                                    <h3 class="contact-map__sub-title">
+                                        {{- section.settings.contact_map_address_title -}}
+                                    </h3>
+                                {% endunless %}
+                                {% unless section.settings.contact_map_address_content == blank %}
+                                    <div class="wysiwyg">
+                                        {{- section.settings.contact_map_address_content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless section.settings.contact_map_directions == blank %}
+                                    <a href="{{ section.settings.contact_map_directions }}" class="link">
+                                        Get directions
+                                    </a>
+                                {% endunless %}
+                            </div>
+                            
+                          <!-- right contact was here-->
+                        </div>
+                    </div>
+                </div>
+            {% endunless %}
+        </div>
+    </section>
+{% endunless %}

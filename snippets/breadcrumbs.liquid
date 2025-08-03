@@ -1,0 +1,163 @@
+{% assign t = template | split: '.' | first %}
+{% assign countNumArrow = 0 %}
+<style>
+    .breadcrumbs {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 2rem 0;
+    }
+
+    @media only screen and (max-width: 47.999em) {
+        .breadcrumbs {
+            padding: 0 5%;
+        }
+        .collection--new-template .breadcrumbs {
+            display: none;
+        }
+
+        .breadcrumbs__list {
+            /*padding-bottom: 4%;*/
+            padding-top: 3%;
+            padding-bottom: 2%
+        }
+
+        .breadcrumbs-desktop-only {
+            display: none !important;
+        }
+    }
+
+    .breadcrumbs li {
+        display: inline-block;
+        /*margin-right: 1rem;*/
+    }
+
+    .breadcrumbs li:last-of-type {
+        margin-right: 0;
+    }
+
+    .breadcrumbs a {
+        text-decoration: none;
+        /* padding: 1.45rem 0; */
+    }
+
+    .breadcrumbs--dark {
+        color: #1b2c3d;
+    }
+
+    .breadcrumbs--light {
+        color: #fff;
+    }
+
+    .breadcrumb--static {
+        position: relative;
+    }
+
+    .breadcrumbs__arrow {
+        display: inline-block;
+        margin-right: 1rem;
+    }
+
+    .breadcrumbs__list-item .breadcrumbs__arrow {
+        margin-left: 1rem;
+    }
+
+    .breadcrumbs__arrow svg {
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+
+    .breadcrumbs--dark .breadcrumbs__arrow svg g {
+        stroke: #1b2c3d;
+    }
+
+    .breadcrumbs--light .breadcrumbs__arrow svg g {
+        stroke: #fff;
+    }
+</style>
+<nav class="breadcrumbs{% if class %} breadcrumbs--{{ class }}{% endif %}{% if static %} breadcrumb--static{% endif %}" role="navigation" aria-label="breadcrumbs">
+    <div class="site-wrap">
+        <ol class="breadcrumbs__list">
+            <li class="breadcrumbs__list-item">
+                <a href="/" title="Home">Home</a>
+                {% assign countNumArrow = countNumArrow | plus: 1 %}
+                <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+            </li>
+            {% case t %}
+            {% when 'page' %}
+                <li class="breadcrumbs__list-item">
+                    <a href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
+                </li>
+            {% when 'collection' and collection.handle %}
+                {% unless collection.metafields.breadcrumb.parent_collection == blank %}
+                    {% assign parentCollectionTitle = collections[collection.metafields.breadcrumb.parent_collection].title %}
+                    <li class="breadcrumbs__list-item">
+                        <a href="{{ collection.metafields.breadcrumb.parent_collection }}">{{ parentCollectionTitle }}</a>
+                        {% assign countNumArrow = countNumArrow | plus: 1 %}
+                        <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                    </li>
+                {% endunless %}
+                {% unless collection.metafields.breadcrumb.parent_parent_collection == blank %}
+                    {% assign parentParentCollectionTitle = collections[collection.metafields.breadcrumb.parent_parent_collection].title %}
+                    <li class="breadcrumbs__list-item">
+                        <a href="{{ collection.metafields.breadcrumb.parent_parent_collection }}">{{ parentParentCollectionTitle }}</a>
+                        {% assign countNumArrow = countNumArrow | plus: 1 %}
+                        <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                    </li>
+                {% endunless %}
+                <li class="breadcrumbs__list-item">
+                    <a href="{{ collection.url }}" aria-current="page">{{ collection.title }}</a>
+                </li>
+            {% when 'list-collections' %}
+                <li class="breadcrumbs__list-item">
+                    <a href="/collections" aria-current="page">Collections</a>
+                </li>
+            {% when 'product' %}
+				      {% if collection %}
+                <li class="breadcrumbs__list-item">
+                    <a href="{{ collection.url }}">{{ collection.title }}</a>
+                    {% assign countNumArrow = countNumArrow | plus: 1 %}
+                    <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                </li>
+				      {% elsif product.metafields.my_fields.breadcrumb-parent-collection != blank %}
+                {% assign collectionTitle = collections[product.metafields.my_fields.breadcrumb-parent-collection].title %}
+                <li class="breadcrumbs__list-item breadcrumbs-product-collection-item">
+                    <a href="/collections/{{ product.metafields.my_fields.breadcrumb-parent-collection | downcase }}">{{ collectionTitle }}</a>
+                    {% assign countNumArrow = countNumArrow | plus: 1 %}
+                    <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                </li>
+              {% endif %}
+				      {% if product.metafields.my_fields.breadcrumb_subcollection_path != blank %}
+                    {% assign subcollectionPath = product.metafields.my_fields.breadcrumb_subcollection_path %}
+                    {% assign subcollectionTitle = collections[subcollectionPath].title %}
+                    <li class="breadcrumbs__list-item">
+                        <a href="/collections/{{ subcollectionPath }}">{{ subcollectionTitle }}</a>
+                        {% assign countNumArrow = countNumArrow | plus: 1 %}
+                        <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                    </li>
+                {% endif %}
+				      {% if product.metafields.my_fields.breadcrumb_sub_subcollection != blank %}
+                {% assign subSubCollectionPath = product.metafields.my_fields.breadcrumb_sub_subcollection %}
+                {% assign subSubCollectionTitle = collections[subSubCollectionPath].title %}
+                <li class="breadcrumbs__list-item">
+                    <a href="/collections/{{ subSubCollectionPath }}">{{ subSubCollectionTitle }}</a>
+                    {% assign countNumArrow = countNumArrow | plus: 1 %}
+                    <span class="breadcrumbs__arrow arrow-nth-{{ countNumArrow }}">{% render 'icon-nav-arrow' %}</span>
+                </li>
+              {% endif %}
+            {% endcase %}
+        </ol>
+    </div>
+</nav>
+{% if t == 'product' %}
+    {% unless collection %}
+        <style>
+            .breadcrumbs__arrow.arrow-nth-{{ countNumArrow }} {
+              display: none;
+            }
+        </style>
+    {% endunless %}
+{% endif %}
+

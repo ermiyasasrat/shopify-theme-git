@@ -1,0 +1,74 @@
+<nav class="site-footer-navigation" id="site-footer-navigation" arial-label="Footer navigation">
+    <ul class="site-footer-navigation__ul">
+        {%- for link in linklists.main_menu.links -%}
+
+            {% assign relNofollow = 'rel="nofollow"' %}
+            {% if link.title == 'Blog' or link.title == 'Flooring Help' %}
+                {% assign relNofollow = '' %}
+            {% endif %}
+
+            <li class="site-footer-navigation__li{% if link.active %} site-footer-navigation__li--active{% endif %}{% if link.links != blank %} site-footer-navigation__li--has-sub{% endif %}">
+                <a {{ relNofollow }} href="{{ link.url }}"
+                                     class="site-footer-navigation__link{% if link.active %} site-footer-navigation__link--active{% endif %}{% if link.links != blank %} site-footer-navigation__link--has-sub{% endif %}"
+                {% if link.current %} aria-current="page" {% endif %}>
+                    {{ link.title }}
+                </a>
+                {% if link.links != blank %}
+                    <div class="site-footer-navigation__sub-menu site-footer-navigation__sub-menu--second">
+                        <ul class="site-footer-navigation__ul site-footer-navigation__ul--sub">
+                            {%- for child_link in link.links -%}
+
+                                {% assign relNofollow = 'rel="nofollow"' %}
+                                {% if child_link.title == 'Blog' or child_link.title == 'Flooring Help' %}
+                                    {% assign relNofollow = '' %}
+                                {% endif %}
+
+                                <li class="site-footer-navigation__li site-footer-navigation__li--sub">
+                                    <a {{ relNofollow }} title="{{ child_link.title | escape }}" href="{{ child_link.url }}" class="site-footer-navigation__link site-footer-navigation__link--sub{% if child_link.active %} site-footer-navigation__link--active{% endif %}">
+                                        {{ child_link.title | escape }}
+                                    </a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </div>
+                {% endif %}
+            </li>
+        {%- endfor -%}
+
+        {% comment %}
+        <li class="site-footer-navigation__li site-footer-navigation__li--has-sub">
+            <a rel="nofollow" href="#" class="site-footer-navigation__link site-footer-navigation__link--has-sub">
+                {{ 'Top Collections' }}
+                <span class="site-footer-navigation__link-arrow">
+            {% include 'icon-nav-arrow' %}
+          </span>
+            </a>
+            {%- for link in linklists.top-collections.links -%}
+                <div class="site-footer-navigation__sub-menu site-footer-navigation__sub-menu--second">
+                    <ul class="site-footer-navigation__ul site-footer-navigation__ul--sub">
+
+                        <li class="site-footer-navigation__li site-footer-navigation__li--sub">
+                            <a rel="nofollow" title="{{ link.title | escape }}" href="{{ link.url }}" class="site-footer-navigation__link site-footer-navigation__link--sub{% if link.active %} site-footer-navigation__link--active{% endif %}">
+                                {{ link.title | escape }}
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            {%- endfor -%}
+        </li>
+        {% endcomment %}
+    </ul>
+</nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.site-footer-navigation__li--has-sub').forEach(function(element) {
+            element.addEventListener('click', function(event) {
+                if (event.target.classList.contains('site-footer-navigation__link--has-sub')) {
+                    event.preventDefault();
+                    this.classList.toggle('is-active');
+                }
+            });
+        });
+    });
+</script>

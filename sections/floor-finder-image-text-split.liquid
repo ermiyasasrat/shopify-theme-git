@@ -1,0 +1,133 @@
+{% schema %}
+    {
+        "name": "Floor finder module",
+        "settings": [
+            {
+                "type": "text",
+                "id": "ff_module_title",
+                "label": "Title"
+            },
+            {
+                "type": "html",
+                "id": "ff_module_content",
+                "label": "Content"
+            },
+            {
+                "type": "url",
+                "id": "ff_module_link",
+                "label": "Link"
+            },
+            {
+                "type": "text",
+                "id": "ff_module_link_text",
+                "label": "Link text"
+            },
+            {
+                "type": "html",
+                "id": "ff_module_content_bottom",
+                "label": "Content"
+            },
+            {
+                "type": "image_picker",
+                "id": "ff_module_image_small",
+                "label": "Image",
+                "info": "Recommended image size: 720 x 580."
+            },
+            {
+                "type": "image_picker",
+                "id": "ff_module_image_large",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1540."
+            },
+            {
+                "type": "text",
+                "id": "ff_module_image_alt",
+                "label": "Image alt"
+            }
+		],
+		"presets": [
+			{
+				"name": "Floor Finder Module",
+				"category": "Product Page"
+			}
+		]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.ff_module_title == blank
+    and section.settings.ff_module_content == blank
+    and section.settings.ff_module_link == blank
+    and section.settings.ff_module_link_text == blank
+    and section.settings.ff_module_image_small == blank
+    and section.settings.ff_module_image_large == blank
+%}
+<div class="site-wrap site-wrap--product {% if product != blank %}site-wrap-pdp{% endif %} {% if template.suffix contains 'desc-top' or template.suffix contains 'titleh3' %}site-wrap--max{%endif%}">
+    <section class="image-text-split">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless
+                    section.settings.ff_module_image_small == blank
+                    and section.settings.ff_module_image_large == blank
+                %}
+                    <div class="image-text-split__image">
+                        {% assign image_small_1x = section.settings.ff_module_image_small | img_url: '360x290' %}
+                        {% assign image_small_2x = section.settings.ff_module_image_small | img_url: '720x580' %}
+                        {% assign image_medium_1x = section.settings.ff_module_image_large | img_url: '683x670' %}
+                        {% assign image_medium_2x = section.settings.ff_module_image_large | img_url: '1366x1340' %}
+                        {% assign image_large_1x = section.settings.ff_module_image_large | img_url: '960x770' %}
+                        {% assign image_large_2x = section.settings.ff_module_image_large | img_url: '1920x1400' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: collection.title,
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.ff_module_title == blank
+                    and section.settings.ff_module_content == blank
+                    and section.settings.ff_module_link == blank
+                    and section.settings.ff_module_link_text == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--right">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.ff_module_title == blank %}
+                                    <h6 class="title title--small image-text-split__title">
+                                        {{- section.settings.ff_module_title -}}
+                                    </h6>
+                                {% endunless %}
+                                {% unless section.settings.ff_module_content == blank %}
+                                    <div class="para image-text-split__para">
+                                        {{- section.settings.ff_module_content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless section.settings.ff_module_link == blank or section.settings.ff_module_link_text == blank %}
+                                    <a class="button" href="{{- section.settings.ff_module_link -}}" rel="nofollow">
+                                        {{- section.settings.ff_module_link_text -}}
+                                    </a>
+                                {% endunless %}
+                              
+                                {% comment %}
+                                  {% unless section.settings.ff_module_content_bottom == blank %}
+                                      <div class="para image-text-split__para-last">
+                                          {{- section.settings.ff_module_content_bottom -}}
+                                      </div>
+                                  {% endunless %}
+                                {% endcomment %}
+                              
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endunless %}

@@ -1,0 +1,108 @@
+{% schema %}
+    {
+        "name": "About hero",
+        "settings": [
+            {
+                "type": "text",
+                "id": "about_hero_title",
+                "label": "About hero title"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content",
+                "label": "About hero content"
+            },
+            {
+                "type": "url",
+                "id": "about_hero_link",
+                "label": "About hero link"
+            },
+            {
+                "type": "text",
+                "id": "about_hero_link_text",
+                "label": "About hero link text"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_hero_image_small",
+                "label": "Image",
+                "info": "Recommended image size: 720 x 720."
+            },
+            {
+                "type": "image_picker",
+                "id": "about_hero_image_large",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1400."
+            },
+            {
+                "type": "text",
+                "id": "about_hero_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.about_hero_title == blank
+    and section.settings.about_hero_content == blank
+    and section.settings.about_hero_link == blank
+    and section.settings.about_hero_link_text == blank
+%}
+    <section id="hero" class="image-text-split image-text-split--hero image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless
+                    section.settings.about_hero_image_small == blank
+                    and section.settings.about_hero_image_large == blank
+                %}
+                    <div class="image-text-split__image image-text-split__image--hero">
+                        {% assign image_small_1x = section.settings.about_hero_image_small | img_url: '360x360' %}
+                        {% assign image_small_2x = section.settings.about_hero_image_small | img_url: '720x720' %}
+                        {% assign image_medium_1x = section.settings.about_hero_image_large | img_url: '683x450' %}
+                        {% assign image_medium_2x = section.settings.about_hero_image_large | img_url: '1366x900' %}
+                        {% assign image_large_1x = section.settings.about_hero_image_large | img_url: '960x700' %}
+                        {% assign image_large_2x = section.settings.about_hero_image_large | img_url: '1920x1400' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.about_hero_image_alt
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.about_hero_title == blank
+                    and section.settings.about_hero_content == blank
+                    and section.settings.about_hero_link == blank
+                    and section.settings.about_hero_link_text == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--hero">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.about_hero_title == blank %}
+                                    <h1 class="title title--small image-text-split__title">
+                                        {{- section.settings.about_hero_title -}}
+                                    </h1>
+                                {% endunless %}
+                                {% unless section.settings.about_hero_content == blank %}
+                                    <p class="para image-text-split__para">
+                                        {{- section.settings.about_hero_content -}}
+                                    </p>
+                                {% endunless %}
+                                {% unless section.settings.about_hero_link or section.settings.about_hero_link == blank %}
+                                    <a class="button button--secondary" href="{{- section.settings.about_hero_link -}}">
+                                        {{- section.settings.about_hero_link -}}
+                                    </a>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

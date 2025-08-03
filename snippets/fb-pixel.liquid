@@ -1,0 +1,131 @@
+<!-- Facebook Pixel Code -->
+      <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+         if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+         n.queue=[];t=b.createElement(e);t.async=!0;
+         t.src=v;s=b.getElementsByTagName(e)[0];
+         s.parentNode.insertBefore(t,s)}(window,document,'script',
+                                         'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '140570354627702'); 
+        
+        {% if template.name contains 'product' %}
+          fbq('track', 'PageView', {
+              content_type: 'product',
+              content_ids: ["{{ product.id }}"]
+          }); 
+                         
+            fbq('track', 'ViewContent', {
+              content_ids: ["{{ product.id }}"],
+              content_name: "{{ product.title }}",
+              value: {{ product.metafields.product_config.price_per_metres_squared }},
+              content_type: 'product',
+              currency: 'GBP'
+            });
+            
+
+        
+        {% else %}
+                            
+          {% if template.name contains 'collection' %}     
+            fbq('track', 'PageView', {
+                content_ids: ["{{ collection.id }}"]
+            }); 
+          {% elsif template.name contains 'page' %}     
+            fbq('track', 'PageView', {
+                content_ids: ["{{ page.id }}"]
+            }); 
+          {% else %}
+            fbq('track', 'PageView');
+          {% endif %}
+                            
+        	
+        {% endif %}
+                            
+        {% if template.name contains 'collection' %}
+            fbq('track', 'ViewContent');                            
+        {% endif %}
+        
+        
+
+        
+      </script>
+
+      <!-- End Facebook Pixel Code -->
+      
+      {% if template contains 'product' %}
+          <script>
+          var atcButtonID = "AddToCart";
+
+          var atcButton = document.getElementById(atcButtonID);
+          if(atcButton){
+              atcButton.addEventListener("click", function(event) {
+                  var cartValue = $('#total-price').text();
+                          var productId = {{ product.selected_or_first_available_variant.id }};
+                          var productType = "{{ product.type }}";
+                          //PASTE AFTER HERE
+                          fbq('track', 'AddToCart',{
+                            content_name: '{{ product.title }}',
+                            content_type: 'Product',
+                            content_category: '{{ product.type }}',
+                            content_ids: ['{{ product.id }}'],
+                            value: cartValue,
+                            currency: 'GBP'
+        				});
+              });
+          }
+          </script>
+      {% endif %} 
+      {% if template.name contains 'cart' %}
+      
+          <script>
+          var atcButtonID = "checkout";
+
+          var atcButton = document.getElementById(atcButtonID);
+          if(atcButton){
+			var cart_item_ids = [];
+            $('.cart-product').each(function(){
+            	var variant_idx = $(this).attr('data-varID');
+				variant_idx = parseInt(variant_idx);
+              	cart_item_ids.push(variant_idx);
+            });
+            
+            var cart_items_array = [];
+            $('.cart-product').each(function(){
+                if($(this).hasClass('cart-sample-product')){
+                    var variant_idx = $(this).find('.js-sample-title').text();
+					cart_items_array.push(variant_idx);
+                }else{
+                    var variant_idx = $(this).find('.js-product-title').text();
+					cart_items_array.push(variant_idx);
+                }
+                
+            });
+            
+			var cart_items_collections_array = [];
+            $('.cart-product').each(function(){
+            	var collection_idx = $(this).attr('data-collections');
+              	cart_items_collections_array.push(collection_idx);
+            });
+
+            
+            var cart_value = {{cart.total_price | money_without_currency }};
+            var cart_items_count = {{ cart.item_count }};
+            
+              atcButton.addEventListener("click", function(event) {
+                 
+                          //PASTE AFTER HERE
+                          fbq('track', 'InitiateCheckout', {
+                            content_type: 'product_group',
+                            content_ids: cart_item_ids,
+                            value: cart_value,
+                            num_items: cart_items_count,
+                            content_name: cart_items_array,
+                            currency: 'GBP',
+                            content_category: cart_items_collections_array
+                          });
+              });
+          }
+          </script>
+      {% endif %} 

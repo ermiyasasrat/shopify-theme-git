@@ -1,0 +1,129 @@
+{% unless section.blocks == blank %}
+    <div class="site-wrap">
+        <div class="guide-table">
+            <table class="guide-table__table">
+                <thead>
+                    <th class="guide-table__empty"></th>
+                    <th class="guide-table__header">
+                        Luxury Vinyl Tiles
+                    </th>
+                    <th class="guide-table__header">
+                        Laminate
+                    </th>
+                    <th class="guide-table__header">
+                        Engineered Wood
+                    </th>
+                    <th class="guide-table__header">
+                        Solid Wood
+                    </th>
+                    <th class="guide-table__header">
+                        Carpet
+					</th>
+					<th class="guide-table__header">
+                        SPC
+                    </th>
+                </thead>
+                <tbody>
+                    {% for row in section.blocks %}
+                        <tr>
+                            <td class="guide-table__row-title">
+                                {{ row.settings.guide_row_title }}
+                            </td>
+                            <td class="guide-table__row">
+                                {% if row.settings.guide_row_luxury == true %}
+                                    <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% endif %}
+                            </td>
+                            <td class="guide-table__row">
+                                {% if row.settings.guide_row_laminate == true %}
+                                       <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                               {% endif %}
+                            </td>
+                            <td class="guide-table__row">
+                                {% if row.settings.guide_row_engineered == true %}
+                                     <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                               {% endif %}
+                            </td>
+                            <td class="guide-table__row">
+                                {% if row.settings.guide_row_solid == true %}
+                                    <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% endif %}
+                            </td>
+                            <td class="guide-table__row">
+                                {% if row.settings.guide_row_carpet == true %}
+                                    <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                               {% endif %}
+							</td>
+							<td class="guide-table__row">
+                                {% if row.settings.guide_row_spc == true %}
+                                    <img src="{{ "icon-tick-large.svg" | asset_url }}" class="js-lazy-load-image">
+                                {% else %}
+                                    <img src="{{ "icon-cross.svg" | asset_url }}" class="js-lazy-load-image">
+                              {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endunless %}
+
+{% schema %}
+    {
+        "name": "Guide Table",
+        "blocks": [
+            {
+                "type": "guide_row",
+                "name": "Guide Table Row",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "guide_row_title",
+                        "label": "Title"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "guide_row_luxury",
+                        "label": "Luxury Vinyl Tiles"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "guide_row_laminate",
+                        "label": "Laminate"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "guide_row_engineered",
+                        "label": "Engineered Wood"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "guide_row_solid",
+                        "label": "Solid Wood"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "guide_row_carpet",
+                        "label": "Carpet"
+					},
+					{
+                        "type": "checkbox",
+                        "id": "guide_row_spc",
+                        "label": "SPC"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

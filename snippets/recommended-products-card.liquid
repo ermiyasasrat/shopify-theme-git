@@ -1,0 +1,87 @@
+{%- assign relatedProduct = all_products[relatedHandle] -%}
+
+{%- assign mainVariant = relatedProduct.selected_or_first_available_variant -%}
+{%- if relatedProduct.variants.size == 2 -%}
+	{%- for variant in relatedProduct.variants -%}
+		{%- if variant.title contains "Sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- elsif variant.title contains "sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- else -%}
+			{%- assign mainVariant = variant -%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endif -%}
+
+{%- assign productType = relatedProduct.type | downcase | replace: ' ', '_' | slice: 0, 20 -%}
+{%- assign productRollWidth = mainVariant.metafields[productType].roll_width -%}
+{%- if productRollWidth == blank -%}
+	{%- assign productRollWidth = relatedProduct.metafields[productType].roll_width -%}
+{%- endif -%}
+
+
+{%- assign productPackSize = mainVariant.metafields.product_attribute.pack_size -%}
+{%- assign relatedProductComparePrice = mainVariant.compare_at_price -%}
+{%- assign relatedProductPricePerMetresSquared = mainVariant.price | divided_by: productPackSize | money -%}
+{%- assign relatedProductComparePricePerMetresSquared = relatedProductComparePrice | divided_by: productPackSize | money -%}
+
+
+{%- if relatedProduct.available == true -%}
+	{%- assign relatedProductURL = relatedProduct.first_available_variant.url -%}
+{%- else -%}
+	{%- assign relatedProductURL = relatedProduct.url -%}
+{%- endif -%}
+
+
+<div class="product-related__column">
+	<a 
+		class="product-related__slide-link" 
+		href="{{ relatedProductURL }}" 
+		title="{{ relatedProduct.title }}"
+	>
+		<div class="product-related__slide-image">
+			{% render 'responsive-image',
+				image: relatedProduct.featured_image,
+				image_class: "product-related-iamge",
+				alt: relatedProduct.title
+			%}
+		</div>
+		<div class="product-related-text-container">
+			{% unless relatedProduct.title == blank %}
+				<h3 class="product-related__slide-title">
+					{{ relatedProduct.title }}
+				</h3>
+			{% endunless %}
+			{% if relatedProductPricePerMetresSquared != blank or relatedProduct.price != blank %}
+				<div class="product-related__slide-price">
+					{%- if mainVariant.metafields.product_config.sale_metric == "Pack" -%}
+						{%- if relatedProductPricePerMetresSquared != blank -%}
+							{{ relatedProductPricePerMetresSquared }}/m²
+						{%- endif -%}
+						{%- if relatedProductComparePrice != blank -%}
+							<div class="product__compare-price">
+								{{ 'products.product.sale_was' | t }} {{ relatedProductComparePricePerMetresSquared }}/m²
+							</div>
+						{%- endif -%}
+					{%- elsif mainVariant.metafields.product_config.sale_metric == "Roll" -%}
+						{{ mainVariant.price | divided_by: productRollWidth | money }}/m²
+					{%- else -%}
+						{%- if relatedProductComparePrice != blank -%}
+							<div class="product__compare-price">
+								{{ relatedProductComparePrice | money }}
+							</div>
+						{%- endif -%}
+						{%- if relatedProduct.price != blank -%}
+							{{ relatedProduct.price | money }}
+						{%- endif -%}
+					{%- endif -%}
+				</div>
+			{% endif %}
+		</div>
+	</a>
+	<div class="product-out-of-stock-cta-container">
+		<a href={{ relatedProductURL }}>
+			{{ 'products.product.view_product' | t }}
+		</a>
+	</div>
+</div>

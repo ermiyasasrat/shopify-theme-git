@@ -1,0 +1,25 @@
+<div class="site-wrap">
+    <div class="blog-list">
+        {% for article in blog.articles %}
+            <div class="blog-list__item">
+                <a href="{{ article.url }}" class="blog-list__item-link">
+                    {% if article.image %}
+                        <img data-src="{{ article.image | img_url: '253x253', crop: 'center' }}"
+                            class="blog-list__image js-lazy-load-image"
+                            alt="{{ article.title }}">
+                    {% endif %}
+                    <div class="blog-list__additional">
+                        {{ article.published_at | date: "%d.%m.%y" }}
+                        {% if article.tags.first %}
+                            <span class="blog-list__splitter"></span>
+                            {{ article.tags | first }}
+                        {% endif %}
+                    </div>
+                    <h2 class="blog-list__title">
+                        {{ article.title }}
+                    </h2>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>

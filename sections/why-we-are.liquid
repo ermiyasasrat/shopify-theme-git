@@ -1,0 +1,74 @@
+<section class="why-we">
+  <img class="why-shape" width="288" height="350" src="{{ section.settings.sec_shape | img_url: 'master' }}" alt="{{ section.settings.sec_shape.alt }}"/>
+  <div class="site-wrap">
+    <span>{{ section.settings.sec_title }}</span>
+    <h2>{{ section.settings.sec_heading }}</h2>
+    <div class="why-boxes">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'why_boxes' %}
+          <div class="advantage-box">
+            <div class="icon">
+              <img width="24" height="24" loading="lazy" src="{{ block.settings.advantage_icon | image_url: width: 24, height: 24 }}" alt="{{ block.settings.advantage_icon.alt }}">
+            </div>
+            <h3>{{ block.settings.advantage_text }}</h3>
+            <p>{{ block.settings.advantage_content }}</p>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Why We Are",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "sec_shape",
+        "label": "Why Shape",
+      },
+      {
+        "type": "text",
+        "id": "sec_title",
+        "label": "Why Title",
+      },
+      {
+        "type": "text",
+        "id": "sec_heading",
+        "label": "Why Heading",
+      },
+    ],
+    "blocks": [
+      {
+        "type": "why_boxes",
+        "name": "Advantage Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "advantage_icon",
+            "label": "Advantage Icon",
+          },
+          {
+            "type": "text",
+            "id": "advantage_text",
+            "label": "Advantage Text",
+          },
+          {
+            "type": "text",
+            "id": "advantage_content",
+            "label": "Advantage Content",
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Why We Are",
+      }
+    ]
+  }
+{% endschema %}

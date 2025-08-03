@@ -1,0 +1,84 @@
+{% schema %}
+    {
+        "name": "Guide Accordion",
+        "blocks": [
+            {
+                "type": "guide_accordion",
+                "name": "Accordion Item",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "guide_accordion_title",
+                        "label": "Title"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "guide_accordion_text",
+                        "label": "Text"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "guide_accordion_image",
+                        "label": "Image"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless section.blocks == blank %}
+    <div class="guide-accordion">
+        <div class="site-wrap">
+            <ul id="guide-accordion" class="accordion accordion--light accordion--product-details" aria-label="Guide accordion">
+                {% for accordionItem in section.blocks %}
+                    <li class="accordion__item js-accordion-item">
+                        {% unless accordionItem.settings.guide_accordion_title == blank %}
+                            <button class="accordion__toggle js-accordion-toggle button-reset" type="button" aria-controls="accordion-guide-{{ forloop.index }}" aria-expanded="false">
+                                <span class="accordion__title">
+                                    {{- accordionItem.settings.guide_accordion_title -}}
+                                </span>
+                                <span class="accordion__link-arrow">
+                                    {% include 'icon-accordion-arrow' %}
+                                </span>
+                            </button>
+                        {% endunless %}
+                        {% unless accordionItem.settings.guide_accordion_text == blank %}
+                            <div class="accordion__content-container js-accordion-content-container" aria-hidden="true" id="accordion-guide-{{ forloop.index }}">
+                                <div class="accordion__content js-accordion-content">
+                                    <div class="guide-accordion__inner">
+                                        {% if accordionItem.settings.guide_accordion_image %}
+                                            <div class="guide-accordion__image">
+                                                <img 
+                                                    src="{{ accordionItem.settings.guide_accordion_image | img_url: '605x' }}"
+                                                    srcset="
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '1210x' }} 1210w,
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '2420x' }} 2420w,
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '667x' }} 667w,
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '1334x' }} 1334w,
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '380x' }} 380w,
+                                                        {{ accordionItem.settings.guide_accordion_image | img_url: '760x' }} 760w,
+                                                    "
+                                                    sizes="
+                                                        (max-width: 480px) 380px,
+                                                        (max-width: 767px) 667px,
+                                                        605px
+                                                    "
+                                                    >
+                                            </div>
+                                        {% endif %}
+                                        {% if accordionItem.settings.guide_accordion_text %}
+                                            <div class="guide-accordion__text">
+                                                {{- accordionItem.settings.guide_accordion_text -}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endunless %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endunless %}

@@ -1,0 +1,102 @@
+{%- layout none -%}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+
+{
+	"metafields":[
+        {% comment %}
+            check if product is a variant or not
+        {% endcomment %}
+        {%- if product.variants.size > 1 -%}
+            {%- for configMetafields in current_variant.metafields.product_config -%}
+                {
+                    "namespace": "product_config",
+                    "key": "{{ configMetafields[0] }}",
+                    "value": "{{ configMetafields[1] }}"
+                }
+                {%- if forloop.last != true -%}
+                    ,
+                {%- endif -%}
+            {%- endfor -%}
+            {% comment %}
+                add a separating comma if both arrays exist
+            {% endcomment %}
+            {%- if current_variant.metafields.product_config != blank and current_variant.metafields.product_attribute != blank -%}
+                ,
+            {%- endif -%}
+            {%- for attributeMetafields in current_variant.metafields.product_attribute -%}
+                {
+                    "namespace": "product_attribute",
+                    "key": "{{ attributeMetafields[0] }}",
+                    "value": "{{ attributeMetafields[1] }}"
+                }
+                {%- if forloop.last != true -%}
+                    ,
+                {%- endif -%}
+            {%- endfor -%}
+            {% comment %}
+                add a separating comma if either of the above arrays exist
+            {% endcomment %}
+            {% if current_variant.metafields[productType] != blank %}
+                {%- if current_variant.metafields.product_config != blank or current_variant.metafields.product_attribute != blank -%}
+                    ,
+                {%- endif -%}
+                {%- for productTypeMetafields in current_variant.metafields[productType] -%}
+                    {
+                        "namespace": "{{ productType }}",
+                        "key": "{{ productTypeMetafields[0] }}",
+                        "value": "{{ productTypeMetafields[1] }}"
+                    }
+                    {%- if forloop.last != true -%}
+                        ,
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- for configMetafields in product.metafields.product_config -%}
+                {
+                    "namespace": "product_config",
+                    "key": "{{ configMetafields[0] }}",
+                    "value": "{{ configMetafields[1] }}"
+                }
+                {%- if forloop.last != true -%}
+                    ,
+                {%- endif -%}
+            {%- endfor -%}
+            {% comment %}
+                add a separating comma if both arrays exist
+            {% endcomment %}
+            {%- if product.metafields.product_config != blank and product.metafields.product_attribute != blank -%}
+                ,
+            {%- endif -%}
+            {%- for attributeMetafields in product.metafields.product_attribute -%}
+                {
+                    "namespace": "product_attribute",
+                    "key": "{{ attributeMetafields[0] }}",
+                    "value": "{{ attributeMetafields[1] }}"
+                }
+                {%- if forloop.last != true -%}
+                    ,
+                {%- endif -%}
+            {%- endfor -%}
+            {% comment %}
+                add a separating comma if either of the above arrays exist
+            {% endcomment %}
+            {% if product.metafields[productType] != blank %}
+                {%- if product.metafields.product_config != blank or product.metafields.product_attribute != blank -%}
+                    ,
+                {%- endif -%}
+                {%- for productTypeMetafields in product.metafields[productType] -%}
+                    {
+                        "namespace": "{{ productType }}",
+                        "key": "{{ productTypeMetafields[0] }}",
+                        "value": "{{ productTypeMetafields[1] }}"
+                    }
+                    {%- if forloop.last != true -%}
+                        ,
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        {%- endif -%}
+    ]
+}

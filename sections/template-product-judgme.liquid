@@ -1,0 +1,16 @@
+<div class="site-wrap site-wrap--product">
+{% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, product: product %}
+</div>
+{% schema %}
+  {
+    "name": "JudgeMe Reviews",
+	"settings": [],
+	"presets": [
+		{
+			"name": "JudgeMe Reviews",
+			"category": "Product Page",
+			"settings": {}
+		}
+	]
+  }
+{% endschema %}

@@ -1,0 +1,67 @@
+{% schema %}
+    {
+        "name": "Home Our Stories",
+        "settings": [
+            {
+                "type": "article",
+                "id": "home_our_stories_article",
+                "label": "Our Stories Article"
+            }
+        ]
+    }
+{% endschema %}
+{% unless section.settings.home_our_stories_article == blank %}
+    {% assign storiesArticle = articles[section.settings.home_our_stories_article] %}
+    <section class="image-text-split image-text-split--peach our-stories">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless storiesArticle.image == blank %}
+                    <div class="our-stories__image-block">
+                        <div class="our-stories__image">
+                            <h2 class="our-stories__image-block-title">
+                                Our stories
+                            </h2>
+                            {% assign image_small_1x = storiesArticle.image | img_url: '460x303', crop: 'center' %}
+                            {% assign image_small_2x = storiesArticle.image | img_url: '920x606', crop: 'center' %}
+                            {% assign image_medium_1x = storiesArticle.image | img_url: '340x509', crop: 'center' %}
+                            {% assign image_medium_2x = storiesArticle.image | img_url: '680x1018', crop: 'center' %}
+                            {% assign image_large_1x = storiesArticle.image | img_url: '402x610', crop: 'center' %}
+                            {% assign image_large_2x = storiesArticle.image | img_url: '804x1220', crop: 'center' %}
+                            {% include 'picture',
+                                small1x: image_small_1x,
+                                small2x: image_small_2x,
+                                medium1x: image_medium_1x,
+                                medium2x: image_medium_2x,
+                                large1x: image_large_1x,
+                                large2x: image_large_2x,
+                                alt: storiesArticle.image_alt,
+                                lazy: true
+                            %}
+                        </div>
+                    </div>
+                {% endunless %}
+                <div class="image-text-split__content">
+                    <div class="image-text-split__content__container">
+                        <div class="image-text-split__content__inner">
+                            <div class="our-stories__additional">
+                                {{ storiesArticle.published_at | date: "%d.%m.%y" }}
+                                {% if storiesArticle.tags.first %}
+                                    <span class="our-stories__splitter"></span>
+                                    {{ storiesArticle.tags | first }}
+                                {% endif %}
+                            </div>
+                            <h2 class="title-sans title-sans--smaller image-text-split__title">
+                                {{- storiesArticle.title -}}
+                            </h2>
+                            <div class="image-text-split__buttons">
+                                <a class="button button--secondary" href="{{- storiesArticle.url -}}">
+                                    Read more
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endunless %}

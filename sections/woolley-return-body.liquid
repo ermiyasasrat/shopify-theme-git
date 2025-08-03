@@ -1,0 +1,102 @@
+{% schema %}
+    {
+        "name": "Woolley Returns Page",
+        "settings": [
+            {
+                "type": "textarea",
+                "id": "process_1_content",
+                "label": "Process 1 Content"
+            },
+{
+                "type": "textarea",
+                "id": "process_2_content",
+                "label": "Process 2 Content"
+            },
+            {
+                "type": "textarea",
+                "id": "process_3_content",
+                "label": "Process 4 Content"
+            },
+            {
+                "type": "textarea",
+                "id": "lower_content",
+                "label": "Lower Content"
+            },      
+            {
+                "type": "textarea",
+                "id": "faqs",
+                "label": "FAQs"
+            }
+        ],
+        "blocks": [
+            {
+            "type": "image",
+            "name": "FAQ",                
+                "settings": [
+                    {
+                        "type": "text",
+                        "label" : "Question",
+                        "id" : "question"
+                    },
+                    {
+                        "type" : "textarea",
+                        "label" : "Answer",
+                        "id" : "answer"
+                    }
+                ]
+            }
+        ]
+}
+{% endschema %}
+<div class="process-wrap">
+    <div class="process-content-wrap-title">
+        <h3>Our Returns Process</h3>
+    </div>
+    <ul class="return-process-items">
+        <li><i class="icon icon-disc"></i></li>
+        <li><i class="icon icon-disc"></i></li>
+        <li><i class="icon icon-disc"></i></li>
+    </ul>
+    <div class="process-content-wrap">
+      {% unless section.settings.process_1_content == blank %}
+        <div class="process-content">
+            <div class="process-content-info">
+                {{- section.settings.process_1_content -}}
+            </div>
+        </div>
+      {% endunless %}
+
+      {% unless section.settings.process_2_content == blank %}
+        <div class="process-content">
+            <div class="process-content-info">
+        {{- section.settings.process_2_content -}}
+            </div>
+        </div>
+      {% endunless %}
+
+      {% unless section.settings.process_3_content == blank %}
+        <div class="process-content">
+            <div class="process-content-info">
+        {{- section.settings.process_3_content -}}
+            </div>
+        </div>
+      {% endunless %}
+    </div>
+</div>
+
+
+{% unless section.settings.lower_content == blank %}
+    <div class="process-lower-content-wrap">
+    {{- section.settings.lower_content -}}
+    </div>
+{% endunless %}
+  
+<div class="process-faqs-wrap">
+    <h3>FAQs</h3>
+{% for block in section.blocks %}
+    <div class="process-faqs-content">         
+      <h5>{{ block.settings.question | escape }}</h5>
+      <p>{{ block.settings.answer | escape }}</p>           
+     </div>
+{% endfor %}
+</div>

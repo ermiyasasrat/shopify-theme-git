@@ -1,0 +1,67 @@
+<div class="product-installation">
+    {% if product.metafields.product_installation.title != blank and product.metafields.product_installation.description != blank %}
+        {% for item in product.metafields.product_installation.title %}
+            <div class="product-image-text-content">
+                {% unless product.metafields.product_installation.image[forloop.index0] == blank %}
+                    <div class="product-image-text-content__image">
+                        {% assign featureImage = product.metafields.product_installation.image[forloop.index0] %}
+                        {% render 'picture-acf',
+                            small: featureImage,
+                            medium: featureImage,
+                            large: featureImage,
+                            alt: 'Installation',
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% if product.metafields.product_installation.title[forloop.index0] != blank or product.metafields.product_installation.description[forloop.index0] != blank %}
+                    <div class="product-image-text-content__text {% if featureImage == blank %}product-image-text-content__text-no-margin product-image-text-content__text--full{% endif %}">
+                        <button class="accordion__toggle button-reset" type="button" aria-controls="accordion-product-installation" aria-expanded="false">
+                            <span class="accordion__title">
+                                Installation
+                            </span>
+                            <span class="accordion__link-arrow">
+                                {% render 'icon-accordion-arrow' %}
+                            </span>
+                        </button>
+                        {% if product.metafields.product_installation.title[forloop.index0] != blank %}
+                            <div class="title title--small product-image-text-content__title">
+                                {{ product.metafields.product_installation.title[forloop.index0] }}
+                            </div>
+                        {% endif %}
+                        {% if product.metafields.product_installation.description[forloop.index0] != blank %}
+                            <div class="para">
+                                {{ product.metafields.product_installation.description[forloop.index0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+	{% elsif wysiwygInstallation != blank %}
+        <div class="product-image-text-content">
+			{% if wysiwygInstallationImage != blank %}
+                <div class="product-image-text-content__image product-image-text-content__image--top">
+					<img 
+						src="{{ wysiwygInstallationImage | img_url: 'master' }}"
+						class=""
+						alt="{{ wysiwygTitle }}"
+					/>
+                </div>
+            {% endif %}
+            <div class="product-image-text-content__text {% if wysiwygInstallationImage == blank %}product-image-text-content__text-no-margin{% endif %}">
+                <button class="accordion__toggle button-reset" type="button" aria-controls="accordion-product-installation" aria-expanded="false">
+                    <span class="accordion__title">
+                        Installation
+                    </span>
+                    <span class="accordion__link-arrow">
+                        {% render 'icon-accordion-arrow' %}
+                    </span>
+                </button>
+                <div class="wysiwyg">
+                    {{ wysiwygInstallation | replace: '[Product]', product.title | replace: '[product]', product.title }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

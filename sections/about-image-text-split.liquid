@@ -1,0 +1,82 @@
+{% schema %}
+    {
+        "name": "About text split",
+        "settings": [
+            {
+                "type": "text",
+                "id": "about_text_split_title",
+                "label": "About text split title"
+            },
+            {
+                "type": "html",
+                "id": "about_text_split_content",
+                "label": "About text split content"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_text_split_image",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1540."
+            },
+            {
+                "type": "text",
+                "id": "about_text_split_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.about_text_split_title == blank
+    and section.settings.about_text_indent_split_content == blank
+    and section.settings.about_text_split_image == blank
+%}
+    <section class="image-text-split">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.about_text_split_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--switch">
+                        {% assign image_small_1x = section.settings.about_text_split_image | img_url: '360x360' %}
+                        {% assign image_small_2x = section.settings.about_text_split_image | img_url: '720x720' %}
+                        {% assign image_medium_1x = section.settings.about_text_split_image | img_url: '683x670' %}
+                        {% assign image_medium_2x = section.settings.about_text_split_image | img_url: '1366x1340' %}
+                        {% assign image_large_1x = section.settings.about_text_split_image | img_url: '960x770' %}
+                        {% assign image_large_2x = section.settings.about_text_split_image | img_url: '1920x1540' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.about_text_split_image_alt,
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.about_text_split_title == blank
+                    and section.settings.about_text_indent_split_content == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--switch">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.about_text_split_title == blank %}
+                                    <h2 class="title title--small image-text-split__title">
+                                        {{- section.settings.about_text_split_title -}}
+                                    </h2>
+                                {% endunless %}
+                                {% unless section.settings.about_text_split_content == blank %}
+                                    <div class="para">
+                                        {{- section.settings.about_text_split_content -}}
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

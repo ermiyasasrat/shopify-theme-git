@@ -1,0 +1,70 @@
+<div class="countdown-banner-validator">
+    <div class="message-content">
+        Invalid Start Date!
+    </div>
+</div>
+<style>
+    .countdown-banner-validator {
+        background: red;
+        color: #fff;
+        display: none;
+    }
+    .countdown-banner-validator.invalid {
+        display: block;
+    }
+    .countdown-banner-validator .message-content {
+        display: inline-block;
+        height: 46px;
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
+        padding: 15px 0;
+    }
+</style>
+<script>
+    (function () {
+        function isValidDate(str) {
+            const regex = /^\d{4}-\d{1,2}-\d{1,2}$/;
+            if (!regex.test(str)) {
+                return false;
+            }
+            const [year, month, day] = str.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            return date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
+        }
+
+        function isValidTime(str) {
+            const regex = /^(?:[01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
+            return regex.test(str);
+        }
+
+        function validate({start_date, start_time, end_date, end_time}) {
+            if(!isValidDate(start_date)) {
+                return 'Invalid Start Date! It must be format Y-m-d, for example: 2024-03-01'
+            }
+            if(!isValidDate(end_date)) {
+                return 'Invalid End Date! It must be format Y-m-d, for example: 2024-03-01'
+            }
+            if(!isValidTime(start_time)) {
+                return 'Invalid Start Time! It must be format H:M, for example: 08:00'
+            }
+            if(!isValidTime(end_time)) {
+                return 'Invalid End Time! It must be format H:M, for example: 08:00'
+            }
+            return '';
+        }
+
+        var countdownBannerValidatorEl = document.querySelector('.countdown-banner-validator');
+        var messageEl = document.querySelector('.countdown-banner-validator .message-content');
+        var result = validate({
+            start_date : '{{ section.settings.start_date }}',
+            start_time : '{{ section.settings.start_time }}',
+            end_date : '{{ section.settings.end_date }}',
+            end_time : '{{ section.settings.end_time }}',
+        });
+        if(countdownBannerValidatorEl && messageEl && result) {
+            countdownBannerValidatorEl.classList.add('invalid');
+            messageEl.textContent = result;
+        }
+    })();
+</script>

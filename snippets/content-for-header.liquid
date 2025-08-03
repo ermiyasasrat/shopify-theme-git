@@ -1,0 +1,21 @@
+{% if settings.optimize_product_samples_enabled %}
+  {% assign replace = '"https:\/\/product-samples.herokuapp.com\/complied\/main.min.js?shop=' | append: shop.permanent_domain | append: '"' %}
+  {% assign replace_with_comma = replace | append: ',' %}
+  {% assign content_for_header = content_for_header | remove: replace_with_comma | remove: replace %}
+{% endif %}
+
+{% if settings.optimize_gorgias_inbox_chat_enabled %}
+  {% assign replace = '"https:\/\/config.gorgias.chat\/bundle-loader\/01HP71FP8F8C54X7SR7Z0AYBRQ?source=shopify1click\u0026shop=' | append: shop.permanent_domain | append: '"' %}
+  {% assign replace_with_comma = replace | append: ',' %}
+  {% assign content_for_header = content_for_header | remove: replace_with_comma | remove: replace %}
+
+  {% assign replace = '"https:\/\/bundle.dyn-rev.app\/loader.js?g_cvt_id=18f6bdfe-4745-41f4-be6f-4fa356d7bff9\u0026shop=' | append: shop.permanent_domain | append: '"' %}
+  {% assign replace_with_comma = replace | append: ',' %}
+  {% assign content_for_header = content_for_header | remove: replace_with_comma | remove: replace %}
+{% endif %}
+
+{% if content_for_header contains "previewBarInjector.init();" %}
+  {% render 'admin-preview-mode', content_for_header: content_for_header %}
+{% else %}
+  {{ content_for_header }}
+{% endif %}

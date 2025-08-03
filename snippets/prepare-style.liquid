@@ -1,0 +1,13 @@
+{% if rel == blank %}
+   {% assign rel = 'preload' %}
+{% endif %}
+{% if apply_onload == blank %}
+   {% assign apply_onload = true %}
+{% endif %}
+{% if noscript == blank %}
+   {% assign noscript = true %}
+{% endif %}
+<link href="{{ file | asset_url }}" rel="{{ rel }}" as="style"{% if apply_onload %} onload="this.onload=null;this.rel='stylesheet'" {% endif %}>
+{% if noscript %}
+   <noscript><link rel="stylesheet" href="{{ file | asset_url }}"></noscript>
+{% endif %}

@@ -1,0 +1,53 @@
+<div class="site-wrap">
+    <div class="guide-detail">
+        {% if settings.guide_landing %}
+            <a href="{{ settings.guide_landing }}" class="link link--back">
+                Back
+            </a>
+        {% endif %}
+        <div class="guide-detail__content cf">
+            <div class="guide-detail__inner">
+                <h1 class="guide-detail__title title-sans">
+                    {{ page.title }}
+                </h1>
+            </div>
+          
+          
+          {% comment %}
+            {% if page.metafields.guide-detail.intro-content %}
+                <div class="wysiwyg guide-detail__inner">
+                    {{ page.metafields.guide-detail.intro-content }}
+                </div>
+            {% endif %}
+            {% if page.metafields.guide-detail.featured-image %}
+                <div class="guide-detail__image">
+                    <img src="{{ page.metafields.guide-detail.featured-image }}" title="{{ page.title }}" alt="{{ page.title }}">
+                </div>
+            {% endif %}
+          {% endcomment %}
+          
+          
+            {% if page.content %}
+                <div class="wysiwyg guide-detail__inner">
+                    {{ page.content }}
+                </div>
+            {% endif %}
+            {% if linklists[page.metafields.arena.nav_handle].links != "" %}
+                <div class="guide-detail__sidebar">
+                    <h3 class="guide-detail__sidebar-title">Related Guides</h3>
+                    <ul class="guide-detail__sidebar-list">
+                        {% for guide in linklists[page.metafields.arena.nav_handle].links %}
+                            {% assign guide = page[handle] %}
+                            <li class="guide-detail__sidebar-item">
+                                <a href="{{ guide.url }}" class="guide-detail__sidebar-link guide-detail__sidebar-post-title" title="{{ guide.title }}">
+                                    {{ guide.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+

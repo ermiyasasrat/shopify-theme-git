@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="{{ shop.locale }}">
+  <head>
+	{% render 'pandectes-rules' %}
+
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://ss.storiesflooring.co.uk/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5WK5DVHN');</script>
+<!-- End Google Tag Manager -->
+	
+	
+
+
+  {% render 'redirect-manager' %}
+
+ 
+
+
+    {% comment %}<script src="{{ 'jquery-3.5.1.min.js' | asset_url }}" async></script>{% endcomment %}
+    {% comment %}<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>{% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+
+    <meta charset="utf-8">
+    {%- if product -%}
+      {%- render 'meta-tag-pdp' -%}
+    {%- else -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="theme-color" content="#C6D5D5">
+    {%- if request.path == '/collections/vendors' and collection.all_products_count == 0 -%}
+      <meta name="robots" content="noindex">
+    {%- endif -%}
+    {% render 'fb-graph' %}
+
+    {%- if template.name == 'index' -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Stories Flooring",
+          "url": "https://storiesflooring.co.uk/",
+          "logo": "https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Stories_Flooring_Logo.jpg?v=1682410311",
+          "alternateName": "Flooring Wholesale Yorkshire Ltd",
+          "sameAs": [
+            "https://www.instagram.com/storiesflooring/",
+            "https://www.facebook.com/storiesflooring/",
+            "https://www.twitter.com/storiesflooring/",
+            "https://www.linkedin.com/company/11315458",
+            "https://www.pinterest.com/storiesflooring/",
+            "https://www.tiktok.com/@storiesflooring",
+            "https://www.youtube.com/channel/UCGZ1nTv869ip_a1AwzW65DQ"
+          ],
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "01133200223",
+              "contactType": "customer service",
+              "email": "customerservice@storiesflooring.co.uk",
+              "areaServed": "GB",
+              "availableLanguage": "en"
+            },
+            {
+              "@type": "ContactPoint",
+              "telephone": "01133200223",
+              "contactType": "sales",
+              "email": "info@storiesflooring.co.uk",
+              "areaServed": "GB",
+              "availableLanguage": "en"
+            }
+          ]
+        }
+      </script>
+    {%- endif -%}
+
+    {% if template.name == 'collection' %}
+      {% render 'collection-ld-json' %}
+
+       {% if request.page_type != 'index' %}
+            {% include 'vendors-script' %}
+      {% include 'samples-script' %}
+            {% endif %}
+    {% endif %}
+    {% if template.name == '404' %}
+      {{ 'flickity.css' | asset_url | stylesheet_tag }}
+      {{ 'flickity.pkgd.min.js' | asset_url | script_tag }}
+    {% endif %}
+
+    <script type="text/javascript">
+      var _cgk = 'vzAVdiEEEALRggc';
+      (function () {
+          var _cg = document.createElement('script'); _cg.type = 'text/javascript'; _cg.async = true;
+          _cg.src = 'https://v2.clickguardian.app/track.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(_cg, s);
+      })();
+    </script>
+
+    <title>{{ page_title }}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% render 'prepare-resources' %}
+    {% render 'shop-data-storage' %}
+    {% comment %}<script src="{{ 'global-utils.js' | asset_url }}" defer="defer"></script>{% endcomment %}
+    {% render 'global-utils' %}
+    <script src="{{ 'global-default.js' | asset_url }}" defer="defer"></script>
+{% comment %}
+      {%- if template.name contains 'collection' -%}
+           	<link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+         {%- else -%}
+           	<link rel="canonical" href="{{ canonical_url }}">
+         {%- endif -%}
+   {% endcomment %}
+{% if template == 'collection' %}
+  {%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+  {%- assign parts = contentForQuerystring
+    | split: '"pageurl":"'
+    | last
+    | split: '"'
+    | first
+    | split: '://'
+    | last
+    | split: '/'
+  -%}
+
+  {% if parts.size > 1 %}
+    {%- assign domain_removed_parts = parts | slice: 1, parts.size -%}
+    {%- assign final_url = domain_removed_parts | join: '/' | prepend: '/' -%}
+  {% else %}
+    {%- assign final_url = '/' -%}
+  {% endif %}
+
+  {%- assign current_url = final_url | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&' -%}
+
+  {% assign page_param_index = current_url | split: '?' | last | split: '&page=' %}
+
+  {% if page_param_index.size > 1 %}
+    {% assign page_param = page_param_index.last %}
+    {% if page_param != '1' %}
+      {% assign canonical_url = current_url | replace: '?page=1', '' %}
+    {% else %}
+      {% assign canonical_url = current_url %}
+    {% endif %}
+  {% else %}
+    {% assign canonical_url = current_url %}
+  {% endif %}
+
+  {% assign url_parts = canonical_url | split: '?'%}
+  {% if url_parts.size > 0 %}
+    {% assign canonical_url_without_param = url_parts[0] %}
+  {% else %}
+    {% assign canonical_url_without_param = canonical_url %}
+  {% endif %}
+
+  <link rel="canonical" href="{{ shop.url }}{{ canonical_url_without_param }}">
+{% endif %}
+
+
+
+    <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}">
+    <link rel="icon" href="{{ 'favicon-32.png' | asset_url }}" sizes="32x32">
+    <link rel="icon" href="{{ 'favicon-192.png' | asset_url }}" sizes="192x192">
+
+    <link
+      rel="preload"
+      as="font"
+      href="{{ 'Averta-Regular.woff2' | asset_url }}"
+      type="font/woff2"
+      crossorigin
+    >
+
+    <link
+      rel="preload"
+      as="font"
+      href="{{ 'Averta-Semibold.woff2' | asset_url }}"
+      type="font/woff2"
+      crossorigin
+    >
+
+    <link
+      rel="preload"
+      as="font"
+      href="{{ 'Bogue-Light.woff2' | asset_url }}"
+      type="font/woff2"
+      crossorigin
+    >
+
+    <link
+      rel="preload"
+      as="font"
+      href="{{ 'Bogue-Bold.woff2' | asset_url }}"
+      type="font/woff2"
+      crossorigin
+    >
+
+    <link
+      rel="preload"
+      as="font"
+      href="{{ 'AvertaDemoPE-Regular.woff2' | asset_url }}"
+      type="font/woff2"
+      crossorigin
+    >
+    <link rel="preconnect" href="https://connect.facebook.net">
+
+    <style>
+      .menu-arrow-mobile{display:none}@media (max-width: 79.999em) {.menu-arrow-mobile{display:block}}
+    </style>
+    {% comment %}{{ 'common.css' | asset_url | stylesheet_tag }}{% endcomment %}
+    {% comment %}{% render 'prepare-style', file: 'common.css' %}{% endcomment %}
+    {% render 'common-style' %}
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+    
+    {% comment %}{{ 'slick.css' | asset_url | stylesheet_tag }}{% endcomment %}
+
+    {% if template == 'index' %}
+      {{ 'home.css' | asset_url | stylesheet_tag }}
+      {% render 'prepare-style', file: 'template-collection.css' %}
+    {% endif %}
+    {% if template.name == 'page' %}
+      {{ 'default.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.about' or template == 'page.woolley-about-us' %}
+      {{ 'about.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.faq' %}
+      {{ 'faq.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.samples' %}
+      {{ 'samples.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.guide-listing' %}
+      {{ 'guide-listing.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.guide-detail' %}
+      {{ 'guide-detail.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.list-collections' or template.name == 'list-collections' %}
+      {{ 'collection-listing.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+
+    {% if template.name == 'blog' %}
+      {{ 'blog-listing.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template.name == 'article' %}
+      {{ 'blog-detail.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == '404' %}
+      {{ '404.css' | asset_url | stylesheet_tag }}
+      <style>
+        .glide__slides { width: 100% !important;}
+      </style>
+    {% endif %}
+    {% if template.directory == 'customers' %}
+      {{ 'account.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.contact' %}
+      {{ 'contact.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.trade-portal' %}
+      {{ 'trade-portal.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.trade-portal-form' %}
+      {{ 'trade-portal-form.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'page.booking' %}
+      {{ 'booking.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {% if template == 'cart' %}
+      {{ 'cart.css' | asset_url | stylesheet_tag }}
+      <link
+        href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css"
+        rel="stylesheet"
+        type="text/css"
+      >
+    {% endif %}
+
+    {% comment %}<link href="{{ 'base-style.css' | asset_url }}" rel="stylesheet" type="text/css">{% endcomment %}
+    {% render 'base-style' %}
+    {% render 'header-style' %}
+    {% if request.page_type == 'collection' or request.page_type == 'search' %}
+      {% render 'inline-collection-style' %}
+    {% endif %}
+    {% comment %}{% render 'prepare-style', file: 'megamenu-menu-styles.css' %}{% endcomment %}
+
+    {% comment %}{{ content_for_header }}{% endcomment %}
+    {% render 'content-for-header', content_for_header: content_for_header %}
+
+    {%- render 'product-samples-app-templates' -%}
+
+
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    {% render 'trustpilot-fix-schema' %}
+    {% render 'gclid' %}
+
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "oijq6tbx1m");
+</script>
+
+
+    
+</head>
+
+  {% assign reviewPage = '' %}
+  {% if template.name contains 'page' %}
+    {% if page.handle contains 'reviews' %}
+      {% assign reviewPage = 'reviewPage' %}
+    {% endif %}
+  {% endif %}
+  <body class="{{template.name}}---template {{reviewPage}}">
+    <!-- Click Fraud (noscript) -->
+    <noscript>
+      <img
+        src="https://v2.clickguardian.app/pixel?tkey=vzAVdiEEEALRggc"
+        height="1"
+        width="1"
+        style="border:0;"
+        alt="Click Guardian v2 Tracking Pixel"
+      >
+    </noscript>
+
+    <!-- End Click Fraud (noscript) -->
+
+
+    {% section 'announcement-bar' %}
+
+    {% section 'header' %}
+    {% section 'countdown-sale-banner' %}
+    {% section 'site-usp-banner' %}
+    {% if settings.optimize_storeify_quote_enabled %}
+      {% if request.page_type == 'product' or request.page_type == 'collection' or request.page_type == 'search' %}
+        {% section 'storeify-quote-optimization' %}
+      {% endif %}
+    {% endif %}
+    <div id="ctb_placeholder"></div>
+
+    <main>
+      {{ content_for_layout }}
+    </main>
+    {% if template == 'cart' %}
+      <script src=  "{{ 'cart.js' | asset_url }}" defer></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
+      <script src=  "{{ 'dn-delivery-date-2.js' | asset_url }}" defer></script>
+      {% comment %} {% assign sampleFinder = false %}
+      {% for item in cart.items %}
+        {% if item.title contains 'Samples' %}
+          {% assign sampleFinder = true %}
+        {% else %}
+          {% assign sampleFinder = false %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% if sampleFinder %}
+        <script src=  "{{ 'sample-processor.js' | asset_url }}" defer></script>
+      {% endif %} {% endcomment %}
+    {% endif %}
+    {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
+
+    {% render 'prepare-style', file: 'footer.css' %}
+    {% section 'footer' %}
+    <div id="js-sample-limit" data-sample-limit="{{ shop.metafields.product_samples.max_limit }}"></div>
+    {%- comment -%}
+      {{ 'common.js' | asset_url | script_tag }}
+    {%- endcomment -%}
+
+    {% if template == 'index' %}
+      <script src=  "{{ 'home.js' | asset_url }}" defer></script>
+    {% endif %}
+
+    {% if template.name == 'page' %}
+      <script src=  "{{ 'default.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.about' %}
+      <script src=  "{{ 'about.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.faq' %}
+      <script src=  "{{ 'faq.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.samples' %}
+      <script src=  "{{ 'samples.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.guide-listing' %}
+      <script src=  "{{ 'guide-listing.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.guide-detail' %}
+      <script src=  "{{ 'guide-detail.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.list-collections' or template.name == 'list-collections' %}
+      <script src=  "{{ 'collection-listing.js' | asset_url }}" defer></script>
+    {% endif %}
+
+    {% if template.name == 'collection' %}
+      {% comment %}<script src=  "{{ 'dn_lazy.js' | asset_url }}" defer></script>{% endcomment %}
+      {% comment %}<script src=  "{{ 'dn_collection_template.js' | asset_url }}" defer></script>{% endcomment %}
+    {% endif %}
+
+
+
+    {% if template.name == 'product' %}
+      {% if template == 'product.video' %}
+        <script src=  "{{ 'product-detail-video.js' | asset_url }}" defer></script>
+      {% endif %}
+    {% endif %}
+    {% if template.name == 'blog' %}
+      <script src=  "{{ 'blog-listing.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template.name == 'article' %}
+      <script src=  "{{ 'blog-detail.js' | asset_url }}" defer></script>
+    {% endif %}
+
+    {% if template == 'page.contact' %}
+      <script src=  "{{ 'contact.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template.directory == 'customers' %}
+      <script src=  "{{ 'account.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.trade-portal' %}
+      <script src=  "{{ 'trade-portal.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.trade-portal-form' %}
+      <script src=  "{{ 'trade-portal-form.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if template == 'page.booking' %}
+      <script src=  "{{ 'booking.js' | asset_url }}" defer></script>
+    {% endif %}
+
+    {% if content_for_header contains 'adminBarInjector' %}
+      {% if template.name contains 'article' %}
+        <div class="blog-editor">
+          <a title="{{ article.title }}" href="https://stories-flooring.myshopify.com/admin/articles/{{article.id}}"
+            >Edit this Blog</a
+          >
+        </div>
+
+        <style>
+          .blog-editor {
+              position: fixed;
+              width: 100%;
+              margin-left: 0;
+              background: #000;
+              bottom: 0;
+              text-align: center;
+          }
+          .blog-editor a {
+              color: #fff;
+              line-height: 39px;
+              text-decoration: none;
+              font-weight: bold;
+          }
+        </style>
+      {% endif %}
+    {% endif %}
+    {% if template.suffix contains 'desc-top' %}
+      <script>
+        $(document).ready(function(){
+          $('section#hero .twoliner_button').on('click', function(event){
+               event.preventDefault();
+               $(this).slideUp();
+               $('.read-more').slideDown();
+               $('html, body').animate({
+                   scrollTop: $('.read-more').offset().top - 100
+               }, 2000);
+          });
+
+          //Read Less Button
+          $('.read-less-button a').on('click', function(event){
+               event.preventDefault();
+               $('section#hero .twoliner_button').slideDown(1000);
+               $('.read-more').slideUp(950);
+               $('html, body').animate({
+                   scrollTop: $('section#hero').offset().top - 100
+               }, 1000);
+          });
+
+        });
+      </script>
+    {% endif %}
+    {% if template.name contains 'cart' %}
+      {% render 'cart-modal' %}
+    {% endif %}
+
+    {% if template.name contains 'product' and product.tags contains 'hide_qty' %}
+      <script>
+        	$('.product-basket__tool').hide();
+          $('input[name="quantity"]').val(1);
+
+          // get the element in question
+          const input = document.querySelector('input[name="quantity"]');
+
+          // focus on the input element
+          input.focus();
+
+          // add event listeners to the input element
+          input.addEventListener('keypress', (event) => {
+            console.log("You have pressed key: ", event.key);
+          });
+
+          input.addEventListener('keydown', (event) => {
+            console.log(`key: ${event.key} has been pressed down`);
+          });
+
+          input.addEventListener('keyup', (event) => {
+            console.log(`key: ${event.key} has been released`);
+          });
+
+          // dispatch keyboard events
+          input.dispatchEvent(new KeyboardEvent('keypress',  {'key':'h'}));
+          input.dispatchEvent(new KeyboardEvent('keydown',  {'key':'e'}));
+          input.dispatchEvent(new KeyboardEvent('keyup', {'key':'y'}));
+      </script>
+    {% endif %}
+    <script>
+			window.shopUrl = '{{ request.origin }}';
+			window.routes = {
+			  cart_add_url: '{{ routes.cart_add_url }}',
+			  cart_change_url: '{{ routes.cart_change_url }}',
+			  cart_update_url: '{{ routes.cart_update_url }}',
+        cart_url: '{{ routes.cart_url }}',
+			  predictive_search_url: '{{ routes.predictive_search_url }}'
+			};
+
+			window.cartStrings = {
+			  error: `{{ 'sections.cart.cart_error' | t }}`,
+			  quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
+			}
+
+			window.variantStrings = {
+			  addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+			  soldOut: `{{ 'products.product.sold_out' | t }}`,
+			  unavailable: `{{ 'products.product.unavailable' | t }}`,
+			}
+
+			window.accessibilityStrings = {
+			  imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
+			  shareSuccess: `{{ 'general.share.success_message' | t }}`,
+			  pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
+			  playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
+			}
+    </script>
+    <script>
+      window.KlarnaThemeGlobals={};{%case template.name%} {%when "product"%} window.KlarnaThemeGlobals.data_purchase_amount='{{product.first_available_variant.price}}';window.KlarnaThemeGlobals.productVariants={{product.variants|json}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%when "cart"%} window.KlarnaThemeGlobals.data_purchase_amount={{cart.total_price}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%endcase%}
+    </script>
+
+  {% render 'gts' %}
+  <script language="JavaScript" src="//porjs.com/2518.js" async></script>
+
+  {% unless settings.optimize_new_sample_app_enabled %}
+    {% if settings.optimize_product_samples_enabled %}
+        {% if request.page_type == 'product' or request.page_type == 'collection' or request.page_type == 'search' %}
+            {% render 'product-sample-button-fake' %}
+        {% endif %}
+    {% endif %}
+  {% endunless %}
+
+  {% render 'adv-sample-debug' %}
+    
+  <!.... KLAVIYO ADD TO CART CODE START HERE ....>
+    
+    {% if product %}
+     <script type="text/javascript">
+var _learnq = _learnq || [];
+  var classname = document.getElementsByClassName("button button--submit");
+var addToCart = function() {
+_learnq.push(['track', 'Added to Cart', item]);
+}; for (var i = 0; i < classname.length; i++) {
+classname[i].addEventListener('click', addToCart, false);
+}
+</script>
+    {% endif %}
+    
+    <!.... KLAVIYO ADD TO CART CODE END HERE ....>
+    
+{% if page.url == '/pages/register'%}
+<style>
+@media (min-width: 64em) {
+    .site-wrap .page__container {
+        padding: 0 1rem !important;
+    }
+}
+</style>
+{% endif %}
+    <!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47826063.js"></script>
+<!-- End of HubSpot Embed Code -->
+  </body>
+</html>

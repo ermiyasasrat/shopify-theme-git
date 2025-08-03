@@ -1,0 +1,14 @@
+<div {% if id %}id="{{ id }}"{% endif %}  class="countdown-banner__timer {{ class }}">
+    <div class="countdown-banner__timer-top">
+        <span class="timer-item timer-item--value timer-item--day{% if showColon %} timer-item--colon{% endif %}">{{ timerDays }}</span>
+        <span class="timer-item timer-item--value timer-item--hou{% if showColon %} timer-item--colon{% endif %}">{{ timerHours | printf: '%02d' }}</span>
+        <span class="timer-item timer-item--value timer-item--min{% if showColon %} timer-item--colon{% endif %}">{{ timerMinutes | printf: '%02d' }}</span>
+        <span class="timer-item timer-item--value timer-item--sec">{{ timerSeconds | printf: '%02d' }}</span>
+    </div>
+    <div class="countdown-banner__timer-bottom">
+        <span class="timer-item timer-item--label timer-item--day">Days</span>
+        <span class="timer-item timer-item--label timer-item--hou">Hrs</span>
+        <span class="timer-item timer-item--label timer-item--min">Mins</span>
+        <span class="timer-item timer-item--label timer-item--sec">Sec</span>
+    </div>
+</div>

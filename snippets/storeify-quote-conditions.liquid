@@ -1,0 +1,63 @@
+{% if condition_mode == CONDITION_MODE_AND %}
+    {% assign can_render_storify = true %}
+{% else %}
+    {% assign can_render_storify = false %}
+{% endif %}
+
+{% for i in (0..keys_array.size) %}
+    {% assign key = keys_array[i] %}
+    {% assign name = names_array[i] %}
+    {% assign value = values_array[i] %}
+    {% assign can_render_storify_tmp = false %}
+
+    {% case key %}
+        {% when 'type' or 'vendor' or 'price' %}
+            {% assign productValue = product[key] %}
+            {% if key == 'price' %}
+                {% assign productValue = productValue | divided_by: 100 %}
+            {% endif %}
+
+            {% case name %}
+                {% when 'equal' %}
+                    {% if productValue == value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'not_equal' %}
+                    {% if productValue != value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'contains' %}
+                    {% if productValue contains value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'not_contains' %}
+                    {% if productValue contains value %}{% else %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'starts_with' %}
+                    {% assign productValueStart = productValue | slice: 0, value.size %}
+                    {% if productValueStart == value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'ends_with' %}
+                    {% assign product_value_length = productValue | size %}
+                    {% assign value_length = value | size %}
+                    {% assign start_index = product_value_length | minus: value_length %}
+                    {% assign product_value_end = productValue | slice: start_index, value_length %}
+                    {% if product_value_end == value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'greater' %}
+                    {% if productValue > value %}{% assign can_render_storify_tmp = true %}{% endif %}
+                {% when 'less' %}
+                    {% if productValue < value %}{% assign can_render_storify_tmp = true %}{% endif %}
+            {% endcase %}
+
+        {% when 'available' %}
+            {% if value == 'yes' and product[key] %}
+                {% assign can_render_storify_tmp = true %}
+            {% elsif value != 'yes' and product[key] == false %}
+                {% assign can_render_storify_tmp = true %}
+            {% endif %}
+
+        {% when 'tags' %}
+            {% if product.tags contains value %}{% assign can_render_storify_tmp = true %}{% endif %}
+
+        {% when 'collection' %}
+            {% if product.collection contains value %}{% assign can_render_storify_tmp = true %}{% endif %}
+    {% endcase %}
+
+    {% if condition_mode == CONDITION_MODE_AND %}
+        {% unless can_render_storify_tmp %}{% assign can_render_storify = false %}{% break %}{% endunless %}
+    {% else %}
+        {% if can_render_storify_tmp %}{% assign can_render_storify = true %}{% break %}{% endif %}
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,17 @@
+{% if customer  %}
+    <!-- Redirect to the trade portal form if user is logged in -->
+    <script>
+        window.location = "/pages/trade-portal-sign-up";
+    </script>
+{% endif %}
+<section class="page">
+    <div class="site-wrap">
+        <div class="page__container page__container--center">
+            <h1 class="title title--small page__title">{{ page.title }}</h1>
+            <div class="wysiwyg">
+                {{ page.content }}
+            </div>
+            <a class="button button--solid button--secondary button--mt" href="/pages/trade-portal-sign-up">Apply for an account</a>
+        </div>
+    </div>
+</section>

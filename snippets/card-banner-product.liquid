@@ -1,0 +1,153 @@
+
+{% comment %} Soldout {% endcomment %}
+{% assign sold_out = false %}
+{% assign sold_out_class = '' %}
+{% unless card_product.available %}
+	{% assign sold_out = true %}
+	{% assign sold_out_class = 'sold-out' %}
+{% endunless %}
+
+{% comment %} On Sale {% endcomment %}
+{%- assign on_sale = false -%}
+{%- assign sale_class = '' -%}
+{%- if card_product.compare_at_price > card_product.price -%}
+	{%- assign on_sale = true -%}
+	{%- assign sale_class =  'on-sale' -%}
+{%- endif -%}
+
+{% comment %} Product Image Url {% endcomment %}
+{% assign main_img_url = 'bc-sf-filter-no-image.gif' | asset_url %}
+{% if card_product.featured_image.src == blank %}
+	{% if card_product.images[0]%}
+		{% assign main_img_url = card_product.images[0]  %}
+	{% endif %}
+	{% if card_product.images[1] %}
+		{% assign swap_img_url = card_product.images[1]  %}
+	{% endif %}
+{% else %}
+	{% assign main_img_url = card_product.featured_image  %}
+	{% if card_product.images[1] %}
+		{% assign swap_img_url = card_product.images[1]  %}
+	{% endif %}
+{% endif %}
+
+{%- assign sampleVariantId = "" -%}
+{%- for variant in card_product.variants -%}
+	{%- if variant.title contains "Sample" and variant.price == 0 -%}
+		{%- assign sampleVariantId = variant.id -%}
+	{%- elsif variant.title contains "sample" and variant.price == 0 -%}
+		{%- assign sampleVariantId = variant.id -%}
+	{%- endif -%}
+{%- endfor -%}
+
+{% assign current_variant = card_product.selected_or_first_available_variant %}
+{% assign productType = card_product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+{% assign productUpsells = card_product.metafields.product_upsells.product | split: '|' %}
+{% assign productRelated = card_product.metafields.related_products.product | split: '|' %}
+{% if card_product.variants.size > 1 %}
+	{% assign productPrice = current_variant.price | money_without_currency %}
+	{% assign productComparePrice = current_variant.compare_at_price | money_without_currency %}
+	{% assign productPricePerMetresSquared = current_variant.metafields.product_config.price_per_metres_squared %}
+	{% assign productComparePricePerMetresSquared = current_variant.metafields.product_config.compare_price_per_metres_sq %}
+	{% assign productWarranty = current_variant.metafields.product_attribute.warranty %}
+	{% assign productRollWidth = current_variant.metafields[productType].roll_width %}
+{% else %}
+	{% assign productPrice = card_product.price | money_without_currency %}
+	{% assign productComparePrice = card_product.compare_at_price | money_without_currency %}
+	{% assign productPricePerMetresSquared = card_product.metafields.product_config.price_per_metres_squared %}
+	{% assign productComparePricePerMetresSquared = card_product.metafields.product_config.compare_price_per_metres_sq %}
+	{% assign productWarranty = card_product.metafields.product_attribute.warranty %}
+	{% assign productRollWidth = card_product.metafields[productType].roll_width %}
+{% endif %}
+
+{% assign productNumber = current_variant.metafields.product_config.product_number %}
+{% assign productMinQty = current_variant.metafields.product_config.minimum_qty %}
+{% assign productRrp = current_variant.metafields.filters.rrp %}
+{% assign productLength = current_variant.metafields.filters.length %}
+{% assign productWidth = current_variant.metafields.product_attribute.width %}
+{% assign productPackSize = current_variant.metafields.product_attribute.pack_size %}
+
+{% assign default_default_size = "medium" %}
+{% assign default_sizes = "50vw" %}
+{% assign default_image = card_product.featured_image %}
+{% assign lazy_load = false %}
+{%- if forloop.index > 2 -%}
+	{%- assign lazy_load = true -%}
+{%- endif -%}
+
+{%- assign sampleIndex = "" -%}
+{%- assign firstVariant = "" -%}
+{%- for variant in card_product.variants -%}
+	{%- if variant.title contains "Sample" and variant.price == 0 -%}
+		{%- assign sampleIndex = forloop.index -%}
+	{%- elsif variant.title contains "sample" and variant.price == 0 -%}
+		{%- assign sampleIndex = forloop.index -%}
+	{%- elsif forloop.index == 1 -%}
+		{%- assign firstVariant = variant -%}
+	{%- endif -%}
+{%- endfor -%}
+
+{%- if sampleIndex == "" and product.available == true -%}
+	{%- assign productUrl = card_product.first_available_variant.url -%}
+{%- elsif sampleIndex == "" and product.available == false -%}
+	{%- assign productUrl = card_product.url -%}
+{%- elsif firstVariant != "" -%}
+	{%- assign productUrl = firstVariant.url -%}
+{%- else -%}
+	{%- assign productUrl = card_product.url -%}
+{%- endif -%}
+
+{% assign productwoolOfflive = card_product.metafields.product_config.offline_product | downcase %}
+
+<div class="product-item">
+	<div class="product-item-inner md-whiteframe-2dp">
+		<div class="product-item-top">
+			{% if card_product.featured_image %}
+				{% render 'luis-sale-banner-picture',
+					image: card_product.featured_image,
+					mobile_image: card_product.featured_image,
+					image_link: productUrl,
+					image_title: card_product.title %}
+			{% endif %}
+		</div>
+		{%-  if on_sale or sold_out -%}
+			<div class="ui-ribbon-type-3">SALE</div>
+		{%- endif -%}
+
+		<div class="product-item-bottom">
+			<a
+				class="collection-product-title"
+				href="{{ productUrl }}"
+				title="View {{ card_product.title }}"
+			>
+				{{ card_product.title }}
+			</a>
+			{%- unless productwoolOfflive == "true" -%}
+				{% render 'collection-price',
+					product: card_product,
+					productPricePerMetresSquared: productPricePerMetresSquared,
+					on_sale: on_sale,
+					productPackSize: productPackSize
+				%}
+			{%- endunless -%}
+			<div class="collection-buttons-container">
+				{% assign noSample = true %}
+				{% for tag in card_product.tags %}
+					{% if tag contains 'sample-available_Yes' %}
+						{% assign noSample = false %}
+					{% endif %}
+				{% endfor %}
+				<a {% if noSample == true %}{% endif %} href="{{ productUrl }}" class="button" title="View {{ card_product.title | escape }}">
+					{{ 'products.product.view_product' | t }}
+				</a>
+				{% if noSample == false %}
+					{%- form 'product', card_product, novalidate: 'novalidate' -%}
+						<input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+						<div class="js-product-samples" data-sample="{{ card_product | json | url_encode }}">
+						</div>
+					{%- endform -%}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

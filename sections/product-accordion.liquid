@@ -1,0 +1,95 @@
+<div class="product-accordion">
+    <div class="site-wrap">      
+		{%- if product.type == "LVT" -%}
+			{%- assign wysiwygMaintenance = shop.metaobjects.installation_object.maintenance-lvt.wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = shop.metaobjects.installation_object.maintenance-lvt.image -%}
+			{%- assign wysiwygMaintenanceTitle = shop.metaobjects.installation_object.maintenance-lvt.text -%}
+          {% assign installTypeLVT = product.metafields.filters.installation_method_list.value | handle %}
+			{%- if installTypeLVT == "gluedown" -%}
+				{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-lvt-gluedown.wysiwyg -%}
+				{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-lvt-gluedown.image -%}
+				{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-lvt-gluedown.text -%}
+			{%- elsif installTypeLVT == "click" -%}
+				{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-lvt-click.wysiwyg -%}
+				{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-lvt-click.image -%}
+				{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-lvt-click.text -%}
+			{%- elsif installTypeLVT == "looselay" -%}
+				{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-lvt-looselay.wysiwyg -%}
+				{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-lvt-looselay.image -%}
+				{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-lvt-looselay.text -%}
+			{%- endif -%}
+          
+		{%- elsif product.type == "Laminate" -%}      
+          {% assign installTypeLaminate = product.metafields.filters.installation_method_list.value | handle %}
+
+			{%- assign wysiwygMaintenance = shop.metaobjects.installation_object.maintenance-laminate.wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = shop.metaobjects.installation_object.maintenance-laminate.image -%}
+			{%- assign wysiwygMaintenanceTitle = shop.metaobjects.installation_object.maintenance-laminate.text -%}
+
+			{%- if installTypeLaminate == "click" -%}
+				{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-laminate.wysiwyg -%}
+				{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-laminate.image -%}
+				{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-laminate.text -%}
+			{%- endif -%}
+		{%- elsif product.type == "SPC" -%}
+			{%- assign wysiwygMaintenance = shop.metaobjects.installation_object.maintenance-spc.wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = shop.metaobjects.installation_object.maintenance-spc.image -%}
+			{%- assign wysiwygMaintenanceTitle = shop.metaobjects.installation_object.maintenance-spc.text -%}
+
+      {% assign clickValue = product.metafields.filters.installation_method_list.value | handle %}
+			{%- if clickValue == "click" -%}
+				{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-spc.wysiwyg -%}
+				{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-spc.image -%}
+				{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-spc.text -%}
+			{%- endif -%}
+		{%- elsif product.type == "Engineered Wood" -%}
+
+			{%- assign wysiwygMaintenance = shop.metaobjects.installation_object.maintenance-engineered-wood.wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = shop.metaobjects.installation_object.maintenance-engineered-wood.image -%}
+			{%- assign wysiwygMaintenanceTitle = shop.metaobjects.installation_object.maintenance-engineered-wood.text -%}
+
+			{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-engineered-wood.wysiwyg -%}
+			{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-engineered-wood.image -%}
+			{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-engineered-wood.text -%}
+		{%- elsif product.type == "Solid Wood" -%}
+			{%- assign wysiwygMaintenance = shop.metaobjects.installation_object.solid-wood-maintenance.wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = shop.metaobjects.installation_object.solid-wood-maintenance.image -%}
+			{%- assign wysiwygMaintenanceTitle = shop.metaobjects.installation_object.solid-wood-maintenance.text -%}
+
+			{%- assign wysiwygInstallation = shop.metaobjects.installation_object.installation-solid-wood.wysiwyg -%}
+			{%- assign wysiwygInstallationImage = shop.metaobjects.installation_object.installation-solid-wood.image -%}
+			{%- assign wysiwygInstallationTitle = shop.metaobjects.installation_object.installation-solid-wood.text -%}
+		{%- endif -%}
+
+        <ul id="product-details-accordion" class="accordion accordion--light accordion--product-details" aria-label="Product details accordion">
+			{% if wysiwygMaintenance %}
+                <li class="accordion__item js-accordion-item">
+                    <div class="accordion__content-container js-accordion-content-container" id="accordion-product-installation">
+                        <div class="accordion__content js-accordion-content">
+							{% render 'product-maintenance'
+								wysiwygMaintenance: wysiwygMaintenance,
+								wysiwygMaintenanceImage: wysiwygMaintenanceImage,
+								wysiwygTitle: wysiwygMaintenanceTitle
+							%}
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Product Accordion",
+		"settings": [
+			
+        ],
+        "presets": [
+            {
+                "name": "Product Accordion",
+                "category": "Product Page"
+            }
+        ]
+    }
+{% endschema %}

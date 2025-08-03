@@ -1,0 +1,75 @@
+{%- assign productRange = product.metafields.product_config.recommend_alternate_collection -%}
+{%- for collection in collections -%}
+	{%- if productRange == collection.handle -%}
+		{%- assign recommendedCollection = collection -%}
+	{%- endif -%}
+{%- endfor -%}
+
+{% comment %}
+	New recommended products
+{% endcomment %}
+{%- assign newRecomProducts = "" -%}
+{%- assign newRecomProductsReserve = "" -%}
+
+{%- if recommendedCollection != blank -%}
+  <!-- {{ recommendedCollection.handle }} -->
+  
+	{%- assign coreProductDesignMetafield = product.selected_or_first_available_variant.metafields.filters.design -%}
+	{%- assign coreProductEffectMetafield = product.metafields.filters.effect -%}
+	{%- assign coreProductShadeMetafield = product.selected_or_first_available_variant.metafields.filters.shade -%}
+	{%- assign coreProductThicknessMetafield = product.selected_or_first_available_variant.metafields.filters.thickness -%}
+
+	{%- for productInCollection in recommendedCollection.products -%}
+		{%- assign designMetafield = productInCollection.selected_or_first_available_variant.metafields.filters.design -%}
+		{%- assign effectMetafield = productInCollection.metafields.filters.effect -%}
+		{%- assign shadeMetafield = productInCollection.selected_or_first_available_variant.metafields.filters.shade -%}
+		{%- assign thicknessMetafield = productInCollection.selected_or_first_available_variant.metafields.filters.thickness -%}
+
+		{%- if coreProductDesignMetafield == designMetafield and coreProductEffectMetafield == effectMetafield and coreProductShadeMetafield == shadeMetafield and productInCollection.available == true -%}
+			{%- assign newRecomProducts = newRecomProducts | append: productInCollection.handle | append: ',' -%}
+ 
+		{%- else -%}
+			{%- assign newRecomProductsReserve = newRecomProductsReserve | append: productInCollection.handle | append: ',' -%}
+     
+		{%- endif -%}
+	{%- endfor -%}
+{%- endif -%}
+
+{%- assign newRecomProducts = newRecomProducts | split: ',' -%}
+{%- assign newRecomProductsReserve = newRecomProductsReserve | split: ',' -%}
+<div class="out-of-stock-area">
+	<div class="product-relateds">
+		{%- if snippetHeading != blank -%}
+			<h2 class="out-of-stock-heading">
+				{{ snippetHeading }}
+			</h2>
+		{%- endif -%}
+		{% if newRecomProducts != blank or newRecomProductsReserve != blank %}
+				<h2 class="title title--small product-related__heading">
+					{{ 'products.recommended_products.discontinued.title' | t }}
+				</h2>
+			<hr>
+			<div class="product-related__container">
+			<div class="product-related__listing js-recently-viewed-list">
+				{%- if newRecomProducts != blank -%}
+					{%- for product_handle in newRecomProducts limit: 3 -%}
+						{%- if product_handle != product.handle -%}
+							{% render 'recommended-products-card',
+								relatedHandle: product_handle
+							%}
+						{%- endif -%}
+					{%- endfor -%}
+				{%- else -%}
+					{%- for product_handle in newRecomProductsReserve limit: 3 -%}
+						{%- if product_handle != product.handle -%}
+							{% render 'recommended-products-card',
+								relatedHandle: product_handle
+							%}
+						{%- endif -%}
+					{%- endfor -%}
+				{%- endif -%}
+			</div>
+			</div>
+		{% endif %}
+	</div>
+</div>

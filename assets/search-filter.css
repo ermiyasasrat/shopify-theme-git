@@ -1,0 +1,170 @@
+.facets-container{
+    width:100%;
+  }
+  .filter-collection-grid-container {
+      flex-wrap: wrap;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    #FacetsWrapperDesktop {
+      flex-wrap: wrap;
+      flex-direction: unset;
+      justify-content: unset;
+      align-items: unset;
+      gap: 10px;
+    }
+    #FacetsWrapperDesktop .facets-element.js-filter {
+      width: calc(16.6% - 8px);
+      padding: 0 5px;
+      margin-bottom: 0px;
+      border: 1px solid #ddd;
+      padding: 0px;
+      height: fit-content;
+      position: relative;
+    }
+    .facets__header-title{
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1;
+    }
+    #FacetsWrapperDesktop .facets__list{
+      max-height: 0px;
+      padding: 0;
+      background: #fafafa;
+      width: 100%;
+      z-index: 2;
+    }
+    .facets__header{
+      padding:13px 20px;
+      position:relative;
+      cursor:pointer;
+    }
+    #FacetsWrapperDesktop .facets__list.active{
+      max-height: 203px;
+      position: absolute;
+      left: 0;
+      padding: 0px 20px 10px 20px;
+      border: 1px solid #ddd;
+      border-top: 0px;
+      z-index: 9;
+    }
+    .facets__header:before{
+      display: block;
+      content: "";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      margin-top: -4px;
+      width: 8px;
+      height: 8px;
+      background-image: url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/layered-nav-expand.svg?v=1724814138');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 8px;
+  }
+    .facets__header.active:before{
+      background-image: url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/layered-nav-collapse-minus.svg?v=1724814139');
+    }
+    .facet-checkbox input[type=checkbox]{
+      position:unset;
+      appearance: auto;
+      -webkit-appearance: auto;
+      width: 1.3rem;
+      height: 1.3rem;
+      margin: 0px;
+      margin-right: 10px;
+      z-index:1;
+    }
+    .facet-checkbox>input[type=checkbox]:checked~span {
+      color: #000;
+      font-weight: 600;
+  }
+  @media only screen and (min-width: 1150px) {
+  #FacetsWrapperDesktop .facets__list{
+    width:calc(100% + 2px);
+  }
+    #FacetsWrapperDesktop .facets__list.active{
+        left:-1px;
+    }
+    .mobile-filter-heading, .filter-close-mobile{
+      display:none;
+    }
+  .search-product-grid-container{
+    margin-left:0px;
+  }
+    .facets-container{
+      padding-bottom:0px;
+    }
+    #FacetsWrapperDesktop{
+      padding-bottom: 20px;
+    }
+  }
+
+  @media(max-width: 1024px){
+    #main-collection-filters{
+      padding-bottom: 0px;
+    }
+    #ProductGridContainer{
+      padding-top: 0px;
+    }
+  }
+
+  @media only screen and (max-width: 1149px) {
+    .filter-close-mobile {
+          display: block;
+          position: absolute;
+          left: 9px;
+          top: 10px;
+          width: 40px;
+          height: 40px;
+          background: url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/icon-close-blue.svg?v=1724888227') no-repeat center center;
+          background-size: 18px;
+      }
+   .mobile-filter-heading{
+      padding: 22px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+  }
+  #FacetsWrapperDesktop{
+      flex-wrap: nowrap;
+      flex-direction: column;
+      padding-left: 0;
+      padding-right: 0;
+      gap: 0px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99999;
+      background: #fff;
+      height: 100%;
+      overflow-y: auto;
+      width: 100%;
+      max-width: 650px;
+      padding-top: 40px;
+  }
+  #FacetsWrapperDesktop .facets-element.js-filter{
+    width:100%;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0px;
+  }
+    #FacetsWrapperDesktop .facets-element.js-filter:last-child{
+      border-bottom:0px;
+    }
+  
+    .facets__header{
+      padding-bottom:22px;
+      padding-top:22px;
+    }
+    #FacetsWrapperDesktop .facets__list.active{
+      position:unset;
+      border:0px;
+      background: transparent;
+    }
+    .filter-toggle{
+      padding-top:20px
+    }
+  }
+  

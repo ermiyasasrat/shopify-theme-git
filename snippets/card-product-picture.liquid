@@ -1,0 +1,19 @@
+{% assign width = image.width %}
+{% assign height = image.height %}
+{% assign small = image | img_url: '480x' %}
+{% assign medium = image | img_url: '768x' %}
+<picture>
+  <source srcset="{{ small }}" media="(max-width: 29.999em)">
+  <source srcset="{{ medium }}" media="(max-width: 47.999em)">
+  <img id="image-{{ image.id }}"
+       width="{{ width }}"
+       height="{{ height }}"
+       src="{{ small }}"
+      {% if lazy %}loading="lazy"{% endif %}
+       class="responsive-image {{ image_class }}"
+       tabindex="-1"
+       title="{{alt}}"
+       alt="{{ alt }}"
+       {{ image_attributes }}
+  >
+</picture>

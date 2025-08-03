@@ -1,0 +1,357 @@
+{%- assign splittedParentTitle = link.title | split: '[' -%}
+{%- assign sublinkParentTitle = splittedParentTitle[0] -%}
+{%- if link.title contains "Garden" -%}
+	{%- assign gardenLink = true -%}
+{%- else -%}
+	{%- assign gardenLink = false -%}
+{%- endif -%}
+
+<li class="site-navigation__li-mobile site-navigation__li{% if link.active %} site-navigation__li--active{% endif %}{% if link.links != blank %} site-navigation__li--has-sub{% endif %} {% if link.title == "Sale" or link.title == "Black Friday" %} site-navigation__sale-background {% endif %}">
+	<a href="{{ link.url }}"
+	   title="{{ sublinkParentTitle }}" 
+	   class="site-navigation__link{% if link.active %} site-navigation__link--active{% endif %}{% if link.links != blank %} site-navigation__link--has-sub{% endif %}"
+	   {% if link.current %} aria-current="page" {% endif %}>
+			<span class="site-navigation__link-text">
+				{{ sublinkParentTitle }}
+			</span>
+			{% if link.links != blank %}
+				<span class="site-navigation__link-arrow">
+					{% render 'icon-nav-arrow' %}
+				</span>
+			{% endif %}
+	</a>
+	{% if link.links != blank %}
+		<div class="site-navigation__sub-menu site-navigation__sub-menu--second" aria-hidden="true">
+			<div class="site-wrap site-wrap--nav {% if link.title == 'Brand' %}branded_mobile{% endif %}">
+			  {% if link.title == 'Brand' %}
+					  {%- for link in linklists[section.settings.brand-menu].links -%}
+						{% if link.title == 'Brand' %}                                      
+							<ul class="site-navigation__ul">
+								<li class="site-navigation__li site-navigation__li--sub xlarge-hide mobile_li_bg">
+									<a href="{{ link.url }}" class="site-navigation__link site-navigation__link--sub" title="View {{link.title}}">
+										View all
+										<span class="site-navigation__link-arrow site-navigation__link-arrow--sub">
+											{% render 'icon-nav-arrow' %}
+										</span>
+									</a>
+								</li>
+								{%- for child_link in link.links -%}
+									<li class="site-navigation__li site-navigation__li--sub mobile_li_bg">
+										<a href="{{ child_link.url }}" class="site-navigation__link site-navigation__link--sub{% unless child_link.links == blank %} site-navigation__link--has-third{% endunless %}"  title="{{child_link.title}}">
+											{%- if link.title == 'Room' -%}
+												{% assign cat_icon = 'icon-' | append: child_link.title | downcase | replace: ' ', '-'  %}
+												<span class="site-navigation__link-icon">
+													{% render cat_icon %}
+												</span>
+											{%- endif -%}
+											<span class="site-navigation__link-text">
+												{{ child_link.title | escape | replace: "[full]", "" }}
+												</span>
+											<span class="site-navigation__link-arrow site-navigation__link-arrow--sub xlarge-hide">
+												{% render 'icon-nav-arrow' %}
+											</span>
+										</a>
+										{% assign childHandle = child_link.url | split: '/' | last %}
+										{% unless child_link.links == blank %}
+											<div class="site-navigation__sub-menu site-navigation__sub-menu--third{% if child_link.title contains '[full]' %} site-navigation__sub-menu--has-third-mobile{% endif %}">
+												<div class="site-wrap site-wrap--nav branded_mobile">
+													<div class="site-navigation__third-nav">
+														<div class="site-navigation__third-img-wrap">
+															{% assign title = child_link.title | replace: "[full]", "" %}
+															{% if collections[childHandle].image != blank %}
+																{% 	render 'responsive-image' 
+																	image: collections[childHandle].image,
+																	image_class: 'site-navigation__third-img',
+																	alt: title,
+																	lazy: false
+																%}
+															{% else %}
+																{% assign navSubCatImgUrl = link.title
+																	| append: "_"
+																	| append: title
+																	| append: '.jpg'
+																	| replace: '&', ""
+																	| replace: " ", "_"
+																	| replace: "__", "_"  %}
+																<img alt="{{title}}" class="site-navigation__third-img js-lazy-load-image" src="{{ 'transparent.png' | file_url }}" data-src="{{ navSubCatImgUrl | file_img_url : '560x' }}">
+															{% endif %}
+														</div>
+														<div class="site-navigation__third-content">
+															<p class="site-navigation__third-title title title--smallest">
+																{% if collections[childHandle].metafields.nav.title %}
+																	{{ collections[childHandle].metafields.nav.title }}
+																{% elsif collections[childHandle].metafields.hero.title %}
+																	{{ collections[childHandle].metafields.hero.title }}
+																{% elsif collections[childHandle].title %}
+																	{{ collections[childHandle].title }}
+																{% endif %}
+															</p>
+															<p class="site-navigation__third-text para">
+																{% if collections[childHandle].metafields.nav.content %}
+																	{{ collections[childHandle].metafields.nav.content | strip_html }}
+																{% elsif collections[childHandle].metafields.hero.content %}
+																	{{ collections[childHandle].metafields.hero.content | strip_html | truncatewords: 35 }}
+																{% elsif collections[childHandle].description %}
+																	{{ collections[childHandle].description | strip_html | truncatewords: 35 }}
+																{% endif %}
+															</p>
+															<a class="button" href="{{ child_link.url }}" title="{{child_link.title}}">
+																View All
+															</a>
+														</div>
+														{%- if child_link.title contains '[full]' -%}
+															<div class="site-navigation__third-right">
+																<div class="site-navigation__third-links site-navigation__third-links--full">
+																	<ul class="site-navigation__ul site-navigation__ul--third">
+																		<li class="site-navigation__li site-navigation__li--sub xlarge-hide">
+																			<a href="{{ child_link.url }}" class="site-navigation__link site-navigation__link--sub"  title="{{child_link.title}}">
+																				View all
+																				<span class="site-navigation__link-arrow site-navigation__link-arrow--sub">
+																					{% render 'icon-nav-arrow' %}
+																				</span>
+																			</a>
+																		</li>
+																		{%- for link in child_link.links -%}
+																			<li class="site-navigation__li site-navigation__li--third">
+																				<a class="site-navigation__link site-navigation__link--sub link" href="{{ link.url }}" title="{{link.title}}">
+																					{{ link.title | replace: "[title]", "" }}
+																					<span class="site-navigation__link-arrow site-navigation__link-arrow--sub xlarge-hide">
+																						{% render 'icon-nav-arrow' %}
+																					</span>
+																				</a>
+																			</li>
+																		{%- endfor -%}
+																	</ul>
+																</div>
+															</div>
+														{%- else -%}
+															<div class="site-navigation__third-right">
+																{%- for link in child_link.links -%}
+																	{% if forloop.first == true %}
+																		<div class="site-navigation__third-links">
+																			{% if link.title contains '[title]' %}
+																				<p class="site-navigation__third-list-title">
+																					{{ link.title | replace: "[title]", "" }}
+																				</p>
+																			{% endif %}
+																			<ul class="site-navigation__third-list">
+																	{% elsif link.title contains '[title]' %}
+																	</ul>
+																	</div>
+																		<div class="site-navigation__third-links">
+																			<p class="site-navigation__third-list-title">
+																				{{ link.title | replace: "[title]", "" }}
+																			</p>
+																			<ul class="site-navigation__third-list">
+																	{% endif %}
+																	{% unless link.title contains '[title]' %}
+																		<li class="site-navigation__third-list-item">
+																			<a class="site-navigation__third-link link{% if link.title contains '[noicon]' %} site-navigation__third-link--no-img{% endif %}" href="{{ link.url }}" title="{{link.title}}">
+																				{% unless link.title contains '[noicon]' %}
+																					<div>
+																						{% assign imageUrl = link.title | append: '.png' | replace: " ", "_" %}
+																						<img alt="Browse {{ link.title | replace: "[noicon]", "" }}" src="{{ 'transparent.png' | file_url }}" data-src="{{ imageUrl | file_img_url }}" class="site-navigation__third-link-image js-lazy-load-image">
+																					</div>
+																				{% endunless %}
+																				{{ link.title | replace: "[noicon]", "" }}
+																			</a>
+																		</li>
+																	{% endunless %}
+																{%- endfor -%}
+																	</ul>
+																</div>
+															</div>
+														{%- endif -%}
+													</div>
+												</div>
+											</div>
+										{% endunless %}
+									</li>
+								{%- endfor -%}
+							</ul>
+						{% endif %}                                      
+					{%- endfor -%}
+				   {% else %}  
+					{% assign child_link = link %}
+					{% assign childHandle = child_link.url | split: '/' | last %}
+					{% unless child_link.links == blank %}
+					<div class="site-navigation__third-nav{% if child_link.title contains '[full]' %} site-navigation__sub-menu--has-third-mobile{% endif %}">
+						  <div class="site-navigation__third-img-wrap">
+							{% assign title = child_link.title | replace: "[full]", "" %}
+							{% if collections[childHandle].image != blank %}
+								{% 	render 'responsive-image' 
+									image: collections[childHandle].image,
+									image_class: 'site-navigation__third-img',
+									alt: title,
+									lazy: false
+								%}
+							{% else %}
+							{% assign navSubCatImgUrl = link.title
+														  | append: "_"
+							| append: title
+							| append: '.jpg'
+							| replace: '&', ""
+							| replace: " ", "_"
+							| replace: "__", "_"  %}
+							<img alt="{{title}}" class="site-navigation__third-img js-lazy-load-image" src="{{ 'transparent.png' | file_url }}" data-src="{{ navSubCatImgUrl | file_img_url : '560x' }}">
+							{% endif %}
+						  </div>
+						  <div class="site-navigation__third-content">
+							<p class="site-navigation__third-title title title--smallest">
+							  {% if collections[childHandle].metafields.nav.title %}
+							  {{ collections[childHandle].metafields.nav.title }}
+							  {% elsif collections[childHandle].metafields.hero.title %}
+							  {{ collections[childHandle].metafields.hero.title }}
+							  {% elsif collections[childHandle].title %}
+							  {{ collections[childHandle].title }}
+							  {% endif %}
+							</p>
+							<p class="site-navigation__third-text para">
+							  {% if collections[childHandle].metafields.nav.content %}
+							  {{ collections[childHandle].metafields.nav.content | strip_html }}
+							  {% elsif collections[childHandle].metafields.hero.content %}
+							  {{ collections[childHandle].metafields.hero.content | strip_html | truncatewords: 35 }}
+							  {% elsif collections[childHandle].description %}
+							  {{ collections[childHandle].description | strip_html | truncatewords: 35 }}
+							  {% endif %}
+							</p>
+							<a  title="{{ child_link.title }}" class="button" href="{{ child_link.url }}">
+							  View All
+							</a>
+						  </div>
+						  {%- if child_link.title contains '[full]' -%}
+						  <div class="site-navigation__third-right">
+							<div class="site-navigation__third-links site-navigation__third-links--full">
+							  <ul class="site-navigation__ul site-navigation__ul--third">
+								<li class="site-navigation__li site-navigation__li--sub xlarge-hide">
+								  <a href="{{ child_link.url }}" title="{{ child_link.title }}" class="site-navigation__link site-navigation__link--sub">
+									View all
+									<span class="site-navigation__link-arrow site-navigation__link-arrow--sub">
+									  {% render 'icon-nav-arrow' %}
+									</span>
+								  </a>
+								</li>
+								{%- for link in child_link.links -%}
+								<li class="site-navigation__li site-navigation__li--third">
+								  <a class="site-navigation__link site-navigation__link--sub link" title="{{ link.title }}" href="{{ link.url }}">
+									{{ link.title | replace: "[title]", "" }}
+									<span class="site-navigation__link-arrow site-navigation__link-arrow--sub xlarge-hide">
+									  {% render 'icon-nav-arrow' %}
+									</span>
+								  </a>
+								</li>
+								{%- endfor -%}
+							  </ul>
+							</div>
+						  </div>
+						  {%- else -%}
+						  <div class="site-navigation__third-right">
+							<ul class="mobile-menu-subaccordion-container">
+								{%- for link in child_link.links -%}
+									{%- unless link.title contains "[product]" or link.title contains "Images" or link.title contains "[collection]" and gardenLink == false -%}
+										<li 
+											{% if link.links != blank %}
+												onclick="accordionToggle({{ parentIndex }}, {{ forloop.index0 }})"
+											{% endif %}
+											class="mobile-menu-subaccordion-title"
+										>
+											{%- if gardenLink == true -%}
+												<a href="{{ link.url }}" class="mobile-menu-subaccordion-title-text" title="{{ link.title | replace: '[collection]', '' }}">
+													{{ link.title | replace: '[collection]', '' }}
+												</a>
+											{%- else -%}
+												<div class="mobile-menu-subaccordion-title-text">
+													{%- if link.title contains "[layer-" -%}
+														<a href="{{ link.url }}" class="mobile-menu-subaccordion-title-bold" title="{{ link.title | replace: '[layer-1]', '' | replace: '[layer-2]', '' }}">
+													{%- endif -%}
+													{{ 'general.navigation.title_prefix' | t }} {{ link.title | replace: '[layer-1]', '' | replace: '[layer-2]', '' }}
+													{%- if link.title contains "[layer-" -%}
+														</a>
+													{%- endif -%}
+												</div>
+												<div class="mobile-menu-subaccordion-icon-container">
+													{%- if link.links != blank -%}
+														<svg aria-hidden="true" focusable="false" role="presentation" class="mobile-nav-subaccordion-icon icon icon-caret" viewBox="0 0 10 6">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+														</svg>
+													{%- endif -%}
+												</div>
+											{%- endif -%}
+										</li>
+										<div class="mobile-menu-subaccordion-panel">
+											<ul>
+												{%- for grandchildlink in link.links -%}
+													{%- assign splittedTitle = grandchildlink.title | split: '[' -%}
+													{%- assign sublinkTitle = splittedTitle[0] -%}
+
+													{%- if grandchildlink.title contains ".png" -%}
+														{%- assign secondHalfUrl = splittedTitle[1] | split: ']' | replace: ' ', '' -%}
+														{%- assign imageUrl = secondHalfUrl | replace: '[', '' | replace: ']', '' | replace: '"', '' -%}
+													{%- else -%}
+														{%- assign imageUrl = sublinkTitle | append: '.png' | replace: " ", "_" -%}
+													{%- endif -%}
+
+													<li class="mobile-menu-subaccordion-element">
+														<a {% unless grandchildlink.title contains "[heading]" %} href="{{ grandchildlink.url }}" {% endunless %} class="mobile-menu-subaccordion-anchor {% if grandchildlink.title contains "[heading]" %}mobile-menu-subaccordion-heading{% endif %}" title="{{ sublinkTitle }}">
+															{%- if link.title contains "Room" -%}
+																{%- assign imageUrl = sublinkTitle | downcase | replace: ' ', '' | append: '.svg' -%}
+																<img 
+																	alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																	src="{{ imageUrl | asset_url }}" 
+																	class="site-navigation__third-link-image"
+																>
+															{%- elsif imageUrl contains 'Bespoke' or imageUrl contains 'Bevel' -%}
+																<img 
+																	alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																	src="{{ 'transparent.png' | file_url }}" 
+																	data-src="{{ 'Bevel_Edge_small.png' | asset_url }}" 
+																	class="site-navigation__third-link-image js-lazy-load-image"
+																>
+															{%- elsif grandchildlink.title contains "[i]" or grandchildlink.title contains ".png" -%}
+																<img 
+																	alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																	src="{{ imageUrl | file_url }}" 
+																	class="site-navigation__third-link-image"
+																>
+															{%- endif -%}
+															<span>
+																{{ sublinkTitle }}
+															</span>
+														</a>
+													</li>
+												{%- endfor -%}
+											</ul>
+										</div>
+									{%- endunless -%}
+								{%- endfor -%}
+							</ul>
+						  </div>
+						  {%- endif -%}
+					</div>
+					{% endunless %}
+			  {% endif %}
+			  <div class="mobile-only mobile_view_all">
+				<a  title="{{ child_link.title }}" class="button" href="{{ child_link.url }}">
+				  View full collection
+				</a>
+			  </div>
+			</div>
+		</div>
+	{% endif %}
+</li>
+
+<script>
+	function accordionToggle(parentIndex, val) {
+		var parentAccordions = document.getElementsByClassName("site-navigation__li-mobile");
+		var accordions = parentAccordions[parentIndex].getElementsByClassName("mobile-menu-subaccordion-panel");
+		var panel = accordions[val];
+		var previousSibling = panel.previousElementSibling
+		if (panel.style.display === "block") {
+			panel.style.display = null;
+			previousSibling.classList.remove("mobile-menu-subaccordion-open");
+		} else {
+			panel.style.display = "block";
+			previousSibling.classList.add("mobile-menu-subaccordion-open");
+		}
+	}
+</script>

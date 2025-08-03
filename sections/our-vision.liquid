@@ -1,0 +1,47 @@
+<section class="our-vision">
+  <img width="702" height="313" src="{{ section.settings.image | img_url: "master" }}" alt="{{ section.settings.image.alt }}">
+  <div class="site-wrap">
+    <div class="vision-wrapper">
+      <div class="left-content">
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.subheading }}</p>
+      </div>
+      <div class="right-content">
+        {{ section.settings.content }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Our Vision",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background Shape"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Left Heading"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Left Subheading"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Right Content"
+      },
+    ],
+    "presets": [
+      {
+        "name": "Our Vision",
+      }
+    ]
+  }
+{% endschema %}

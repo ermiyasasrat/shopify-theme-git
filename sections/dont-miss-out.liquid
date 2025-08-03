@@ -1,0 +1,58 @@
+<section class="dont-miss">
+  <div class="site-wrap">
+    <div class="heading">
+      <h2>{{ section.settings.heading }}</h2>
+      <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+    </div>
+    <div class="dontmiss-wrapper">
+      {% assign dont_miss_collection = collections[section.settings.collection] %}
+      {% if dont_miss_collection.products.size > 0 %}
+        <ul class="dont-miss-products">
+          {% assign limited_products = dont_miss_collection.products | limit: 3 %}
+          {% for product in limited_products limit: 3 %}
+            <li>
+              {% render 'card-product',
+                card_product: product
+              %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No product found.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Don't Miss",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+      },
+      {
+        "type": "collection",
+        "label": "Select Collection",
+        "id": "collection",
+      },
+    ],
+    "presets": [
+      {
+        "name": "Don't Miss",
+      }
+    ]
+  }
+{% endschema %}

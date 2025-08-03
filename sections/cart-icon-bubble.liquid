@@ -1,0 +1,17 @@
+{% render 'icon-cart' %}
+<div id="CartCount" class="site-header__cart-count">
+  <span data-cart="count" data-count="{{ cart.item_count }}">
+    {%- if cart.item_count > 0 -%}
+      {% assign countItems = 0 %}
+      {% for xItem in cart.items %}
+        {% assign countItems = countItems | plus: 1 %}
+      {% endfor %}
+      {{- countItems -}}
+    {%- endif -%}
+  </span>
+  <span data-cart="wording" class="large-show">
+    {%- if cart.item_count > 0 -%}
+      item{% if cart.item_count > 1 %}s{% endif -%}
+    {%- endif -%}
+  </span>
+</div>

@@ -1,0 +1,380 @@
+
+{% if popup_products != blank %}
+  <style>
+ 
+.modal {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+.modal-close-btn {
+    font-size: 14px;
+  line-height: 1.4;
+  padding: 13px 20px;
+  border-radius: 4px;
+  top: 0;
+  background: #fff;
+    margin: 0;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    border-radius: 100%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+.modal-close-btn svg{
+  width:16px;
+  height:16px;
+  color:#fff;
+  fill:#fff;
+}
+
+.overlay {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 99999999;
+}
+
+
+.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+      z-index: 999999999;
+}
+.complementary-prdouct-wrapper {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  text-align: left;
+  padding-top: 35px;
+}
+    .complementary-product {
+    display: flex;
+    gap: 20px;
+          border-top: 1px solid #d8d8d8;
+    padding-top: 25px;
+}
+        .complementary-product:first-of-type{
+            border-top: 0px;
+    padding-top: 0px;
+        }
+    .complementary-product-img {
+    width: 16%;
+}
+    .complementary-product-info{
+      width:50%;
+      padding:0px 20px 0px 30px;
+    }
+    .complementary-product-content{
+      width:34%;
+    }
+    .complementary-product-img img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+  }
+    .complementary-product-info .title{
+      font-size:22px;
+      line-height:26px;
+    }
+    .qty-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+    .qty-wrapper span{
+      font-size:18px;
+      font-weight:700;
+    }
+    .quantity-area {
+    display: flex;
+    gap: 8px;
+}
+    .quantity-area button {
+    border-radius: 5px;
+    border: 1px solid #d8d8d8;
+    background-color: rgb(255 255 255);
+    padding: 8px;
+      cursor:pointer;
+}
+    svg.w-2{
+      width: 9px;
+    }
+    svg.w-2.-scale-x-100 {
+    transform: rotate(180deg);
+}
+    .quantity-area input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 5px;
+   border: 1px solid #d8d8d8;
+    background-color: rgb(255 255 255);
+    padding: 8px;
+    text-align: center;
+          height: 42px;
+      font-size: 18px;
+    pointer-events: none;
+}
+.quantity-area input::-webkit-outer-spin-button,
+.quantity-area input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.quantity-area input[type=number] {
+  -moz-appearance: textfield;
+}
+    .complementary-product-price p,
+    .complementary-product-info p{
+    font-size: 18px;
+    font-weight: 700;
+}
+    .complementary-product-info p{
+    padding-top:25px;
+    }
+    .complementary-product-info p span{
+      font-weight:400;
+    }
+    .complementary-product-price{
+      padding:15px 0px;
+    }
+    .complementary-product-btn button{
+    background: #ff877a;
+    color: #fff;
+    border-radius: 25px;
+    padding: 15px;
+    width: 70%;
+    font-size: 17px;
+    font-weight: 600;
+          border: 0px;
+      position:relative;
+      cursor:pointer;
+     }
+    .modal-top-content{
+       padding-right:30px;
+    }
+    .modal-top-content p {
+      font-size:16px;
+      line-height:20px;
+      text-align:center;
+    }
+    .not-available button{
+      pointer-events: none;
+    }
+   .not-available button .complementary-add-to-cart {
+      opacity:0.5;
+    }
+    .complementary-add-to-cart.loading .loading__spinner{
+      left: 50%;
+    }
+     .complementary-add-to-cart.loading .loading__spinner svg circle{
+       stroke:#000 !important;
+     }
+    .complementary-add-to-cart.loading{
+      color:#ffffff78;
+    }
+    @media screen and (max-width:991px){
+      .complementary-product-btn button{
+        width:100%;
+      }
+      .modal{      margin: 0px 40px;}
+    }
+        @media screen and (max-width:768px){
+      .complementary-product-btn button{
+        width:100%;
+      }
+          .complementary-product {
+    flex-wrap: wrap;
+}
+                .complementary-product > div{
+                  width:100%;
+                }
+          .complementary-product-img img{
+            width:100%;
+            max-width:390px;
+          }
+          .complementary-product-info{
+            padding:0px;
+          }
+          .complementary-product-price {
+    padding: 20px 0px;
+}
+          .complementary-product-content{
+            padding-top:12px;
+          }
+    }
+  </style>
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="modal">
+  <button class="modal-close-btn" id="close-btn"><svg class="w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62.956 62.956">
+   <path d="M61.093 10.752a6.3 6.3 0 1 0-8.908-8.908L31.475 22.57 10.752 1.863a6.3 6.3 0 0 0-8.908 8.908L22.57 31.475 1.863 52.204a6.3 6.3 0 0 0 8.908 8.908l20.704-20.726 20.726 20.707a6.3 6.3 0 1 0 8.908-8.908l-20.723-20.71Z" fill="currentColor"></path>
+</svg></button>
+  <div class="modal-content">
+    <div class="modal-top-content">
+    <p>Because you have "{{ product.title }}" in your cart...</p>
+      </div>
+    <div class="complementary-prdouct-wrapper">
+        {% for popup_product in popup_products %}
+      <div class="complementary-product" data-price="{{ popup_product.selected_or_first_available_variant.price | money_without_currency }}">
+        <div class="complementary-product-img">
+            <img
+    class="global-media-settings global-media-settings--no-shadow"
+    srcset="{%- if popup_product.featured_image.width >= 550 -%}{{ popup_product.featured_image | image_url: width: 550 }} 550w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 1100 -%}{{ popup_product.featured_image | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 1445 -%}{{ popup_product.featured_image | image_url: width: 1445 }} 1445w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 1680 -%}{{ popup_product.featured_image | image_url: width: 1680 }} 1680w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 2048 -%}{{ popup_product.featured_image | image_url: width: 2048 }} 2048w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 2200 -%}{{ popup_product.featured_image | image_url: width: 2200 }} 2200w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 2890 -%}{{ popup_product.featured_image | image_url: width: 2890 }} 2890w,{%- endif -%}
+            {%- if popup_product.featured_image.width >= 4096 -%}{{ popup_product.featured_image | image_url: width: 4096 }} 4096w,{%- endif -%}
+            {{ popup_product.featured_image | image_url }} {{ popup_product.featured_image.width }}w"
+    sizes="(min-width: 750px) calc(100vw - 22rem), 1100px"
+    src="{{ popup_product.featured_image | image_url: width: 1445 }}"
+    alt="{{ popup_product.featured_image.alt | escape }}"
+    loading="lazy"
+    width="1100"
+    height="{{ 1100 | divided_by: popup_product.featured_image.aspect_ratio | ceil }}"
+  >
+        </div>
+        <div class="complementary-product-info">
+          <h4 class="title">{{ popup_product.title }}</h4>
+          <p>Price: <span>{{  popup_product.selected_or_first_available_variant.price | money }}</span></p>
+        </div>
+        <div class="complementary-product-content {% unless popup_product.available %}not-available{% endunless %}">
+          {% render 'complementary-product-qty' popup_product:popup_product %}
+          <div class="complementary-product-price">
+            <p>Total price: <span class="complementary-product-total-price">{{ popup_product.selected_or_first_available_variant.price | money }}</span></p>
+          </div>
+          <div class="complementary-product-btn">
+            <button data-id="{{ popup_product.selected_or_first_available_variant.id }}" class="complementary-add-to-cart">{% unless popup_product.available %}SOLD OUT{% else %}ADD TO CART  {%- render 'loading-spinner', class: 'loading__spinner' -%}{% endunless %}</button>
+          </div>
+        </div>
+      </div>
+            {% endfor %}
+    </div>
+  </div>
+</div>
+  <script>
+    document.querySelector('.popup-produts-btn').addEventListener('click', function() {
+  document.getElementById('overlay').classList.add('is-visible');
+  document.getElementById('modal').classList.add('is-visible');
+    document.getElementById('modal').scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+});
+
+document.getElementById('close-btn').addEventListener('click', function() {
+    document.querySelector('.product-form .button.button--submit[type="submit"]').click();
+  document.getElementById('overlay').classList.remove('is-visible');
+  document.getElementById('modal').classList.remove('is-visible');
+});
+document.getElementById('overlay').addEventListener('click', function() {
+  document.querySelector('.product-form .button.button--submit[type="submit"]').click();
+  document.getElementById('overlay').classList.remove('is-visible');
+  document.getElementById('modal').classList.remove('is-visible');
+});
+
+document.addEventListener('click', function(event) {
+    if (event.target.closest('.increase') || event.target.closest('.decrease')) {
+        let quantityArea = event.target.closest('.quantity-area');
+        if (quantityArea) {
+            let input = quantityArea.querySelector('input[type="number"]');
+            if (input) {
+                let currentValue = parseInt(input.value, 10);
+                let maxValue = parseInt(input.max, 10);
+                let isIncreasing = event.target.closest('.increase');
+
+                if (isIncreasing && currentValue < maxValue) {
+                    input.value = currentValue + 1;
+                } else if (!isIncreasing && currentValue > 1) {
+                    input.value = currentValue - 1;
+                }
+
+                let complementaryProduct = quantityArea.closest('.complementary-product');
+                if (complementaryProduct) {
+                    let price = parseFloat(complementaryProduct.getAttribute('data-price'));
+                    let totalPriceElement = complementaryProduct.querySelector('.complementary-product-total-price');
+                    if (price && totalPriceElement) {
+                        let totalPrice = price * parseInt(input.value, 10);
+                        totalPriceElement.textContent = '{{ cart.currency.symbol }}'+totalPrice.toFixed(2);
+                    }
+                }
+            }
+        }
+    }
+});
+
+    document.querySelectorAll('.complementary-add-to-cart').forEach(button => {
+  button.addEventListener('click', function() {
+    this.classList.add('loading')
+    const productElement = this.closest('.complementary-product');
+    
+   
+    const quantityInput = productElement.querySelector('input[name="quantity"]');
+    const id = this.dataset.id;
+    const quantity = quantityInput ? parseInt(quantityInput.value, 10) : 1; 
+    
+   
+    const formData = {
+      items: [{
+        id: parseInt(id, 10), 
+        quantity: quantity
+      }]
+    };
+
+    
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      console.log('Item added to cart:', data);
+      this.classList.remove('loading')
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+});
+
+
+
+  </script>
+  {% endif %}

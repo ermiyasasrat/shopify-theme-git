@@ -1,0 +1,148 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+{% assign productAttributesShared = product.metafields.product_attribute %}
+{% assign productNumber = current_variant.metafields.product_config.product_number %}
+{% assign productGtin = product.metafields.product_config.gtin %}
+{% assign discontinuedProduct = product.metafields.product_config.discontinued_product %}
+{%- assign productSku = current_variant.sku -%}
+{%- assign productMetric = current_variant.metafields.product_config.sale_metric -%}
+
+{%- if current_variant.metafields.product_attribute.pack_size != blank -%}
+	{%- assign productRollWidth = current_variant.metafields[productType].roll_width -%}
+{%- else -%}
+	{%- assign productRollWidth = product.metafields[productType].roll_width -%}
+{%- endif -%}
+{%- assign productPackSize = current_variant.metafields.product_attribute.pack_size -%}
+
+{%- if current_variant != blank -%}
+    {%- assign productPrice = current_variant.price | money_without_currency -%}
+{%- else -%}
+    {%- assign productPrice = product.price | money_without_currency -%}
+{%- endif -%}
+
+{%- if productRollWidth == blank and current_variant.metafields.product_config.sale_metric == "Roll" -%}
+	{%- assign productRollWidth = current_variant.metafields.product_attribute.width -%}
+{%- endif -%}
+
+<script type="application/ld+json" id="product-schema">
+    [{
+        "@context": "http://schema.org",
+        "@type": "Product",
+        "@id": {{ canonical_url | append: '#product' | json }},
+        "name": "{{ product.title }}",
+        "brand": {
+          "@type": "Brand",
+           "name": "{{ product.vendor }}"
+      	},
+		{%- if product.description != blank -%}
+            "description": "{{ product.description | strip_newlines | strip_html | escape }}",
+        {%- endif -%}
+        {% if product.images[0] -%}
+            "image": "{{ product.images[0] | img_url }}",
+        {%- endif -%}
+        {%- if productNumber != blank -%}
+            "mpn": "{{ productNumber }}",
+        {%- endif -%}
+        {%- if productSku != blank -%}
+            "sku": "{{ productSku }}",
+        {%- endif -%}
+        {%- if productGtin != blank -%}
+            "gtin": "{{ productGtin }}",
+		{%- endif -%}
+		{%- if product.metafields.reviews.rating != blank -%}
+			"aggregateRating": {
+				"@type": "AggregateRating",
+				"ratingValue": {{ product.metafields.reviews.rating.value }},
+				"bestRating": {{ product.metafields.reviews.rating.value.scale_max }},
+				"ratingCount": {{ product.metafields.reviews.rating_count }}
+			},
+		{%- endif -%}
+
+        "offers": [
+            {%- if productPrice or productPricePerMetresSquared -%}
+                {
+                    "@type": "Offer",
+                    "priceCurrency": "GBP",
+                    "priceValidUntil": "{{ "now" | date:'%s' | plus:100000000 | date:"%F" }}",
+					{%- if squareMetrePence != blank -%}
+						"price": "{{ squareMetrePence | money | replace: '£', '' | replace: ',', '' }}",
+					{%- elsif productPricePerMetresSquared != blank -%}
+						"price": "{{ productPricePerMetresSquared | replace: ',', '' }}",
+                    {%- elsif productPrice != blank -%}
+						"price": "{{ productPrice | replace: ',', '' }}",
+                    {%- endif %}
+                    "itemCondition": "https://schema.org/NewCondition",
+                    {%- unless product.available
+                        and product.metafields.product_config.discontinued_product == true
+                        or product.metafields.product_config.discontinued_product == "true"
+                        or product.metafields.product_config.discontinued_product == "TRUE"
+                    -%}
+                        "availability": "https://schema.org/InStock",
+                    {%- endunless %}
+					"url": "{{ shop.url }}{{ product.url }}",
+                    "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "UK",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 30,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/ReturnShippingFees", 
+                    "returnShippingFeesAmount": {
+                      "@type": "MonetaryAmount",
+                      "value": 10,
+                      "currency": "GBP"
+                    }
+                    },
+					"shippingDetails": {
+						"@type": "OfferShippingDetails",
+						"shippingRate": {
+						  "@type": "MonetaryAmount",
+						  "value": 39.99,
+						  "currency": "GBP"
+						},
+						"shippingDestination": {
+						  "@type": "DefinedRegion",
+						  "addressCountry": "UK"
+						},
+						"deliveryTime": {
+						  "@type": "ShippingDeliveryTime",
+						  "handlingTime": {
+							"@type": "QuantitativeValue",
+							"minValue": 1,
+							"maxValue": 14,
+							"unitCode": "DAY"
+						  },
+						  "transitTime": {
+							"@type": "QuantitativeValue",
+							"minValue": 1,
+							"maxValue": 1,
+							"unitCode": "DAY"
+						  }
+						}
+					}
+                }
+            {%- endif -%}
+        ]
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [{
+		  "@type": "ListItem",
+		  "position": 1,
+		  "name": "Home",
+		  "item": "https://storiesflooring.co.uk"
+		},{
+		  "@type": "ListItem",
+		  "position": 2,
+		  "name": "{% if collections[product.metafields.my_fields.breadcrumb-parent-collection].title != blank %}{{ collections[product.metafields.my_fields.breadcrumb-parent-collection].title }}{% else %}All Collections{% endif %}",
+		  "item": "https://storiesflooring.co.uk/collections/{{ product.metafields.my_fields.breadcrumb-parent-collection | downcase }}"
+		},{
+		  "@type": "ListItem",
+		  "position": 3,
+		  "name": "{{ product.title }}",
+		  "item": "https://storiesflooring.co.uk{{ product.url }}"
+		}]
+	  }
+	]
+</script>

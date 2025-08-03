@@ -1,0 +1,116 @@
+.home-collection-list-outer-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 40px;
+}
+
+.home-collection-list-element-image {
+	width: 100%;
+	height: auto;
+}
+
+.list-collection-anchor-image {
+	text-decoration-line: none;
+	background-size: cover;
+	background-position: bottom center;
+	padding-top: 300px;
+	display: block;
+	margin-bottom: 3rem;
+}
+
+.list-collection-anchor {
+	text-decoration-line: none;
+}
+
+.home-collection-list-element-title {
+	padding: 5%;
+	background: #ffffffb0;
+	font-family: Bogue-Light,sans-serif;
+	font-size: 2.5rem;
+	line-height: 2.7rem;
+	text-align: center;
+}
+
+.home-collection-list-element-text p {
+	font-size: 1.6rem;
+	line-height: 2.5rem;
+	margin-bottom: 1.5rem;
+	text-align: center;
+}
+
+.home-collection-list-element-text p:last-of-type {
+	margin-bottom: 3rem;
+}
+
+.home-collection-list-cta-button-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.home-collection-list-cta-button {
+	text-decoration-line: none;
+	background-color: #24486d;
+	color: #FFFFFF;
+}
+
+.pagination-wrapper {
+	margin: 0 auto;
+	width: 100%;
+}
+
+@media only screen and (min-width: 990px) {
+	.home-collection-list-inner-container {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-gap: 40px;
+		margin: 40px auto;
+		width: 90%;
+		max-width: 1360px;
+	}
+}
+
+@media only screen and (max-width: 989px) and (min-width: 750px) {
+	.home-collection-list-outer-container {
+		margin-bottom: 0px;
+	}
+	
+	.home-collection-list-inner-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 40px;
+		margin: 40px auto;
+		width: 90%;
+	}	
+}
+
+@media only screen and (max-width: 749px) {
+	.home-collection-list-outer-container {
+		margin-bottom: 0px;
+	}
+
+	.home-collection-list-inner-container {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		grid-gap: 40px;
+		margin: 40px auto;
+		width: 90%;
+	}	
+
+	.home-collection-list-outer-container .site-wrap {
+		padding: 0px;
+	}
+
+	.home-collection-list-element-text {
+		width: 90%;
+		margin: 0 auto;
+	}
+
+	.home-collection-list-element-text p {
+		text-align: center;
+	}
+}

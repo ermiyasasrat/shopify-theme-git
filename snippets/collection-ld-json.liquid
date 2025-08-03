@@ -1,0 +1,119 @@
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebPage",
+        "url": "{{ shop.url }}{{ collection.url }}",
+        "mainEntity": {
+            "@context": "http://schema.org",
+            "@type": "OfferCatalog",
+            "name": "{{ collection.title }}",
+            "url": "{{ shop.url }}{{ collection.url }}",
+            "numberOfItems": "{{ collection.all_products_count }}"
+        }
+    }
+</script>
+
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@id": "{{ shop.url }}",
+                    "name": "Home"
+                },
+                "position": 0
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@id": "{{ shop.url }}{{ collection.url }}",
+                    "name": "{{ collection.title }}"
+                },
+                "position": 1
+            }
+        ]
+    }
+</script>
+{% comment %}
+<script type="application/ld+json">
+	[
+		{%- for product in collection.products limit: 18 -%}
+
+		{% assign current_variant = product.selected_or_first_available_variant %}
+		{% assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+		{% assign productAttributesShared = product.metafields.product_attribute %}
+		{% assign productNumber = current_variant.metafields.product_config.product_number %}
+		{% assign productGtin = product.metafields.product_config.gtin %}
+		{% assign discontinuedProduct = product.metafields.product_config.discontinued_product %}
+		{% assign productSku = current_variant.metafields.product_config.product_number %}
+		{%- assign productMetric = current_variant.metafields.product_config.sale_metric -%}
+		
+		{%- assign productRollWidth = current_variant.metafields[productType].roll_width -%}
+
+		{%- assign productPackSize = current_variant.metafields.product_attribute.pack_size -%}
+
+		{%- if productRollWidth == blank and current_variant.metafields.product_config.sale_metric == "Roll" -%}
+			{%- assign productRollWidth = current_variant.metafields.product_attribute.width -%}
+		{%- endif -%}
+		
+		{%- if current_variant != blank -%}
+			{%- assign productPrice = current_variant.price | money_without_currency -%}
+		{%- else -%}
+			{%- assign productPrice = product.price | money_without_currency -%}
+		{%- endif -%}
+		
+		{%- if productRollWidth != blank and current_variant.metafields.product_config.sale_metric == "Roll" -%}
+			{%- assign productPricePerMetresSquared = productPrice | divided_by: productRollWidth -%}
+		{%- elsif productMetric == "Box" -%}
+			{%- assign productPricePerMetresSquared = productPrice -%}
+		{%- elsif productMetric == "Pack" -%}
+			{%- assign productPricePerMetresSquared = productPrice | divided_by: productPackSize | round: 2 -%}
+		{%- else -%}
+			{%- assign productPricePerMetresSquared = productPrice -%}
+		{%- endif -%}
+
+			{
+				"@context": "http://schema.org",
+				"@type": "Product",
+				"name": "{{ product.title }}",
+				{% if product.description != blank -%}
+					"description": "{{ product.description | strip_newlines | strip_html | escape }}",
+				{%- endif %}
+				{% if product.images[0] -%}
+					"image": "{{ product.images[0] | img_url }}",
+				{%- endif %}
+				"offers": [
+					{%- if productPrice or productPricePerMetresSquared -%}
+						{
+							"@type": "Offer",
+							"priceCurrency": "GBP",
+							"priceValidUntil": "{{ "now" | date:'%s' | plus:100000000 | date:"%F" }}",
+							{% if productPricePerMetresSquared != blank -%}
+								"price": "{{ productPricePerMetresSquared | remove: ',' }}",
+							{%- elsif productPrice != blank -%}
+								"price": "{{ productPrice | remove: ',' }}",
+							{%- endif %}
+							"itemCondition": "https://schema.org/NewCondition",
+							{%- unless product.available
+								and product.metafields.product_config.discontinued_product == true
+								or product.metafields.product_config.discontinued_product == "true"
+								or product.metafields.product_config.discontinued_product == "TRUE"
+							-%}
+								"availability": "https://schema.org/InStock",
+							{%- endunless %}
+							"url": "{{ shop.url }}{{ product.url }}"
+						}
+					{%- endif -%}
+				],
+				"aggregateRating": [],
+				"review": [[]],
+				"url": "{{ product.url }}",
+				"brand": { "@type": "Brand", "name": "{{ product.vendor }}" }
+			} {% unless forloop.last == true %},{% endunless %}
+		{%- endfor -%}
+	]
+</script>
+{% endcomment %}

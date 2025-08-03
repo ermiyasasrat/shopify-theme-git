@@ -1,0 +1,49 @@
+<div class="product-features">
+
+	{%- for collection in product.collections -%}
+		{%- if collection.metafields.product_feature.maintenance_wysiwyg != blank -%}
+			{%- assign wysiwygMaintenance = collection.metafields.product_feature.maintenance_wysiwyg -%}
+			{%- assign wysiwygMaintenanceImage = collection.metafields.product_feature.maintenance_wysiwyg_image -%}
+		{%- endif -%}
+	{%- endfor -%}
+
+    {% if product.metafields.product_feature.title != blank and product.metafields.product_feature.description != blank %}
+        {% for item in product.metafields.product_feature.title %}
+            <div class="product-image-text-content">
+                {% if product.metafields.product_feature.image[forloop.index0] %}
+                    <div class="product-image-text-content__image">
+                        {% assign featureImage = product.metafields.product_feature.image[forloop.index0] %}
+                        {% include 'picture-acf',
+                            small: featureImage,
+                            medium: featureImage,
+                            large: featureImage,
+                            lazy: true
+                        %}
+                    </div>
+                {% endif %}
+                {% if product.metafields.product_feature.title[forloop.index0] or product.metafields.product_feature.description[forloop.index0] %}
+                    <div class="product-image-text-content__text">
+                        {% if product.metafields.product_feature.title[forloop.index0] %}
+                            <div class="title title--small product-image-text-content__title">
+                                {{ product.metafields.product_feature.title[forloop.index0] }}
+                            </div>
+                        {% endif %}
+                        {% if product.metafields.product_feature.description[forloop.index0] %}
+                            <div class="para">
+                                {{ product.metafields.product_feature.description[forloop.index0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% elsif wysiwygMaintenance != blank %}
+        <div class="product-image-text-content">
+            <div class="product-image-text-content__text">
+                <div class="wysiwyg">
+                    {{ wysiwygMaintenance | replace: '[Product]', product.title }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

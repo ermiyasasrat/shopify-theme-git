@@ -1,0 +1,139 @@
+{% comment %} Parse title attributes {% endcomment %}
+{% assign title_splits = link.title | split: "[" %}
+{% assign renderer_title = title_splits[0] %}
+{% assign mobile_title = blank %}
+{% assign mobile_only = false %}
+{% assign desktop_only = false %}
+{% assign mobile_expand_child = false %}
+
+{% for title_element in title_splits %}
+  {% if title_element contains 'mobile_title' %}
+    {% assign mobile_title_attrs = title_element | split: '"' %}
+    {% assign mobile_title = mobile_title_attrs[1] %}
+  {% endif %}
+{% endfor %}
+{% if link.title contains '[mobile_only]' %}
+  {% assign mobile_only = true %}
+{% endif %}
+{% if link.title contains '[desktop_only]' %}
+  {% assign desktop_only = true %}
+{% endif %}
+{% if link.title contains '[mobile_expand_child]' %}
+  {% assign mobile_expand_child = true %}
+{% endif %}
+
+{% comment %} Top Menu Constants {% endcomment %}
+{%- assign TOP_MENU_PARQUET = 'Parquet & Herringbone' -%}
+{%- assign TOP_MENU_SHOP_BY_ROOM = 'Shop by Room' -%}
+{%- assign TOP_MENU_ACCESSORIES = 'Accessories' -%}
+{%- assign TOP_MENU_BRAND = 'Brand' -%}
+
+{% comment %} Mega Menu Type Constants {% endcomment %}
+{%- assign MEGA_MENU_TYPE_MEGA = 'mega' -%}
+{%- assign MEGA_MENU_TYPE_BRAND = 'brand' -%}
+{%- assign MEGA_MENU_TYPE_STRETCH_ONE_COLUMN = 'stretch-1column' -%}
+
+{% comment %} Set Mega Menu Type {% endcomment %}
+{%- assign MEGA_MENU_TYPE = MEGA_MENU_TYPE_MEGA -%}
+{% if renderer_title == TOP_MENU_BRAND %}
+  {%- assign MEGA_MENU_TYPE = MEGA_MENU_TYPE_BRAND -%}
+{% elsif renderer_title == TOP_MENU_PARQUET or renderer_title == TOP_MENU_ACCESSORIES or renderer_title == TOP_MENU_SHOP_BY_ROOM %}
+  {%- assign MEGA_MENU_TYPE = MEGA_MENU_TYPE_STRETCH_ONE_COLUMN -%}
+{% endif %}
+
+{% comment %} Set Extra Class For Site Nav Item {% endcomment %}
+{%- assign menu_extra_class = "" -%}
+{% if mobile_only %}
+  {%- assign menu_extra_class = menu_extra_class | append: ' show-mobile-only' -%}
+{% endif %}
+{% if desktop_only %}
+  {%- assign menu_extra_class = menu_extra_class | append: ' show-desktop-only' -%}
+{% endif %}
+{% if mobile_expand_child %}
+  {%- assign menu_extra_class = menu_extra_class | append: ' mobile-expand-child' -%}
+{% endif %}
+{% if mobile_title != blank %}
+  {%- assign menu_extra_class = menu_extra_class | append: ' has-mobile-title' -%}
+{% endif %}
+{% if link.active %}
+  {%- assign menu_extra_class = menu_extra_class | append: " site-navigation__li--active" -%}
+{% endif %}
+{% if link.links != blank %}
+  {%- assign menu_extra_class = menu_extra_class | append: " site-navigation__li--has-sub" -%}
+{% endif %}
+
+{% assign renderer_title_stripped = renderer_title | strip %}
+{% assign clearance_li_style = '' %}
+{% assign clearance_a_style = '' %}
+{% if renderer_title_stripped == 'CLEARANCE' %}
+  {% assign clearance_li_style = ' style="background:#97181A;"' %}
+  {% assign clearance_a_style = ' style="color:#fff;"' %}
+{% endif %}
+
+<li class="site-nav__item menu-type-{{ MEGA_MENU_TYPE }} site-navigation__li {{ renderer_title }} {{ menu_extra_class }}"{{ clearance_li_style }}>
+  <div class="site-navigation__link site-navigation__link-div{% if link.active %} site-navigation__link--active{% endif %}{% if link.links != blank %} site-navigation__link--has-sub{% endif %}"
+       {% if link.current %}aria-current="page"{% endif %} {% if link.links != blank %}aria-haspopup="true"{% endif %}>
+    <a href="{{ link.url }}"
+       class="site-navigation__link-text main-title"
+       title="{{ renderer_title | replace: '[layers]', '' }}"{{ clearance_a_style }}>
+      {{ renderer_title | replace: '[layers]', '' }}
+    </a>
+    {% if mobile_title != blank %}
+      <a href="{{ link.url }}"
+         class="site-navigation__link-text mobile-title"
+         title="{{ mobile_title | replace: '[layers]', '' }}">
+        {{ mobile_title | replace: '[layers]', '' }}
+      </a>
+    {% endif %}
+    {% if link.links != blank and mobile_expand_child %}
+      <span class="site-navigation__link-arrow">
+        {% render 'icon-nav-arrow', width: 7, height: 12 %}
+      </span>
+    {% endif %}
+  </div>
+  {% if link.links != blank %}
+    <div class="site-navigation__sub-menu site-navigation__sub-menu--second" aria-hidden="true">
+      <div class="mega-menu-flex-options">
+        <div class="site-wrap-default-nav site-wrap site-wrap--nav">
+          {% comment %} Loop through all sub-links {% endcomment %}
+          {% for sub_link in link.links %}
+            {% if sub_link.title == 'Shop By Room' %}
+              {% render 'luis-menu-type-brand', link: sub_link %}
+            {% elsif sub_link.title == 'Shop By Finish' %}
+              {% render 'luis-menu-type-stretch-1column', link: sub_link %}
+            {% else %}
+              <div class="mega-menu-sub-link">
+                <a href="{{ sub_link.url }}"
+                   class="site-navigation__sub-link-text"
+                   title="{{ sub_link.title | replace: '[layers]', '' }}">
+                  {{ sub_link.title | replace: '[layers]', '' }}
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+          {% comment %} Default collection card for mega menus {% endcomment %}
+          {% if MEGA_MENU_TYPE == MEGA_MENU_TYPE_MEGA %}
+            <div class="mega-menu-view-collection-card">
+              <div class="view-collection-image" style="background-image: url('{{ 'menu-collection.svg' | asset_url }}');">
+                <div class="view-collection-overlay">
+                  <div class="view-collection-text" style="text-align:center; font-size:2rem; font-weight:600;">
+                    <span style="display:block;">View the</span>
+                    <span style="display:block; margin-top:8px;">full collection</span>
+                  </div>
+                  <a href="/collections/all" class="view-collection-btn">Shop Now</a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          <div class="mobile-only mobile_view_all">
+            <a title="{{ link.title | replace: '[layers]', '' }}"
+               class="button"
+               href="{{ link.url }}">
+              View full collection
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</li>

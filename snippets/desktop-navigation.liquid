@@ -1,0 +1,406 @@
+{%- if link.title contains "Garden" -%}
+	{%- assign gardenLink = true -%}
+{%- else -%}
+	{%- assign gardenLink = false -%}
+{%- endif -%}
+
+<li class="site-nav__item site-navigation__li{% if link.active %} site-navigation__li--active{% endif %}{% if link.links != blank %} site-navigation__li--has-sub{% endif %}{% if link.title == "Sale" or link.title == "Black Friday" %} site-navigation__sale-background {% endif %}">
+	<a href="{{ link.url }}"
+	   title="{{ link.title }}" 
+	   class="site-navigation__link{% if link.active %} site-navigation__link--active{% endif %}{% if link.links != blank %} site-navigation__link--has-sub{% endif %} {% if link.title == "Clearance" %}site-navigation__no-white-border{% endif %}"
+	   {% if link.current %} aria-current="page" {% endif %}>
+			<span class="site-navigation__link-text">
+				{{ link.title | replace: '[layers]', '' }}
+			</span>
+			{% if link.links != blank %}
+				<span class="site-navigation__link-arrow">
+					{% render 'icon-nav-arrow' %}
+				</span>
+			{% endif %}
+	</a>
+	{% if link.links != blank %}
+		<div class="site-navigation__sub-menu site-navigation__sub-menu--second" aria-hidden="true">
+			<div class="mega-menu-flex-options">
+				<div class="site-wrap-default-nav site-wrap site-wrap--nav {% if link.title == 'Brand' %}branded_mobile{% endif %}">
+				{% if link.title == 'Brand' %}
+						{%- for link in linklists[section.settings.brand-menu].links -%}
+							{% if link.title == 'Brand' %}                                      
+								<ul class="site-navigation__ul">
+									<li class="site-navigation__li site-navigation__li--sub xlarge-hide mobile_li_bg">
+										<a href="{{ link.url }}" class="site-navigation__link site-navigation__link--sub" title="View {{link.title}}">
+											View all
+											<span class="site-navigation__link-arrow site-navigation__link-arrow--sub">
+												{% render 'icon-nav-arrow' %}
+											</span>
+										</a>
+									</li>
+									{%- for child_link in link.links -%}
+										<li class="site-navigation__li site-navigation__li--sub mobile_li_bg">
+											<a href="{{ child_link.url }}" class="site-navigation__link site-navigation__link--sub{% unless child_link.links == blank %} site-navigation__link--has-third{% endunless %}"  title="{{child_link.title}}">
+												{%- if link.title == 'Room' -%}
+													{% assign cat_icon = 'icon-' | append: child_link.title | downcase | replace: ' ', '-'  %}
+													<span class="site-navigation__link-icon">
+														{% render cat_icon %}
+													</span>
+												{%- endif -%}
+												<span class="site-navigation__link-text">
+													{{ child_link.title | escape | replace: "[full]", "" }}
+													</span>
+												<span class="site-navigation__link-arrow site-navigation__link-arrow--sub xlarge-hide">
+													{% render 'icon-nav-arrow' %}
+												</span>
+											</a>
+											{% assign childHandle = child_link.url | split: '/' | last %}
+											{% unless child_link.links == blank %}
+												<div class="site-navigation__sub-menu site-navigation__sub-menu--third{% if child_link.title contains '[full]' %} site-navigation__sub-menu--has-third-mobile{% endif %}">
+													<div class="site-wrap site-wrap--nav branded_mobile">
+														<div class="site-navigation__third-nav">
+															<div class="site-navigation__third-img-wrap">
+																{% assign title = child_link.title | replace: "[full]", "" %}
+																{% if collections[childHandle].image != blank %}
+																	{% 	render 'responsive-image' 
+																		image: collections[childHandle].image,
+																		image_class: 'site-navigation__third-img',
+																		alt: title,
+																		lazy: false
+																	%}
+																{% else %}
+																	{% assign navSubCatImgUrl = link.title
+																		| append: "_"
+																		| append: title
+																		| append: '.jpg'
+																		| replace: '&', ""
+																		| replace: " ", "_"
+																		| replace: "__", "_"  %}
+																	<img alt="{{title}}" class="site-navigation__third-img js-lazy-load-image" src="{{ 'transparent.png' | file_url }}" data-src="{{ navSubCatImgUrl | file_img_url : '560x' }}">
+																{% endif %}
+															</div>
+															<div class="site-navigation__third-content">
+																<p class="site-navigation__third-title title title--smallest">
+																	{% if collections[childHandle].metafields.nav.title %}
+																		{{ collections[childHandle].metafields.nav.title }}
+																	{% elsif collections[childHandle].metafields.hero.title %}
+																		{{ collections[childHandle].metafields.hero.title }}
+																	{% elsif collections[childHandle].title %}
+																		{{ collections[childHandle].title }}
+																	{% endif %}
+																</p>
+																<p class="site-navigation__third-text para">
+																	{% if collections[childHandle].metafields.nav.content %}
+																		{{ collections[childHandle].metafields.nav.content | strip_html }}
+																	{% elsif collections[childHandle].metafields.hero.content %}
+																		{{ collections[childHandle].metafields.hero.content | strip_html | truncatewords: 35 }}
+																	{% elsif collections[childHandle].description %}
+																		{{ collections[childHandle].description | strip_html | truncatewords: 35 }}
+																	{% endif %}
+																</p>
+																<a class="button" href="{{ child_link.url }}" title="{{child_link.title}}">
+																	View All
+																</a>
+															</div>
+															{%- if child_link.title contains '[full]' -%}
+																<div class="site-navigation__third-right">
+																	<div class="site-navigation__third-links site-navigation__third-links--full">
+																		<ul class="site-navigation__ul site-navigation__ul--third">
+																			<li class="site-navigation__li site-navigation__li--sub xlarge-hide">
+																				<a href="{{ child_link.url }}" class="site-navigation__link site-navigation__link--sub"  title="{{child_link.title}}">
+																					View all
+																					<span class="site-navigation__link-arrow site-navigation__link-arrow--sub">
+																						{% render 'icon-nav-arrow' %}
+																					</span>
+																				</a>
+																			</li>
+																			{%- for link in child_link.links -%}
+																				<li class="site-navigation__li site-navigation__li--third">
+																					<a class="site-navigation__link site-navigation__link--sub link" href="{{ link.url }}" title="{{link.title}}">
+																						{{ link.title | replace: "[title]", "" }}
+																						<span class="site-navigation__link-arrow site-navigation__link-arrow--sub xlarge-hide">
+																							{% render 'icon-nav-arrow' %}
+																						</span>
+																					</a>
+																				</li>
+																			{%- endfor -%}
+																		</ul>
+																	</div>
+																</div>
+															{%- else -%}
+																<div class="site-navigation__third-right">
+																	{%- for link in child_link.links -%}
+																		{% if forloop.first == true %}
+																			<div class="site-navigation__third-links">
+																				{% if link.title contains '[title]' %}
+																					<p class="site-navigation__third-list-title">
+																						{{ link.title | replace: "[title]", "" }}
+																					</p>
+																				{% endif %}
+																				<ul class="site-navigation__third-list">
+																		{% elsif link.title contains '[title]' %}
+																		</ul>
+																		</div>
+																			<div class="site-navigation__third-links">
+																				<p class="site-navigation__third-list-title">
+																					{{ link.title | replace: "[title]", "" }}
+																				</p>
+																				<ul class="site-navigation__third-list">
+																		{% endif %}
+																		{% unless link.title contains '[title]' %}
+																			<li class="site-navigation__third-list-item">
+																				<a class="site-navigation__third-link link{% if link.title contains '[noicon]' %} site-navigation__third-link--no-img{% endif %}" href="{{ link.url }}" title="{{link.title}}">
+																					{{ link.title | replace: "[noicon]", "" }}
+																				</a>
+																			</li>
+																		{% endunless %}
+																	{%- endfor -%}
+																		</ul>
+																	</div>
+																</div>
+															{%- endif -%}
+														</div>
+													</div>
+												</div>
+											{% endunless %}
+										</li>
+									{%- endfor -%}
+								</ul>
+							{% endif %}                                      
+						{%- endfor -%}
+					{% else %}  
+						{% assign child_link = link %}
+						{% assign childHandle = child_link.url | split: '/' | last %}
+						{% unless child_link.links == blank %}
+							<div class="mega-menu-outer-container {% if link.title contains "[layers]" %}mega-menu-sidebar-flex{% endif %}">
+								{%- if link.title contains "[layers]" -%}
+									{%- for link in child_link.links -%}
+										{%- if link.title contains "[layer-1]" -%}
+											{%- assign layer1Title = link.title | replace: '[layer-1]', '' -%}
+											{%- assign layer1Link = link.url -%}
+										{%- elsif link.title contains "[layer-2]" -%}
+											{%- assign layer2Title = link.title | replace: '[layer-2]', '' -%}
+											{%- assign layer2Link = link.url -%}
+										{%- endif -%}
+									{%- endfor -%}
+									<div class="mega-menu-sidebar-container">
+										<a href="{{ layer1Link }}" data-layer="layer-1" title="{{ layer1Title }}" class="mega-menu-sidebar-container-element mega-menu-sidebar-element-active">
+											<h2>
+												{{ layer1Title }}
+											</h2>
+											<span class="mega-menu-sidebar-chevron">
+												<svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+												  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+													<g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+													  <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+													</g>
+												  </g>
+												</svg>
+											</span>
+										</a>
+										<a href="{{ layer2Link }}" title="{{ layer2Title }}" data-layer="layer-2" class="mega-menu-sidebar-container-element">
+											<h2>
+												{{ layer2Title }}
+											</h2>
+											<span class="mega-menu-sidebar-chevron">
+												<svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+												  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+													<g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+													  <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+													</g>
+												  </g>
+												</svg>
+											</span>
+										</a>
+									</div>
+								{%- endif -%}
+								<div class="mega-menu-inner-container {% if gardenLink == true and section.settings.mega-menu-images == false %}mega-menu-column{% endif %}">
+									{%- for link in child_link.links -%}
+										{%- if link.title contains "layer-1" -%}
+											{%- assign layerLevel = "layer-1" -%}
+										{%- elsif link.title contains "layer-2" -%}
+											{%- assign layerLevel = "layer-2" -%}
+										{%- endif -%}
+										{%- unless link.title == "Images" or link.title contains "layer" -%}
+											{%- unless section.settings.mega-menu-images == false and link.title contains "[product]" or link.title contains "[collection]" and gardenLink == false -%}
+												<div {% if layerLevel != blank %} data-layer="{{ layerLevel }}" {% endif %} class="mega-menu-element-container {% if child_link.links.size > 5 %}mega-menu-element-small-width{% else %}mega-menu-element-wide-width{% endif %} {% if layerLevel != "layer-1" and layerLevel != blank %}mega-menu-element-container-hidden{% endif %}">
+													{%- if link.title contains "[product]" or link.title contains "[collection]" -%}
+														{%- if gardenLink == false or section.settings.mega-menu-images == true -%}
+															<a href="{{ link.url }}" class="mega-menu-element-container-product-collection" title="{{ link.title | replace: "[collection]", "" | replace: "[product]", "" }}">
+																{%- if link.title contains "[collection]" -%}
+																	{%- assign objectImage = link.object.image -%}
+																{%- else -%}
+																	{%- assign objectImage = link.object.featured_image -%}
+																{%- endif -%}
+
+																{% 	render 'responsive-image'
+																	image: objectImage,
+																	image_class: "mega-menu-image-element",
+																	alt: {{ link.title | replace: "[noicon]", "" | replace: '[product]', '' | replace: '[collection]', '' }},
+																	lazy: false
+																%}
+																<span>
+																	{{ link.title | replace: '[product]', '' | replace: '[collection]', '' }}
+																</span>
+																{%- if link.title contains "[product]" -%}
+																	<span>
+																		{{ link.object.price | money }}
+																	</span>
+																{%- endif -%}
+															</a>
+														{%- else -%}
+															<a class="mega-menu-no-images-link {% if forloop.last == true %}mega-menu-no-images-link-last{% endif %}" href="{{ link.url }}" title="{{ link.title | replace: '[collection]', '' }}">
+																<span>
+																	{{ link.title | replace: '[collection]', '' }}
+																</span>
+															</a>
+														{%- endif -%}
+													{%- else -%}
+														<div class="mega-menu-element-title-container">
+															<h3>
+																{{ 'general.navigation.title_prefix' | t }} {{ link.title | replace: "[title]", "" }}
+															</h3>
+														</div>
+														<ul class="mega-menu-element-body-container">
+															{%- for sublink in link.links -%}
+																<li {% if sublink.title contains "[heading]" %}style="margin:0px;"{% endif %} class="mega-menu-element-body-attribute-container">
+																	{%- assign splittedTitle = sublink.title | split: '[' -%}
+																	{%- assign sublinkTitle = splittedTitle[0] -%}
+
+																	{%- if sublink.title contains ".png" -%}
+																		{%- assign secondHalfUrl = splittedTitle[1] | split: ']' | replace: ' ', '' -%}
+																		{%- assign imageUrl = secondHalfUrl | replace: '[', '' | replace: ']', '' | replace: '"', '' -%}
+																	{%- else -%}
+																		{%- assign imageUrl = sublinkTitle | append: '.png' | replace: " ", "_" -%}
+																	{%- endif -%}
+
+
+                                                              <!-- updated this to false, needs to be all follow -->
+																	{%- assign noFollow = false -%}
+																	{%- if sublink.type == "collection_link" -%}
+																		{%- assign noFollow = false -%}
+																	{%- endif -%}
+
+																	<a href="{{ sublink.url }}"  title="{{ sublinkTitle | replace: "[noicon]", "" }}">
+																		{%- if link.title contains "Room" -%}
+																			{%- assign imageUrl = sublinkTitle | downcase | replace: ' ', '' | append: '.svg' -%}
+																			<img 
+																				alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																				src="{{ imageUrl | asset_url }}" 
+																				class="site-navigation__third-link-image"
+																			>
+																		{%- elsif imageUrl contains 'Bespoke' or imageUrl contains 'Bevel' -%}
+																			<img 
+																				alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																				src="{{ 'transparent.png' | file_url }}" 
+																				data-src="{{ 'Bevel_Edge_small.png' | asset_url }}" 
+																				class="site-navigation__third-link-image js-lazy-load-image"
+																			>
+																		{%- elsif sublink.title contains "[i]" or sublink.title contains ".png" -%}
+																			<img 
+																				alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}" 
+																				src="{{ imageUrl | file_url }}" 
+																				class="site-navigation__third-link-image"
+																			>
+																		{%- endif -%}
+																		{%- if sublink.title contains "[heading]" -%}
+																			<div class="mega-menu-element-title-container">
+																				<h3>
+																					{{ 'general.navigation.title_prefix' | t }} {{ sublinkTitle | replace: "[heading]", "" }}
+																				</h3>
+																			</div>
+																		{%- elsif sublinkTitle contains "[collection]" or sublinkTitle contains "[product]" -%}
+																			{%- if sublinkTitle contains "[collection]" -%}
+																				{%- assign objectImage = sublink.object.image -%}
+																			{%- else -%}
+																				{%- assign objectImage = sublink.object.featured_image -%}
+																			{%- endif -%}
+																			<div>
+																				{% 	render 'responsive-image' 
+																					image: objectImage,
+																					image_class: 'mega-menu-element-extra-product-image',
+																					alt: sublink.object.title,
+																					lazy: false
+																				%}
+																				<div class="mega-menu-element-extra-product-text">
+																					<span>
+																						{{ sublink.object.title }}
+																					</span>
+																					{%- if sublinkTitle contains "[product]" -%}
+																						<span>
+																							{{ sublink.object.price | money_with_currency }}
+																						</span>
+																					{%- endif -%}
+																				</div>
+																			</div>
+																		{%- else -%}
+																			<span>
+																				{{ sublinkTitle | replace: '[i]', '' }}
+																			</span>
+																		{%- endif -%}
+																	</a>
+																</li>
+															{%- endfor -%}
+														</ul>
+													{%- endif -%}
+												</div>
+											{%- endunless -%}
+										{%- endunless -%}
+									{%- endfor -%}
+								</div>
+								{%- if section.settings.mega-menu-images == true -%}
+									<div class="mega-menu-images-container">
+										<ul class="mega-menu-images-ul">
+											{%- for link in child_link.links -%}
+												{%- if link.title == "Images" -%}
+													{%- for sublink in link.links -%}
+														<li class="mega-menu-images-element-container">
+															{%- assign sublinkTitle = sublink.title | replace: '[i]', '' -%}
+															<a href="{{ sublink.url }}" title="{{ sublinkTitle | replace: "[noicon]", "" }}">
+																{% 	render 'responsive-image'
+																	image: sublink.object.image,
+																	image_class: "mega-menu-image-element",
+																	alt: {{ sublinkTitle | replace: "[noicon]", "" }},
+																	lazy: false
+																%}
+																<span>
+																	{{ sublinkTitle }}
+																</span>
+															</a>
+														</li>
+													{%- endfor -%}
+												{%- endif -%}
+											{%- endfor -%}
+										</ul>
+									</div>
+									
+								{%- endif -%}
+							</div>
+							{%- if section.settings.mega-menu-images == false -%}
+								{%- if link.title contains "[layers]" -%}
+									<div data-layer="layer-1" class="mega-menu-no-images-button-container mega-menu-no-images-button-container-layers">
+										<a title="{{ layer1Title }}" class="button" href="{{ layer1Link }}">
+											Browse The Full {{ layer1Title }} Collection
+										</a>
+									</div>
+									<div data-layer="layer-2" class="mega-menu-no-images-button-container mega-menu-element-container-hidden mega-menu-no-images-button-container-layers">
+										<a title="{{ layer2Title }}" class="button" href="{{ layer2Link }}">
+											Browse The Full {{ layer2Title }} Collection
+										</a>
+									</div>
+								{%- else -%}
+									<div class="mega-menu-no-images-button-container">
+										<a title="{{ link.title | replace: '[layers]', '' }}" class="button" href="{{ link.url }}">
+											View full collection
+										</a>
+									</div>
+								{%- endif -%}
+							{%- endif -%}
+						{% endunless %}
+				{% endif %}
+				<div class="mobile-only mobile_view_all">
+					<a  title="{{ child_link.title | replace: '[layers]', '' }}" class="button" href="{{ child_link.url }}">
+						View full collection
+					</a>
+				</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+</li>

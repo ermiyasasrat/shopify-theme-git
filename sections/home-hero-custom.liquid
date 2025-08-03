@@ -1,0 +1,222 @@
+{% schema %}
+    {
+        "name": "Home hero Custom",
+        "tag": "section",
+    "class": "section",
+        "settings": [
+          {
+            "id": "custom_layout",
+  "type": "checkbox",
+  "label": "Enable Custom Layout?",
+  "default": false
+},
+            {
+                "type": "text",
+                "id": "home_hero_title",
+                "label": "Home hero title"
+            },
+          
+           {
+                        "type": "richtext",
+                        "id": "hero_richtext",
+                        "label": "Image RichText"
+                    },
+            {
+                "type": "url",
+                "id": "home_hero_link",
+                "label": "Home hero link"
+            },
+            {
+                "type": "text",
+                "id": "home_hero_link_text",
+                "label": "Home hero link text"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "hero_gallery_image",
+                "name": "Hero gallery image",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "hero_gallery_image",
+                        "label": "Image",
+                        "info": "Recommended image size: 1920 x 1600."
+                    },
+                    {
+                        "type": "text",
+                        "id": "hero_gallery_image_text",
+                        "label": "Image Text"
+                    },
+                   {
+                        "type": "html",
+                        "id": "hero_bghtml",
+                        "label": "Image Foreground HTML"
+                    },
+                    {
+                        "type": "url",
+                        "id": "hero_gallery_image_link",
+                        "label": "Image link"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "hero_overlay_image",
+                        "label": "Overlay Image (Like a logo)"
+                    }
+                ]
+            }
+        ],
+       "presets": [
+        {
+            "name": "Home Hero Custom",
+            "category": "Home",
+            "settings": {}
+        }
+    ]
+    }
+{% endschema %}
+{% comment %}
+  {
+                "type": "html",
+                "id": "home_hero_content",
+                "label": "Home hero content"
+            },
+removed schema 
+{% endcomment %}
+{% unless
+    section.settings.home_hero_title == blank
+    and section.settings.home_hero_link == blank
+    and section.settings.home_hero_link_text == blank
+    and section.settings.hero_overlay_image == blank
+%}
+    <section id="hero" class="image-text-split image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.blocks == blank %}
+                    <div class="image-text-split__image image-text-split__image--hero">
+                        <div id="home-hero-gallery" class="glide">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    {% for galleryItem in section.blocks %}
+                                        <li class="glide__slide">
+                                        {% if galleryItem.settings.hero_gallery_image_link %}
+                                            <a class="image-text-split__link" href="{{ galleryItem.settings.hero_gallery_image_link }}">
+                                        {% endif %}
+                                                {% assign image_small_1x = galleryItem.settings.hero_gallery_image | img_url: '360x260' %}
+                                                {% assign image_small_2x = galleryItem.settings.hero_gallery_image | img_url: '720x520' %}
+                                                {% assign image_medium_1x = galleryItem.settings.hero_gallery_image | img_url: '683x520' %}
+                                                {% assign image_medium_2x = galleryItem.settings.hero_gallery_image | img_url: '1366x1040' %}
+                                                {% assign image_large_1x = galleryItem.settings.hero_gallery_image | img_url: '960x800' %}
+                                                {% assign image_large_2x = galleryItem.settings.hero_gallery_image | img_url: '1920x1600' %}
+                                                {% include 'picture',
+                                                    small1x: image_small_1x,
+                                                    small2x: image_small_2x,
+                                                    medium1x: image_medium_1x,
+                                                    medium2x: image_medium_2x,
+                                                    large1x: image_large_1x,
+                                                    large2x: image_large_2x,
+                                                    alt: galleryItem.settings.hero_gallery_image_text
+                                                %}
+                                              <div class="img-html-overlay">
+                                      <div class="overlay-inner-html">
+{{ galleryItem.settings.hero_bghtml }}
+                                      </div>
+                                              </div>
+                                  <style>
+.img-html-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+                                      .overlay-inner-html {
+    transform: translateY(-50%);
+    top: 50%;
+    position: absolute;
+    padding: 0 2.6em;
+}
+                                      </style>
+                                              
+                                              {% comment %}
+                                              Woolley New Section
+                                              {% endcomment %}
+                                              	{% unless galleryItem.settings.hero_overlay_image == blank %}
+                                                    <div class="woolley-home-overlay-image">
+                                                       <img src="{{ galleryItem.settings.hero_overlay_image | img_url: 'master' }}" alt="{{ galleryItem.settings.hero_overlay_image.alt }}" title="{{ galleryItem.settings.hero_overlay_image.alt }}"/>
+                                                       
+                                                    </div>
+                                                {% endunless %}
+                                              
+                                              
+                                              
+                                              
+                                                {% unless galleryItem.settings.hero_gallery_image_text == blank %}
+                                                    <div class="image-text-split__image-text">
+                                                        <span class="image-text-split__image-text-icon"></span>{{- galleryItem.settings.hero_gallery_image_text -}}
+                                                    </div>
+                                                {% endunless %}
+                                        {% if galleryItem.settings.hero_gallery_image_link %}
+                                            </a>
+                                        {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="glide__bullets" data-glide-el="controls[nav]">
+                                {% for galleryItem in section.blocks %}
+                                    <button class="glide__bullet" data-glide-dir="={{- forloop.index0 -}}"></button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.home_hero_title == blank
+                    and section.settings.home_hero_content == blank
+                    and section.settings.home_hero_link == blank
+                    and section.settings.home_hero_link_text == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--hero image-text-split__content--home">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                <img class="image-text-split__background-sig" src="{{ 'icon-hero-sig.svg' | asset_url }}" alt="Every floor tells a story">
+                                {% unless section.settings.home_hero_title == blank %}
+                                    <h1 class="title title--large image-text-split__title image-text-split__title--home">
+                                        {{- section.settings.home_hero_title -}}
+                                    </h1>
+                                {% endunless %}
+                   {% unless section.settings.hero_richtext == blank %}
+                                    <div class="image-text-split__content-indent">
+                                        <div class="para image-text-split__para">
+                                            {{- section.settings.hero_richtext -}}
+                                        </div>
+                                    </div>
+                                {% endunless %}
+                  {% comment %}
+                                {% unless section.settings.home_hero_content == blank %}
+                                    <div class="image-text-split__content-indent">
+                                        <div class="para image-text-split__para">
+                                            {{- section.settings.home_hero_content -}}
+                                        </div>
+                                    </div>
+                  
+                                {% endunless %}
+                  {% endcomment %}
+                                {% unless section.settings.home_hero_link == blank or section.settings.home_hero_link_text == blank %}
+                                    <div class="image-text-split__content-indent">
+                                        <a class="button" href="{{- section.settings.home_hero_link -}}">
+                                            {{- section.settings.home_hero_link_text -}}
+                                        </a>
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+        <a data-scroll href="#site-header" class="button-back-to-top"></a>
+    </section>
+{% render 'trustpilot-hero-mobile' %}
+{% endunless %}

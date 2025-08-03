@@ -1,0 +1,181 @@
+{%- comment -%}
+Mega Menu: Unified layout combining List-Based (four columns, icon+text) and Image-Based (room grid) menus.
+- List-Based: Four columns (Shop by Shade, Price, Finish, Style) with icons and text.
+- Image-Based: Grid of room images from "Shop by Room" sub-links.
+- Responsive, desktop only. Minimal JS for toggle.
+{%- endcomment -%}
+
+{%- assign shop_by_room_menu = false -%}
+{%- for submenu in link.links -%}
+  {%- if submenu.title == "Shop by Room" -%}
+    {%- assign shop_by_room_menu = submenu -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign menu_handle = menu_handle | default: section.settings.main-menu.handle | default: 'main-menu' -%}
+
+<div class="mega-menu-uk site-navigation-brand-submenu-container" aria-hidden="true">
+  <div class="mega-menu-uk__panel mega-menu-uk__panel--combined is-active">
+    <div class="mega-menu-uk__layout">
+      <!-- List-Based Section (Four Columns) -->
+      <div class="mega-menu-uk__columns">
+        {%- assign columns = "Shop by Shade,Shop by Price,Shop by Finish,Shop by Style" | split: "," -%}
+        {%- assign column_handles = "shop-by-shade,shop-by-price,shop-by-finish,shop-by-style" | split: "," -%}
+        {%- for column in columns %}
+          <div class="mega-menu-uk__column">
+            <h3 class="mega-menu-uk__column-title">{{ column }}</h3>
+            <ul class="mega-menu-uk__list">
+              {%- assign menu = linklists[column_handles[forloop.index0]] -%}
+              {%- for item in menu.links %}
+                <li class="mega-menu-uk__item">
+                  <a href="{{ item.url }}" class="mega-menu-uk__link" title="{{ item.title | escape }}">
+                    <span class="mega-menu-uk__icon">
+                      <img src="{{ 'icon-' | append: item.title | handle | append: '.svg' | asset_url | default: 'icon-default.svg' | asset_url }}"
+                           alt="{{ item.title | escape }} icon"
+                           width="28"
+                           height="28" />
+                    </span>
+                    <span class="mega-menu-uk__text">{{ item.title }}</span>
+                  </a>
+                </li>
+              {%- endfor %}
+            </ul>
+          </div>
+        {%- endfor %}
+      </div>
+
+      <!-- Image-Based Section (Room Grid) -->
+      {% if shop_by_room_menu %}
+        <div class="mega-menu-uk__room-grid">
+          {%- for room in shop_by_room_menu.links %}
+            <div class="mega-menu-uk__room-tile">
+              <a href="{{ room.url }}" class="mega-menu-uk__room-link" title="{{ room.title | escape }}">
+                {%- if room.object.image -%}
+                  <img src="{{ room.object.image | img_url: '400x400' }}"
+                       alt="{{ room.title | escape }}"
+                       width="120"
+                       height="120"
+                       class="mega-menu-uk__room-image" />
+                {%- else -%}
+                  <div style="width:120px;height:120px;background:#eee;border-radius:12px;"></div>
+                {%- endif -%}
+                <div class="mega-menu-uk__room-label">{{ room.title }}</div>
+              </a>
+            </div>
+          {%- endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+.mega-menu-uk {
+  position: absolute;
+  left: 0; right: 0;
+  top: 100%;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  z-index: 100;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 2rem 4vw;
+  font-family: inherit;
+}
+.mega-menu-uk__panel {
+  display: none;
+}
+.mega-menu-uk__panel.is-active {
+  display: block;
+}
+.mega-menu-uk__layout {
+  display: flex;
+  gap: 2rem;
+}
+.mega-menu-uk__columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  flex: 2;
+}
+.mega-menu-uk__column-title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.mega-menu-uk__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mega-menu-uk__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.mega-menu-uk__link {
+  text-decoration: none;
+  color: #222;
+}
+.mega-menu-uk__icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+.mega-menu-uk__text {
+  font-size: 1rem;
+}
+.mega-menu-uk__room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  flex: 1;
+}
+.mega-menu-uk__room-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mega-menu-uk__room-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+}
+.mega-menu-uk__room-link {
+  text-decoration: none;
+  color: #222;
+}
+.mega-menu-uk__room-label {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+@media (max-width: 1200px) {
+  .mega-menu-uk__columns { gap: 0.5rem; }
+  .mega-menu-uk__layout { flex-direction: column; }
+  .mega-menu-uk { padding: 2rem 2vw; }
+}
+@media (max-width: 900px) {
+  .mega-menu-uk__columns { grid-template-columns: 1fr 1fr; }
+  .mega-menu-uk__room-grid { gap: 0.5rem; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const menuContainer = document.querySelector('.mega-menu-uk');
+  if (menuContainer) {
+    menuContainer.setAttribute('aria-hidden', !menuContainer.classList.contains('is-active') ? 'true' : 'false');
+    menuContainer.addEventListener('click', function(event) {
+      if (event.target.closest('.mega-menu-uk__link') || event.target.closest('.mega-menu-uk__room-link')) {
+        menuContainer.classList.remove('is-active');
+        menuContainer.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+});
+</script>

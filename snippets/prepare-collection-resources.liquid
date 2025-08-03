@@ -1,0 +1,6 @@
+{% unless collection.template_suffix == "no-images" %}
+    {% unless shop.metafields.collection_list_hero.image_small == blank
+    and shop.metafields.collection_list_hero.image_large == blank %}
+        <link rel="preload" as="image" href="{{ collection.image | img_url: '480x' }}">
+    {% endunless %}
+{% endunless %}

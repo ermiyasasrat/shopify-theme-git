@@ -1,0 +1,66 @@
+{% comment %}
+  Woolley added to stop overwitten issues
+{% endcomment %}
+ {{ 'woolley-contact.css' | asset_url | stylesheet_tag }}
+
+{% section 'woolley-contact-hero' %}
+
+<!--contact form left and right -->
+<div class="image-text-split__wrap">
+    <div class="image-text-split__content contact-left">
+          <h4 class="woolcontact">Please send us your enquiry</h4>
+                {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                    <div class="contact-form__intro">
+                        <p>
+                            Thank you for your contact
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="contact-form__intro">
+                        {{ page.content }}
+                    </div>
+                {% endif %}
+                {%- if form.errors -%}
+                    <div class="contact-form-errors">
+                        {{ form.errors | default_errors }}
+                    </div>
+                {% endif %}
+                <div class="contact-form__field">
+                    <label class="contact-form__label" for="ContactFormName">Name</label>
+                    <input class="input input-text" type="text" id="ContactFormName" name="contact[name]">
+                </div>
+                <div class="contact-form__field">
+                    <label class="contact-form__label" for="ContactFormEmail">Email address</label>
+                    <input class="input input-text" type="email" id="ContactFormEmail" name="contact[email]">
+                </div>
+                <div class="contact-form__field">
+                    <label class="contact-form__label" for="ContactFormPhone">Phone number</label>
+                    <input class="input input-text" type="tel" id="ContactFormPhone" name="contact[phone]">
+                </div>
+                <div class="contact-form__field">
+                    <label class="contact-form__label" for="ContactFormMessage">Your message</label>
+                    <textarea class="input input-text" rows="10" id="ContactFormMessage" name="contact[body]"></textarea>
+                </div>
+                <div class="contact-form__field contact-form__field--split">
+                    <div class="product-basket__wastage input-checkbox">
+                        <input type="checkbox" class="input-checkbox__input" id="ContactFormOffers" name="contact[offers]">
+                        <label class="input-checkbox__label" for="ContactFormOffers">
+                            Keep me up to date on news and exclusive offers
+                        </label>
+                    </div>
+                </div>
+                <div class="contact-form__field contact-form__field--split">
+                    <input class="button contact-form__submit" type="submit" value="Submit">
+                </div>
+            {% endform %}
+    </div>
+
+    <div class="image-text-split__content contact-right">
+           {% section 'woolley-contact-openint-times.liquid' %}
+    </div>
+</div>
+
+
+
+{% section 'woolley-contact-map' %}

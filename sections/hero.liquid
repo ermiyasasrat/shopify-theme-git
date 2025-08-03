@@ -1,0 +1,189 @@
+{% assign collectionIdentifier = '' %}
+{% if page %}
+    {% assign title = page.metafields.hero.title %}
+    {% assign content = page.metafields.hero.content %}
+    {% assign link_text = page.metafields.hero.link_text %}
+    {% assign link = page.metafields.hero.link %}
+    {% assign image_small = page.metafields.hero.image_small %}
+    {% assign image_large = page.metafields.hero.image_large %}
+    {% assign image_alt = page.metafields.hero.image_alt %}
+    {% unless page.metafields.hero.background_colour == blank %}
+        {% assign background_colour = page.metafields.hero.background_colour %}
+    {% endunless %}
+{% elsif collection %}
+
+	{% assign collectionIdentifier = 'collection-hero' %}
+
+    {% if collection.title %}
+        {% assign title = collection.title %}
+    {% elsif collection.metafields.hero.title %}
+        {% assign title = collection.metafields.hero.title %}
+    {% elsif collection.title %}
+        {% assign title = collection.title %}
+    {% else %}
+        {% assign title = shop.metafields.collection_all_hero.title %}
+    {% endif %}
+
+    {% if collection.metafields.hero.content %}
+        {% assign content = collection.metafields.hero.content %}
+    {% elsif collection.description %}
+        {% assign content = collection.description %}
+    {% else %}
+        {% assign content = shop.metafields.collection_all_hero.content %}
+    {% endif %}
+
+    {% if collection.metafields.hero.link_text %}
+        {% assign link_text = collection.metafields.hero.link_text %}
+    {% else %}
+        {% assign link_text = shop.metafields.collection_all_hero.link_text %}
+    {% endif %}
+
+    {% if collection.metafields.hero.link %}
+        {% assign link = collection.metafields.hero.link %}
+    {% else %}
+        {% assign link = shop.metafields.collection_all_hero.link %}
+    {% endif %}
+
+    {% if collection.metafields.collection.read_more_content %}
+        {% assign link = '#collection-read-more' %}
+        {% assign link_text = 'Read more' %}
+    {% endif %}
+
+    {% if collection.metafields.hero.image_small or 
+          collection.metafields.hero.image_large or 
+          collection.metafields.hero.image_alt%}
+         {% assign image_small = collection.metafields.hero.image_small %}
+         {% assign image_large = collection.metafields.hero.image_large %}
+         {% assign image_alt = collection.metafields.hero.image_alt %}
+    {% elsif collection.image %}
+        {% assign image_small = collection.image | img_url: '792x' %}
+        {% assign image_large = collection.image | img_url: '960x' %}
+        {% assign image_alt = collection.title %}
+    {% else %}
+        {% assign image_small = shop.metafields.collection_all_hero.image_small %}
+        {% assign image_large = shop.metafields.collection_all_hero.image_large %}
+        {% assign image_alt = shop.metafields.collection_all_hero.image_alt %}
+    {% endif %}
+
+    {% if collection.handle == 'all' %}
+        {% unless shop.metafields.collection_all_hero.background_colour == blank %}
+            {% assign background_colour = shop.metafields.collection_all_hero.background_colour %}
+        {% endunless %}
+    {% else %}
+        {% unless collection.metafields.hero.background_colour == blank %}
+            {% assign background_colour = collection.metafields.hero.background_colour %}
+        {% endunless %}
+    {% endif %}
+{% elsif template.name == 'list-collections' %}
+    {% assign title = shop.metafields.collection_list_hero.title %}
+    {% assign content = shop.metafields.collection_list_hero.content %}
+    {% assign link_text = shop.metafields.collection_list_hero.link_text %}
+    {% assign link = shop.metafields.collection_list_hero.link %}
+    {% assign image_small = shop.metafields.collection_list_hero.image_small %}
+    {% assign image_large = shop.metafields.collection_list_hero.image_large %}
+    {% assign image_alt = shop.metafields.collection_list_hero.image_alt %}
+    {% unless shop.metafields.collection_list_hero.background_colour == blank %}
+        {% assign background_colour = shop.metafields.collection_list_hero.background_colour %}
+    {% endunless %}
+{% endif %}
+
+{% unless
+    title == blank
+    and content == blank
+    and link_text == blank
+    and link == blank
+%}
+  {% if background_colour == 'Dark' %}<style>
+    nav.breadcrumbs {
+    color: #fff;
+    }
+    </style>{% endif %} 
+  
+    <section id="hero" class="testing {{ collectionIdentifier }} image-text-split image-text-split--hero{% if background_colour == 'Dark' %} image-text-split--dark{% endif %}">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless
+                    image_small == blank
+                    and image_large == blank
+                %}
+                    <div class="image-text-split__image image-text-split__image--hero">
+                        {% include 'picture-acf',
+                            small: image_small,
+                            medium: image_large,
+                            large: image_large,
+                            alt: image_alt
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    title == blank
+                    and content == blank
+                    and link_text == blank
+                    and link == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--hero">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless title == blank %}
+                                    <h1 class="title image-text-split__title twoliner">
+                                        {{- title -}}
+                                    </h1>
+                                {% endunless %}
+                                {% unless content == blank %}
+                                    <div class="para image-text-split__para twoliner_para">
+                                        {{- content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless link_text == blank %}
+                                    <a {% if collection.metafields.collection.read_more_content %}data-scroll{% endif %} class="twoliner_button button{% if background_colour != 'Dark' %} button--secondary{% endif %}" href="{{- link -}}">
+                                        {{- link_text -}}
+                                    </a>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+
+
+{% if template.suffix contains 'desc-top' %}
+
+<div class="full-read-more">
+  <div class="site-wrap site-wrap--max read-more">
+<!--     <div class="site-wrap site-wrap--narrow"> -->
+      {% if collection.metafields.collection.read_more_content %}
+      <div id="collection-read-more" class="wysiwyg wysiwyg--collection">
+        {{ collection.metafields.collection.read_more_content }}
+        {% if template.suffix contains 'desc-top' %}
+          <div class="read-less-button">
+            <a class="button button--secondary" href="#collection-read-more">Read Less</a>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+<!--     </div> -->
+  </div>
+</div>
+
+{% endif %}
+
+
+{% endunless %}
+
+{% schema %}
+	{
+		"name": "Hero",
+		"class": "section",
+		"settings": [
+		],
+		"presets": [
+			{
+				"name": "Hero",
+				"category": "Collection",
+				"settings": {}
+			}
+		]
+	}
+{% endschema %}

@@ -1,0 +1,45 @@
+{%- comment -%}
+    This snippet is for the scenario where we are using ACF rather than
+    shopify files as img_url resize does not work with it. In this case
+    provide all images at 2x.
+
+    All image sizes should be provided at 'sections' or 'templates' level.
+    Ensure that all assets are correctly sized, providing a fallback
+    if required. E.g If no specific 'medium' asset is provided,
+    provide a resized version of 'large'. An empty 'alt' tag is fine
+    and should be encouraged if for decorative purposes only.
+    Output of this would be alt="".
+
+    Pass in lazy (boolean) as option to lazy load the images.
+{%- endcomment -%}
+<picture>
+    {% if lazy %}
+        {% if small %}
+            <source data-srcset="{{ small }}"
+                media="(max-width: 767px)">
+        {% endif %}
+        {% if medium %}
+            <source data-srcset="{{ medium }}"
+                media="(min-width: 768px) and (max-width: 1023px)">
+        {% endif %}
+        {% if large %}
+            <source data-srcset="{{ large }}"
+                media="(min-width: 1024px)">
+        {% endif %}
+        <img data-src="{{ large }}" class="js-lazy-load-image {{ class }}" alt="{{ alt }}">
+    {% else %}
+        {% if small %}
+            <source srcset="{{ small }}"
+                media="(max-width: 767px)">
+        {% endif %}
+        {% if medium %}
+            <source srcset="{{ medium }}"
+                media="(min-width: 768px) and (max-width: 1023px)">
+        {% endif %}
+        {% if large %}
+            <source srcset="{{ large }}"
+                media="(min-width: 1024px)">
+        {% endif %}
+        <img src="{{ large }}"{% unless class == blank %} class="{{ class }}" {% endunless %} alt="{{ alt }}" title="{{ alt }}">
+    {% endif %}
+</picture>

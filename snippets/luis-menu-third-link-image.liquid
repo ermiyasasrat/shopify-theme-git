@@ -1,0 +1,24 @@
+{%- assign splittedTitle = sublink.title | split: '[' -%}
+{%- assign sublinkTitle = splittedTitle[0] -%}
+{%- assign imageExtraClass = '' -%}
+{%- assign imageDataSrc = '' -%}
+
+{%- if link.title contains "Room" -%}
+  {%- assign imageUrl = sublinkTitle | downcase | replace: ' ', '' | append: '.svg'  | asset_url -%}
+{%- elsif imageUrl contains 'Bespoke' or imageUrl contains 'Bevel' -%}
+  {%- assign imageUrl = 'transparent.png' | file_url -%}
+  {%- assign imageExtraClass = imageExtraClass | append: 'js-lazy-load-image' -%}
+  {%- assign imageDataSrc = 'Bevel_Edge_small.png' | asset_url -%}
+{%- elsif sublink.title contains "[i]" or sublink.title contains ".png" -%}
+  {%- assign imageUrl = imageUrl | file_url -%}
+{%- else -%}
+  {%- assign imageUrl = '' -%}
+{%- endif -%}
+
+{% if imageUrl and imageUrl != blank %}
+  <img alt="Browse {{ sublinkTitle | replace: "[noicon]", "" }}"
+       src="{{ imageUrl }}"
+       {%- if imageDataSrc -%}data-src="{{ imageDataSrc }}"{%- endif -%}
+       loading="lazy"
+       class="site-navigation__third-link-image {{ imageExtraClass }}">
+{% endif %}

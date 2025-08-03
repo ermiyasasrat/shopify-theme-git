@@ -1,0 +1,60 @@
+<section class="blog-posts">
+  <div class="site-wrap">
+    <h2>{{ section.settings.title | escape }}</h2>
+    {%- assign blog = blogs[section.settings.blog] -%}
+    <ul>
+      {%- for article in blog.articles limit: section.settings.post_limit -%}
+        <li>
+          <a href="{{ article.url }}">
+            {%- if article.image -%}
+              {{ article | img_url: '150x150', scale: 2 | img_tag: '' }}
+            {%- endif -%}
+            <h3>{{ article.title }}</h3>
+          </a>
+          <a class="button" href="{{ article.url }}" aria-label="Read more: {{ article.title }}">
+            Read more
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Inspiration"
+    },
+    {
+      "id": "blog",
+      "type": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Posts",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 3
+    },
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog",
+      "settings": {
+        "blog": "Inspiration",
+        "post_limit": 3
+      }
+    }
+  ]
+}
+{% endschema %}

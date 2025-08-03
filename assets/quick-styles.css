@@ -1,0 +1,323 @@
+.roomvo {
+    position: absolute;
+    z-index: 999;
+    color: #fff;
+    padding-left: 25px;
+}
+.roomvo a {
+    text-decoration: none;
+}
+.roomvo img {
+    width: 30px;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    margin-right: 5px;
+}
+.trustpilot-badge__image {
+    position: relative;
+    float: left;
+    left: -7px;
+}
+.trustpilot-badge__count {
+    display: block;
+    position: relative;
+    margin-top: 0;
+}
+@media only screen and (min-width: 750px) {
+	.site-footer__trustpilot {
+		margin: 0 0 40px 0 !important;
+	}
+}
+@media only screen and (max-width: 749px) {
+	.site-footer__trustpilot {
+		margin: 20px auto;
+	}
+
+	.dn_review_cstm {
+		justify-content: center;
+		align-items: center;
+	}
+}
+.ui-state-active {
+    background: #ff001e !important;
+}
+span.breadcrumbs__arrow img {
+    display: block;
+}
+.cart-no-click {
+    pointer-events: none;
+    opacity: 0.5;
+}
+a.dn_view_cart {
+    background: #fe877a;
+    text-decoration: none;
+    clear: both;
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px 20px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 600;
+    position: relative;
+    right: 0;
+    float: right;
+    margin-right: 1.5rem;
+}
+.left-content-announce-2 a,
+.left-content-announce-2 a:hover {
+    text-decoration: none;
+    font-weight: 500;
+}
+div#collection-read-more {
+    padding-top: 20px;
+}
+.identixweb-order-delivery {
+    display: none !important;
+}
+.collection---template .bc-sf-filter-product-item-price s {
+    margin-left: 9px;
+    color: #8997a5;
+    font-family: Averta-Regular;
+    font-size: 1.4rem;
+    line-height: 1.5rem;
+    letter-spacing: 0;
+    text-align: left;
+    font-weight: 500;
+}
+.announcement-bar-2 {
+    padding-top: 0;
+    padding-bottom: 0;
+    background: #23486d;
+}
+.announce-bar-cont-2 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.left-content-announce-2 {
+    background-color: red;
+    padding: 1.4rem 1.5rem;
+    color: #fff;
+    font-weight: 600;
+}
+.right-content-announce-2 a {
+    color: #fff;
+    text-decoration: unset;
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 1px solid #fff;
+}
+.right-content-announce-2 a:last-child {
+    padding-right: 0;
+    border-right: 0;
+}
+@media (max-width: 1280px) {
+    .announcement-bar-2 .site-wrap {
+        padding: 0 2rem;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .left-content-announce-2 span {
+        font-size: 85%;
+    }
+    .right-content-announce-2 a {
+        font-size: 80%;
+    }
+}
+@media only screen and (max-width: 425px) {
+    .product-basket__total-button .button--submit {
+        width: 100%;
+    }
+    .site-wrap--product .product__details {
+        padding: 0 2rem 4rem;
+        padding-bottom: 0;
+    }
+    #product-container .product__samples-button {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+    #product-container .product__review {
+        margin-top: 1rem;
+    }
+    #product-container .product__contact {
+        padding: 0 0;
+    }
+    #shopify-section-product-accordion .product-accordion .site-wrap {
+        padding: 0 2rem;
+    }
+    .product__gallery .glide__slide {
+        min-height: 320px !important;
+    }
+    .product__gallery .glide__slide img {
+        min-height: 320px !important;
+    }
+    div#dn_date .ui-datepicker-inline {
+        margin-left: 0;
+    }
+    .cart-product__img {
+        width: auto;
+        margin: 2.5rem 0;
+        max-width: 290px;
+    }
+    .RgCMP {
+        display: none !important;
+    }
+    #shopify-section-announcement-bar-2 {
+        display: none;
+    }
+    .hide_mobile {
+        display: none;
+    }
+    a.dn_view_cart {
+        display: block;
+        clear: both;
+        z-index: 999;
+        position: relative;
+        width: 100%;
+        float: left;
+        left: 0;
+    }
+    .dn_view_cart_div {
+        height: 41px;
+        position: relative;
+        top: 9px;
+    }
+}
+.key-collections__container .slick-slide {
+    margin: 0 15px;
+}
+.key-collections__container .slick-list {
+    margin: 0 -15px;
+}
+.trustpilot-slider__container .slick-slide {
+    margin: 0 7.5px;
+}
+.trustpilot-slider__container .slick-list {
+    margin: 0 -7.5px;
+}
+.slick-slider-dots li,
+.slick-slider-dots-quote li {
+    margin: 0 1rem 0 0;
+    display: inline-block;
+    width: 25px;
+    height: 8px;
+    background: #ebebeb;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    -webkit-transition: background 0.4s;
+    transition: background 0.4s;
+}
+.slick-slider-dots-quote li {
+    background: #fff;
+}
+.slick-slider-dots-quote li.slick-active {
+    background: #1b2c3d;
+}
+.slick-slider-dots li.slick-active {
+    background: #ff877a;
+}
+.slick-slider-dots li button,
+.slick-slider-dots-quote li button {
+    display: none;
+}
+.slick__arrow {
+    border: 0;
+}
+.trustpilot-slider__container .glide__controls {
+    top: 40%;
+    left: 50%;
+    bottom: auto;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+.trustpilot-slider__container .glide__arrows {
+    display: block;
+    width: 100%;
+}
+@media only screen and (max-width: 993px) {
+    .key-collections__container .slick-list {
+        padding-left: 0 !important;
+    }
+    .key-collections__container .slick-slide {
+        margin: 0 10px;
+    }
+    .key-collections__container .slick-list {
+        margin: 0 -10px;
+    }
+    .trustpilot-slider__container .slick-slide {
+        margin: 0;
+    }
+    .trustpilot-slider__container .slick-list {
+        margin: 0;
+    }
+    .trustpilot-slider__container .glide__controls {
+        position: relative;
+        height: 6rem;
+        width: 13rem;
+        margin-top: 2rem;
+        left: auto;
+        top: auto;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+@media (min-width: 1280px) {
+    #split-quote-slider-trustpot .image-text-split__quote-sig {
+        display: none;
+    }
+}
+main .trustpilot-badge--small {
+    display: none;
+}
+#shopify-section-home-hero .trustpilot-badge--small {
+    display: block;
+}
+@media (min-width: 48em) {
+    #shopify-section-home-hero .trustpilot-badge--small {
+        display: none;
+    }
+}
+@media (min-width: 1920px) {
+    .collection---template .bc-sf-filter-product-item-price s {
+        margin-right: 30px;
+    }
+}
+@media (min-width: 120em) {
+    .contact-map__item {
+        padding-left: 13.33333%;
+    }
+    .image-text-split__content.contact-right {
+        padding-right: 13.33333%;
+    }
+    .image-text-split__wrap {
+        margin: 0 auto;
+        max-width: 192rem;
+    }
+}
+.slick-track {
+    display: flex !important;
+}
+.slick-slide {
+    height: auto;
+}
+@media only screen and (max-width: 360px) {
+    .product-sample-button__ctrl .inline-icon-text__text {
+        font-size: 11px;
+    }
+}
+@media (min-width: 64em) {
+    .reviewPage .page__container {
+        padding: 0 8.33333% 0 8.33333% !important;
+    }
+}

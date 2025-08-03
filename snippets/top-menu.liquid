@@ -1,0 +1,72 @@
+<div id="shopify-section-announcement-bar-2" class="shopify-section">
+  <div class="announcement-bar-2">
+    <div class="site-wrap">
+      <div class="announce-bar-cont-2">
+        <div class="left-content-announce-2" style="{{top_sale_display}}">
+          <a href="{{settings.top_sale_link}}"><span>{{settings.top_sale_text}}</span></a> 
+        </div>
+        <div class="right-content-announce-2">
+          <a href="/pages/flooring-guide" title="Flooring Help" rel="nofollow">Flooring help</a>
+          <a href="/pages/floor-finder" title="Floor Finder" rel="nofollow">Floor finder</a>
+<!--           <a href="/pages/contact" title="Contact">Contact</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+    .left-content-announce-2 a,
+    .left-content-announce-2 a:hover {
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+
+    .announcement-bar-2 {
+        padding-top: 0;
+        padding-bottom: 0;
+        background: #23486d;
+    }
+    .announce-bar-cont-2 {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    .left-content-announce-2 {
+        background-color: red;
+        padding: 1.4rem 1.5rem;
+        color: #fff;
+        font-weight: 600;
+    }
+    .right-content-announce-2 a {
+        color: #fff;
+        text-decoration: unset;
+        display: inline-block;
+        padding-right: 10px;
+        padding-left: 10px;
+        border-right: 1px solid #fff;
+    }
+    .right-content-announce-2 a:last-child {
+        padding-right: 0;
+        border-right: 0;
+    }
+    @media (max-width: 1280px) {
+        .announcement-bar-2 .site-wrap {
+            padding: 0 2rem;
+        }
+    }
+    @media only screen and (max-width: 768px) {
+        .left-content-announce-2 span {
+            font-size: 85%;
+        }
+        .right-content-announce-2 a {
+            font-size: 80%;
+        }
+    }
+</style>

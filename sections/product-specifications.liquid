@@ -1,0 +1,1082 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+{% comment %}
+    Get the attributes for the products, the shared and ones specific to the product type.
+{% endcomment %}
+{% assign productNumber = current_variant.metafields.product_config.product_number %}
+{% assign productAttributesShared = product.metafields.product_attribute %}
+{% assign productAttributesType = product.metafields[productType] %}
+
+{% comment %}
+    Override attributes with variant
+{% endcomment %}
+{% if product.variants.size > 1 %}
+	{% assign productAttributesVariant = current_variant.metafields[productType] %}
+{% endif %}
+{% comment %}
+    attributeLabels are the labels for each attribute that have been set on a shop
+    level. This is due to the attributes being added on a product by product basis,
+    so having to fill out the labels each time would not make sense.
+{% endcomment %}
+{% assign productAttributesSharedLabels = shop.metafields.product_attribute %}
+{% assign productAttributesTypeLabels = shop.metafields[productType] %}
+{% assign productAttributesTypeLvtLabels = shop.metafields['lvt'] %}
+
+{%- assign productType = product.type -%}
+
+{%- if productType == "Engineered Wood" or productType == "Solid Wood" -%}
+	{%- assign woodProduct = true -%}
+{%- else -%}
+	{%- assign woodProduct = false -%}
+{%- endif -%}
+
+{%- assign filterFields = product.metafields.filters -%}
+{%- assign variantFilterFields = product.selected_or_first_available_variant.metafields.filters -%}
+{%- assign variantAttributeFields = product.selected_or_first_available_variant.metafields.product_attribute -%}
+
+{%- assign accessoryType = product.metafields.filters.accessory_type -%}
+{%- if accessoryType == "Adhesive" or product.selected_or_first_available_variant.metafields.product_config.sale_metric == "Box" -%}
+	{%- assign adhesive = true -%}
+{%- else -%}
+	{%- assign adhesive = false -%}
+{%- endif -%}
+
+<section class="product-specs">
+  <div class="site-wrap">
+    <div class="specs-wrapper">
+      <div class="specs-detail">
+        <div class="dimension">
+          <h2>Dimensions</h2>
+          <div class="spec-attributes">
+            {%- for filter in variantFilterFields -%}
+                {%- assign attributeKey = filter | first -%}
+                {%- assign attributeValue = filter | last -%}
+            
+                {%- assign showAttributes = "length,width,thickness,pack_size,pieces_per_pack,wear_layer,brand,range" | split: ',' -%}
+            
+                {%- if showAttributes contains attributeKey and attributeKey != "rooms" and attributeKey != "installation_method" -%}
+                    <div class="product-attributes__row cf">
+                        <div class="product-attributes__column product-attributes__column--dark">
+                            {%- if attributeKey == "length" -%}
+                                {{ 'products.attributes.length' | t }}
+                            {%- elsif attributeKey == "width" -%}
+                                {{ 'products.attributes.width' | t }}
+                            {%- elsif attributeKey == "thickness" -%}
+                                {{ 'products.attributes.thickness' | t }}
+                            {%- elsif attributeKey == "pack_size" -%}
+                                {{ 'products.attributes.pack_size' | t }}
+                            {%- elsif attributeKey == "pieces_per_pack" -%}
+                                {{ 'products.attributes.pieces_per_pack' | t }}
+                            {%- elsif attributeKey == "wear_layer" -%}
+                                {{ 'products.attributes.wear_layer' | t }}
+                            {%- elsif attributeKey == "brand" -%}
+                                {{ 'products.attributes.brand' | t }}
+                            {%- elsif attributeKey == "range" -%}
+                                {{ 'products.attributes.range' | t }}
+                            {%- endif -%}
+                        </div>
+                        <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                            {%- if variantFilterFields[attributeKey].value.first -%}
+                                {%- for value in variantFilterFields[attributeKey].value -%}
+                                    {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                {%- endfor -%}
+                            {%- elsif variantFilterFields[attributeKey] -%}
+                                {{ variantFilterFields[attributeKey] }}
+                            {%- else -%}
+                                {{ attributeValue }}
+                            {%- endif -%}
+                            {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                m²
+                            {%- endif -%}
+                        </div>
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {%- for filter in variantAttributeFields -%}
+                {%- assign attributeKey = filter | first -%}
+                {%- assign attributeValue = filter | last -%}
+            
+                {%- assign showAttributes = "length,width,thickness,pack_size,pieces_per_pack,wear_layer,brand,range" | split: ',' -%}
+            
+                {%- assign showWidth = false -%}
+                {%- if filterFields contains "width" -%}
+                    {%- assign showWidth = false -%}
+                {%- elsif attributeKey == "width" -%}
+                    {%- assign showWidth = true -%}
+                {%- endif -%}
+            
+                {%- if showAttributes contains attributeKey or showWidth == true -%}
+                    <div class="product-attributes__row cf">
+                        <div class="product-attributes__column product-attributes__column--dark">
+                            {%- if attributeKey == "pack_size" -%}
+                                {{ 'products.attributes.pack_size' | t }}
+                            {%- elsif attributeKey == "width" -%}
+                                {{ 'products.attributes.width' | t }}
+                            {%- elsif attributeKey == "length" -%}
+                                {{ 'products.attributes.length' | t }}
+                            {%- elsif attributeKey == "thickness" -%}
+                                {{ 'products.attributes.thickness' | t }}
+                            {%- elsif attributeKey == "pieces_per_pack" -%}
+                                {{ 'products.attributes.pieces_per_pack' | t }}
+                            {%- elsif attributeKey == "wear_layer" -%}
+                                {{ 'products.attributes.wear_layer' | t }}
+                            {%- elsif attributeKey == "brand" -%}
+                                {{ 'products.attributes.brand' | t }}
+                            {%- elsif attributeKey == "range" -%}
+                                {{ 'products.attributes.range' | t }}
+                            {%- endif -%}
+                        </div>
+                        <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                            {%- if variantAttributeFields[attributeKey].value.first -%}
+                                {%- for value in variantAttributeFields[attributeKey].value -%}
+                                    {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                {%- endfor -%}
+                            {%- elsif variantAttributeFields[attributeKey] -%}
+                                {{ variantAttributeFields[attributeKey] }}
+                            {%- else -%}
+                                {{ attributeValue }}
+                            {%- endif -%}
+                            {%- if attributeKey == "pack_size" and adhesive == false -%}
+                                m²
+                            {%- endif -%}
+                        </div>
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {%- for filter in filterFields -%}
+                {%- assign attributeKey = filter | first -%}
+                {%- assign attributeValue = filter | last -%}
+                {%- assign variantFilter = variantFilterFields[attributeKey] -%}
+            
+                {%- assign showAttributes = "length,width,thickness,pack_size,pieces_per_pack,wear_layer,brand,range" | split: ',' -%}
+            
+                {%- if showAttributes contains attributeKey and attributeKey != "price-range" and variantFilter == blank and attributeKey != "rooms" and attributeKey != "installation_method" -%}
+                    {%- unless attributeKey contains "price" -%}
+                        {%- unless attributeKey == "material" and woodProduct == true -%}
+                            {%- unless attributeKey == "length" and variantFilterFields != blank -%}
+                                <div class="product-attributes__row cf">
+                                    <div class="product-attributes__column product-attributes__column--dark">
+                                        {%- if attributeKey == "length" -%}
+                                            {{ 'products.attributes.length' | t }}
+                                        {%- elsif attributeKey == "width" -%}
+                                            {{ 'products.attributes.width' | t }}
+                                        {%- elsif attributeKey == "thickness" -%}
+                                            {{ 'products.attributes.thickness' | t }}
+                                        {%- elsif attributeKey == "pack_size" -%}
+                                            {{ 'products.attributes.pack_size' | t }}
+                                        {%- elsif attributeKey == "pieces_per_pack" -%}
+                                            {{ 'products.attributes.pieces_per_pack' | t }}
+                                        {%- elsif attributeKey == "wear_layer" -%}
+                                            {{ 'products.attributes.wear_layer' | t }}
+                                        {%- elsif attributeKey == "brand" -%}
+                                            {{ 'products.attributes.brand' | t }}
+                                        {%- elsif attributeKey == "range" -%}
+                                            {{ 'products.attributes.range' | t }}
+                                        {%- endif -%}
+                                    </div>
+                                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                                        {%- if variantFilter != blank -%}
+                                            {{ variantFilter }}
+                                        {%- elsif filterFields[attributeKey].value.first -%}
+                                            {%- for value in filterFields[attributeKey].value -%}
+                                                {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                            {%- endfor -%}
+                                        {%- elsif filterFields[attributeKey] -%}
+                                            {{ filterFields[attributeKey] }}
+                                        {%- else -%}
+                                            {{ attributeValue }}
+                                        {%- endif -%}
+                                        {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                            m²
+                                        {%- endif -%}
+                                    </div>
+                                </div>
+                            {%- endunless -%}
+                        {%- endunless -%}
+                    {%- endunless -%}
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {%- for attribute in productAttributesShared -%}
+                {%- assign attributeKey = attribute | first -%}
+                {%- assign attributeValue = attribute | last -%}
+            
+                {%- assign showAttributes = "length,width,thickness,pack_size,pieces_per_pack,wear_layer,brand,range" | split: ',' -%}
+            
+                {%- if showAttributes contains attributeKey and attributeKey != "width" and attributeKey != "installation_method_list" and attributeKey != "thickness" and attributeKey != "underfloor_heating" and attributeKey != "shade" and attributeKey != "effect" and attributeKey != "design" and attributeKey != "for_use_with" and attributeKey != "type" and attributeKey != "wood_species" and attributeKey != "finish" and attributeKey != "rating" and attributeKey != "room" and attributeKey != "pile" and attributeKey != "composition" and attributeKey != "pile_height" and attributeKey != "total_carpet_height" and attributeKey != "total_carpet_weight" and attributeKey != "fire_resistance" and attributeKey != "carpet_pattern" and attributeKey != "colour" and attributeKey != "product_number" and attributeKey != "sale_metric" -%}
+                    <div class="product-attributes__row cf">
+                        <div class="product-attributes__column product-attributes__column--dark">
+                            {% if productAttributesSharedLabels[attributeKey] %}
+                                {{ productAttributesSharedLabels[attributeKey] }}
+                            {% elsif productAttributesTypeLabels[attributeKey] %}
+                                {{ productAttributesTypeLabels[attributeKey] }}
+                            {% else %}
+                                {{ attributeKey | capitalize | replace: '_', ' ' }}
+                            {% endif %}
+                        </div>
+                        <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                            {%- if attributeKey == "brand" -%}
+                                {{ product.vendor }}
+                            {% elsif productAttributesVariant[attributeKey] %}
+                                {{ productAttributesVariant[attributeKey] }}
+                            {% else %}
+                                {{ attributeValue }}
+                            {%- endif -%}
+                            {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                m²
+                            {%- endif -%}
+                        </div>
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {%- for attribute in productAttributesType -%}
+                {%- assign attributeKey = attribute | first -%}
+                {%- assign attributeValue = attribute | last -%}
+            
+                {%- assign showAttributes = "length,width,thickness,pack_size,pieces_per_pack,wear_layer,brand,range" | split: ',' -%}
+            
+                {%- if showAttributes contains attributeKey and attributeKey != "width" and attributeKey != "installation_method_list" and attributeKey != "thickness" and attributeKey != "underfloor_heating" and attributeKey != "shade" and attributeKey != "effect" and attributeKey != "design" and attributeKey != "wear_layer" and attributeKey != "for_use_with" and attributeKey != "type" and attributeKey != "wood_species" and attributeKey != "finish" and attributeKey != "rating" and attributeKey != "rooms" and attributeKey != "pile" and attributeKey != "composition" and attributeKey != "pile_height" and attributeKey != "total_carpet_height" and attributeKey != "total_carpet_weight" and attributeKey != "fire_resistance" and attributeKey != "carpet_pattern" and attributeKey != "colour" and attributeKey != "product_number" and attributeKey != "sale_metric" and attributeKey != "built_in_underlay" -%}
+                    <div class="product-attributes__row cf">
+                        <div class="product-attributes__column product-attributes__column--dark">
+                            {%- if productAttributesSharedLabels[attributeKey] -%}
+                                {{ productAttributesSharedLabels[attributeKey] }}
+                            {%- elsif productAttributesTypeLabels[attributeKey] -%}
+                                {{ productAttributesTypeLabels[attributeKey] }}
+                            {%- else -%}
+                                {{ attributeKey | capitalize | replace: '_', ' ' }}
+                            {%- endif -%}
+                        </div>
+                        <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                            {%- if productAttributesVariant[attributeKey] -%}
+                                {{ productAttributesVariant[attributeKey] }}
+                            {%- else -%}
+                                {{ attributeValue }}
+                            {%- endif -%}
+                        </div>
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {% if product.metafields.lvt.built_in_underlay and "built_in_underlay" contains "wear_layer" %}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        {%- if productAttributesSharedLabels['built_in_underlay'] -%}
+                            {{ productAttributesSharedLabels['built_in_underlay'] }}
+                        {%- elsif productAttributesTypeLvtLabels['built_in_underlay'] -%}
+                            {{ productAttributesTypeLvtLabels['built_in_underlay'] }}
+                        {%- else -%}
+                            {{ 'built_in_underlay' | capitalize | replace: '_', ' ' }}
+                        {%- endif -%}
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- 'built_in_underlay' | downcase | replace: ' ', '_' -}}">
+                        {%- if productAttributesVariant['built_in_underlay'] -%}
+                            {{ productAttributesVariant['built_in_underlay'] }}
+                        {%- else -%}
+                            {{ product.metafields.lvt.built_in_underlay }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="product-attributes__row cf">
+                <div class="product-attributes__column product-attributes__column--dark">
+                    {{ 'products.attributes.product_type' | t }}
+                </div>
+                <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                    {{ product.type }}
+                </div>
+            </div>
+            {% if product.vendor %}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        Brand
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- 'vendor' | downcase | replace: ' ', '_' -}}">
+                        {{ product.vendor }}
+                    </div>
+                </div>
+            {% endif %}
+          </div>
+          <button class="read-more-specs">Read more</button>
+        </div>
+        <div class="details">
+          <h2>Details</h2>
+          <div class="spec-attributes">
+            {%- if productNumber -%}
+              <div class="product-attributes__row cf">
+                <div class="product-attributes__column product-attributes__column--dark">
+                    <span>Product code:</span>
+                </div>
+                <div class="product-attributes__column product-attributes__column--light" data-visual-data="product_number">
+                    {{ productNumber }}
+                </div>
+              </div>
+            {%- endif -%}
+            {%- for filter in variantFilterFields -%}
+            {%- assign attributeKey = filter | first -%}
+            {%- assign attributeValue = filter | last -%}
+        
+            {%- assign showAttributes = "design,shade,effect,edge_detail,installation_method_list,underfloor_heating,water-resistance,warranty,type" | split: ',' -%}
+        
+            {%- if showAttributes contains attributeKey and attributeKey != "rooms" and attributeKey != "pack_size" and attributeKey != "installation_method" -%}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        {%- if attributeKey == "design" -%}
+                            {{ 'products.attributes.design' | t }}
+                        {%- elsif attributeKey == "shade" -%}
+                            {{ 'products.attributes.shade' | t }}
+                        {%- elsif attributeKey == "effect" -%}
+                            {{ 'products.attributes.effect' | t }}
+                        {%- elsif attributeKey == "edge_detail" -%}
+                            {{ 'products.attributes.edge_detail' | t }}
+                        {%- elsif attributeKey == "installation_method_list" -%}
+                            {{ 'products.attributes.installation_method' | t }}
+                        {%- elsif attributeKey == "underfloor_heating" -%}
+                            {{ 'products.attributes.underfloor_heating' | t }}
+                        {%- elsif attributeKey == "water-resistance" -%}
+                            {{ 'products.attributes.water_resistance' | t }}
+                        {%- elsif attributeKey == "warranty" -%}
+                            {{ 'products.attributes.warranty' | t }}
+                        {%- elsif attributeKey == "type" -%}
+                            {{ 'products.attributes.type' | t }}
+                        {%- endif -%}
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                        {%- if attributeKey == "rooms" -%}
+                        {%- elsif variantFilterFields[attributeKey].value.first -%}
+                            {%- for value in variantFilterFields[attributeKey].value -%}
+                                {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                            {%- endfor -%}
+                        {%- elsif variantFilterFields[attributeKey] -%}
+                            {{ variantFilterFields[attributeKey] }}
+                        {%- else -%}
+                            {{ attributeValue }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
+          {%- endfor -%}
+        
+          {%- for filter in variantAttributeFields -%}
+            {%- assign attributeKey = filter | first -%}
+            {%- assign attributeValue = filter | last -%}
+        
+            {%- assign showAttributes = "design,shade,effect,edge_detail,installation_method_list,underfloor_heating,water-resistance,warranty,type" | split: ',' -%}
+        
+            {%- assign showWidth = false -%}
+            {%- if filterFields contains "width" -%}
+                {%- assign showWidth = false -%}
+            {%- elsif attributeKey == "width" -%}
+                {%- assign showWidth = true -%}
+            {%- endif -%}
+        
+            {%- if showAttributes contains attributeKey -%}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        {%- if attributeKey == "design" -%}
+                            {{ 'products.attributes.design' | t }}
+                        {%- elsif attributeKey == "shade" -%}
+                            {{ 'products.attributes.shade' | t }}
+                        {%- elsif attributeKey == "effect" -%}
+                            {{ 'products.attributes.effect' | t }}
+                        {%- elsif attributeKey == "edge_detail" -%}
+                            {{ 'products.attributes.edge_detail' | t }}
+                        {%- elsif attributeKey == "installation_method_list" -%}
+                            {{ 'products.attributes.installation_method' | t }}
+                        {%- elsif attributeKey == "underfloor_heating" -%}
+                            {{ 'products.attributes.underfloor_heating' | t }}
+                        {%- elsif attributeKey == "water-resistance" -%}
+                            {{ 'products.attributes.water_resistance' | t }}
+                        {%- elsif attributeKey == "warranty" -%}
+                            {{ 'products.attributes.warranty' | t }}
+                        {%- elsif attributeKey == "type" -%}
+                            {{ 'products.attributes.type' | t }}
+                        {%- endif -%}
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                        {%- if variantAttributeFields[attributeKey].value.first -%}
+                            {%- for value in variantAttributeFields[attributeKey].value -%}
+                                {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                            {%- endfor -%}
+                        {%- elsif variantAttributeFields[attributeKey] -%}
+                            {{ variantAttributeFields[attributeKey] }}
+                        {%- else -%}
+                            {{ attributeValue }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
+          {%- endfor -%}
+        
+          {%- for filter in filterFields -%}
+            {%- assign attributeKey = filter | first -%}
+            {%- assign attributeValue = filter | last -%}
+            {%- assign variantFilter = variantFilterFields[attributeKey] -%}
+        
+            {%- assign showAttributes = "design,shade,effect,edge_detail,installation_method_list,underfloor_heating,water-resistance,warranty,type" | split: ',' -%}
+        
+            {%- if showAttributes contains attributeKey and attributeKey != "price-range" and variantFilter == blank and attributeKey != "rooms" and attributeKey != "installation_method" -%}
+                {%- unless attributeKey contains "price" -%}
+                    {%- unless attributeKey == "material" and woodProduct == true -%}
+                        <div class="product-attributes__row cf">
+                            <div class="product-attributes__column product-attributes__column--dark">
+                                {%- if attributeKey == "design" -%}
+                                    {{ 'products.attributes.design' | t }}
+                                {%- elsif attributeKey == "shade" -%}
+                                    {{ 'products.attributes.shade' | t }}
+                                {%- elsif attributeKey == "effect" -%}
+                                    {{ 'products.attributes.effect' | t }}
+                                {%- elsif attributeKey == "edge_detail" -%}
+                                    {{ 'products.attributes.edge_detail' | t }}
+                                {%- elsif attributeKey == "installation_method_list" -%}
+                                    {{ 'products.attributes.installation_method' | t }}
+                                {%- elsif attributeKey == "underfloor_heating" -%}
+                                    {{ 'products.attributes.underfloor_heating' | t }}
+                                {%- elsif attributeKey == "water-resistance" -%}
+                                    {{ 'products.attributes.water_resistance' | t }}
+                                {%- elsif attributeKey == "warranty" -%}
+                                    {{ 'products.attributes.warranty' | t }}
+                                {%- elsif attributeKey == "type" -%}
+                                    {{ 'products.attributes.type' | t }}
+                                {%- endif -%}
+                            </div>
+                            <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                                {%- if variantFilter != blank -%}
+                                    {{ variantFilter }}
+                                {%- elsif attributeKey == "rooms" -%}
+                                {%- elsif filterFields[attributeKey].value.first -%}
+                                    {%- for value in filterFields[attributeKey].value -%}
+                                        {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                    {%- endfor -%}
+                                {%- elsif filterFields[attributeKey] -%}
+                                    {{ filterFields[attributeKey] }}
+                                {%- else -%}
+                                    {{ attributeValue }}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    {%- endunless -%}
+                {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        
+          {%- for attribute in productAttributesShared -%}
+            {%- assign attributeKey = attribute | first -%}
+            {%- assign attributeValue = attribute | last -%}
+        
+            {%- assign showAttributes = "design,shade,effect,edge_detail,installation_method_list,underfloor_heating,water-resistance,warranty,type" | split: ',' -%}
+        
+            {%- if showAttributes contains attributeKey -%}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        {% if productAttributesSharedLabels[attributeKey] %}
+                            {{ productAttributesSharedLabels[attributeKey] }}
+                        {% elsif productAttributesTypeLabels[attributeKey] %}
+                            {{ productAttributesTypeLabels[attributeKey] }}
+                        {% else %}
+                            {{ attributeKey | capitalize | replace: '_', ' ' }}
+                        {% endif %}
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                        {%- if attributeKey == "brand" -%}
+                            {{ product.vendor }}
+                        {% elsif productAttributesVariant[attributeKey] %}
+                            {{ productAttributesVariant[attributeKey] }}
+                        {% else %}
+                            {{ attributeValue }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
+          {%- endfor -%}
+        
+          {%- for attribute in productAttributesType -%}
+            {%- assign attributeKey = attribute | first -%}
+            {%- assign attributeValue = attribute | last -%}
+        
+            {%- assign showAttributes = "design,shade,effect,edge_detail,installation_method_list,underfloor_heating,water-resistance,warranty,type" | split: ',' -%}
+        
+            {%- if showAttributes contains attributeKey -%}
+                <div class="product-attributes__row cf">
+                    <div class="product-attributes__column product-attributes__column--dark">
+                        {%- if productAttributesSharedLabels[attributeKey] -%}
+                            {{ productAttributesSharedLabels[attributeKey] }}
+                        {%- elsif productAttributesTypeLabels[attributeKey] -%}
+                            {{ productAttributesTypeLabels[attributeKey] }}
+                        {%- else -%}
+                            {{ attributeKey | capitalize | replace: '_', ' ' }}
+                        {%- endif -%}
+                    </div>
+                    <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                        {%- if productAttributesVariant[attributeKey] -%}
+                            {{ productAttributesVariant[attributeKey] }}
+                        {%- else -%}
+                            {{ attributeValue }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
+          {%- endfor -%}
+        
+          {% if product.metafields.lvt.built_in_underlay and showAttributes contains "built_in_underlay" %}
+            <div class="product-attributes__row cf">
+                <div class="product-attributes__column product-attributes__column--dark">
+                    {%- if productAttributesSharedLabels['built_in_underlay'] -%}
+                        {{ productAttributesSharedLabels['built_in_underlay'] }}
+                    {%- elsif productAttributesTypeLvtLabels['built_in_underlay'] -%}
+                        {{ productAttributesTypeLvtLabels['built_in_underlay'] }}
+                    {%- else -%}
+                        {{ 'built_in_underlay' | capitalize | replace: '_', ' ' }}
+                    {%- endif -%}
+                </div>
+                <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- 'built_in_underlay' | downcase | replace: ' ', '_' -}}">
+                    {%- if productAttributesVariant['built_in_underlay'] -%}
+                        {{ productAttributesVariant['built_in_underlay'] }}
+                    {%- else -%}
+                        {{ product.metafields.lvt.built_in_underlay }}
+                    {%- endif -%}
+                </div>
+            </div>
+          {% endif %}
+          </div>
+          <button class="read-more-specs">Read more</button>
+        </div>
+      </div>
+      <div class="specs-accordion">
+        <ul id="guarantee-accordion" class="accordion luis-accordion__container">
+          {%- if product.description != blank -%}
+            <li class="accordion__item js-accordion-item">
+              <button class="accordion__toggle js-accordion-toggle button-reset" type="button" aria-controls="accordion-1" aria-expanded="false">
+                  <span class="accordion__title">
+                    Product Details
+                  </span>
+                  <span class="accordion__link-arrow">
+                      {% render 'icon-accordion-arrow-new' %}
+                  </span>
+              </button>
+              <div class="accordion__content-container js-accordion-content-container" aria-hidden="true" id="accordion-1">
+                  <div class="accordion__content js-accordion-content">
+                    {{ product.description }}
+                  </div>
+              </div>
+            </li>
+          {% endif %}
+          <li class="accordion__item js-accordion-item">
+            <button class="accordion__toggle js-accordion-toggle button-reset" type="button" aria-controls="accordion-1" aria-expanded="false">
+                <span class="accordion__title">
+                  Product Specification
+                </span>
+                <span class="accordion__link-arrow">
+                    {% render 'icon-accordion-arrow-new' %}
+                </span>
+            </button>
+            <div class="accordion__content-container js-accordion-content-container" aria-hidden="true" id="accordion-1">
+                <div class="accordion__content js-accordion-content">
+                  {%- if productNumber -%}
+                      <div class="product-attributes__row cf">
+                          <div class="product-attributes__column product-attributes__column--dark">
+                              Product Number
+                          </div>
+                          <div class="product-attributes__column product-attributes__column--light" data-visual-data="product_number">
+                              {{ productNumber }}
+                          </div>
+                      </div>
+                  {%- endif -%}
+                  {%- for filter in variantFilterFields -%}
+                      {%- assign attributeKey = filter | first -%}
+                      {%- assign attributeValue = filter | last -%}
+                      {%- if attributeKey != "rooms" and attributeKey != "pack_size" and attributeKey != "installation_method" -%}
+                          <div class="product-attributes__row cf">
+                              <div class="product-attributes__column product-attributes__column--dark">
+                                  {%- if attributeKey == "width" -%}
+                                      {{ 'products.attributes.width' | t }}
+                                  {%- elsif attributeKey == "installation_method_list" -%}
+                                      {{ 'products.attributes.installation_method' | t }}
+                                  {%- elsif attributeKey == "thickness" -%}
+                                      {{ 'products.attributes.thickness' | t }}
+                                  {%- elsif attributeKey == "underfloor_heating" -%}
+                                      {{ 'products.attributes.underfloor_heating' | t }}
+                                  {%- elsif attributeKey == "shade" -%}
+                                      {{ 'products.attributes.shade' | t }}
+                                  {%- elsif attributeKey == "effect" -%}
+                                      {{ 'products.attributes.effect' | t }}
+                                  {%- elsif attributeKey == "design" -%}
+                                      {{ 'products.attributes.design' | t }}
+                                  {%- elsif attributeKey == "wear_layer" -%}
+                                      {{ 'products.attributes.wear_layer' | t }}
+                                  {%- elsif attributeKey == "for_use_with" -%}
+                                      {{ 'products.attributes.for_use_with' | t }}
+                                  {%- elsif attributeKey == "type" -%}
+                                      {{ 'products.attributes.type' | t }}
+                                  {%- elsif attributeKey == "wood_species" -%}
+                                      {{ 'products.attributes.wood_species' | t }}
+                                  {%- elsif attributeKey == "finish" -%}
+                                      {{ 'products.attributes.finish' | t }}
+                                  {%- elsif attributeKey == "rating" -%}
+                                      {{ 'products.attributes.rating' | t }}
+      
+                                  {%- elsif attributeKey == "rooms" -%}
+                                  {%- elsif attributeKey == "for-use-with" -%}
+                                      {{ 'products.attributes.for-use-with' | t }}
+                                  {%- elsif attributeKey == "length" -%}
+                                      {{ 'products.attributes.length' | t }}
+                                  {%- elsif attributeKey == "pack_size" -%}
+                                      {{ 'products.attributes.pack_size' | t }}
+                                  {% elsif attributeKey == "range" %}
+                                      {{ 'products.attributes.range' | t }}
+                                  {%- elsif attributeKey == "pile" -%}
+                                      {{ 'products.attributes.pile' | t }}
+                                  {%- elsif attributeKey == "composition" -%}
+                                      {{ 'products.attributes.composition' | t }}
+                                  {%- elsif attributeKey == "pile_height" -%}
+                                      {{ 'products.attributes.pile_height' | t }}
+                                  {%- elsif attributeKey == "total_carpet_height" -%}
+                                      {{ 'products.attributes.total_carpet_height' | t }}
+                                  {%- elsif attributeKey == "total_carpet_weight" -%}
+                                      {{ 'products.attributes.total_carpet_weight' | t }}
+                                  {%- elsif attributeKey == "fire_resistance" -%}
+                                      {{ 'products.attributes.fire_resistance' | t }}
+                                  {%- elsif attributeKey == "carpet_pattern" -%}
+                                      {{ 'products.attributes.carpet_pattern' | t }}
+                                  {%- elsif attributeKey == "colour" -%}
+                                      {{ 'products.attributes.colour' | t }}
+                                  {%- elsif attributeKey == "product_number" -%}
+                                      {{ 'products.attributes.product_number' | t }}
+                                  {%- elsif attributeKey == "sale_metric" -%}
+                                      {{ 'products.attributes.sale_metric' | t }}
+                                  {%- elsif variantFilterFields[attributeKey] -%}
+                                      {{ variantFilterFields[attributeKey] }}
+                                  {% endif %}
+                              </div>
+                              <div
+                                  class="product-attributes__column product-attributes__column--light"
+                                  data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}"
+                              >
+      
+                                  {%- if attributeKey == "rooms" -%}
+                                  {%- elsif variantFilterFields[attributeKey].value.first -%}
+                                      {%- for value in variantFilterFields[attributeKey].value -%}
+                                          {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                      {%- endfor -%}
+                                  {%- elsif variantFilterFields[attributeKey] -%}
+                                      {{ variantFilterFields[attributeKey] }}
+                                  {%- else -%}
+                                      {{ attributeValue }}
+                                  {%- endif -%}
+                                  {%- if attributeKey == 'length' or attributeKey == 'width' -%}
+      
+                                  {%- endif -%}
+                                  {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                      m²
+                                  {%- endif -%}
+      
+                              </div>
+                          </div>
+                      {%- endif -%}
+                  {%- endfor -%}
+                  {%- for filter in variantAttributeFields -%}
+                      {%- assign attributeKey = filter | first -%}
+                      {%- assign attributeValue = filter | last -%}
+      
+                      {%- assign showWidth = false -%}
+                      {%- if filterFields contains "width" -%}
+                          {%- assign showWidth = false -%}
+                      {%- elsif attributeKey == "width" -%}
+                          {%- assign showWidth = true -%}
+                      {%- endif -%}
+      
+                      {%- if attributeKey == "pack_size" or showWidth == true -%}
+                          <div class="product-attributes__row cf">
+                              <div class="product-attributes__column product-attributes__column--dark">
+                                  {%- if attributeKey == "pack_size" -%}
+                                      {{ 'products.attributes.pack_size' | t }}
+                                  {%- elsif attributeKey == "width" -%}
+                                      {{ 'products.attributes.width' | t }}
+                                  {%- endif -%}
+                              </div>
+                              <div
+                                  class="product-attributes__column product-attributes__column--light"
+                                  data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}"
+                              >
+                                  {%- if variantAttributeFields[attributeKey].value.first -%}
+                                      {%- for value in variantAttributeFields[attributeKey].value -%}
+                                          {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                      {%- endfor -%}
+                                  {%- elsif variantAttributeFields[attributeKey] -%}
+                                      {{ variantAttributeFields[attributeKey] }}
+                                  {%- else -%}
+                                      {{ attributeValue }}
+                                  {%- endif -%}
+                                  {%- if attributeKey == "pack_size" and adhesive == false -%}
+                                      m²
+                                  {%- endif -%}
+                              </div>
+                          </div>
+                      {%- endif -%}
+                  {%- endfor -%}
+                  {%- for filter in filterFields -%}
+                      {%- assign attributeKey = filter | first -%}
+                      {%- assign attributeValue = filter | last -%}
+                      {%- assign variantFilter = variantFilterFields[attributeKey] -%}
+                      {%- if attributeKey != "price-range" and variantFilter == blank and attributeKey != "rooms" and attributeKey != "installation_method" -%}
+                          {%- unless attributeKey contains "price" -%}
+                              {%- unless attributeKey == "material" and woodProduct == true -%}
+                                  {%- unless attributeKey == "length" and variantFilterFields != blank -%}
+                                      <div class="product-attributes__row cf">
+                                          <div class="product-attributes__column product-attributes__column--dark">
+                                              {%- if attributeKey == "width" -%}
+                                                  {{ 'products.attributes.width' | t }}
+                                              {%- elsif attributeKey == "installation_method_list" -%}
+                                                  {{ 'products.attributes.installation_method' | t }}
+                                              {%- elsif attributeKey == "thickness" -%}
+                                                  {{ 'products.attributes.thickness' | t }}
+                                              {%- elsif attributeKey == "underfloor_heating" -%}
+                                                  {{ 'products.attributes.underfloor_heating' | t }}
+                                              {%- elsif attributeKey == "shade" -%}
+                                                  {{ 'products.attributes.shade' | t }}
+                                              {%- elsif attributeKey == "effect" -%}
+                                                  {{ 'products.attributes.effect' | t }}
+                                              {%- elsif attributeKey == "design" -%}
+                                                  {{ 'products.attributes.design' | t }}
+                                              {%- elsif attributeKey == "wear_layer" -%}
+                                                  {{ 'products.attributes.wear_layer' | t }}
+                                              {%- elsif attributeKey == "for_use_with" -%}
+                                                  {{ 'products.attributes.for_use_with' | t }}
+                                              {%- elsif attributeKey == "type" -%}
+                                                  {{ 'products.attributes.type' | t }}
+                                              {%- elsif attributeKey == "wood_species" -%}
+                                                  {{ 'products.attributes.wood_species' | t }}
+                                              {%- elsif attributeKey == "finish" -%}
+                                                  {{ 'products.attributes.finish' | t }}
+                                              {%- elsif attributeKey == "rating" -%}
+                                                  {{ 'products.attributes.rating' | t }}
+                                              {%- elsif attributeKey == "rooms" -%}
+                                              {%- elsif attributeKey == "for-use-with" -%}
+                                                  {{ 'products.attributes.for-use-with' | t }}
+                                              {%- elsif attributeKey == "length" -%}
+                                                  {{ 'products.attributes.length' | t }}
+                                              {%- elsif attributeKey == "pack_size" -%}
+                                                  {{ 'products.attributes.pack_size' | t }}
+                                              {% elsif attributeKey == "range" %}
+                                                  {{ 'products.attributes.range' | t }}
+                                              {%- elsif attributeKey == "pile" -%}
+                                                  {{ 'products.attributes.pile' | t }}
+                                              {%- elsif attributeKey == "composition" -%}
+                                                  {{ 'products.attributes.composition' | t }}
+                                              {%- elsif attributeKey == "pile_height" -%}
+                                                  {{ 'products.attributes.pile_height' | t }}
+                                              {%- elsif attributeKey == "total_carpet_height" -%}
+                                                  {{ 'products.attributes.total_carpet_height' | t }}
+                                              {%- elsif attributeKey == "total_carpet_weight" -%}
+                                                  {{ 'products.attributes.total_carpet_weight' | t }}
+                                              {%- elsif attributeKey == "fire_resistance" -%}
+                                                  {{ 'products.attributes.fire_resistance' | t }}
+                                              {%- elsif attributeKey == "carpet_pattern" -%}
+                                                  {{ 'products.attributes.carpet_pattern' | t }}
+                                              {%- elsif attributeKey == "colour" -%}
+                                                  {{ 'products.attributes.colour' | t }}
+                                              {%- elsif attributeKey == "edge_detail" -%}
+                                                  {{ 'products.attributes.edge_detail' | t }}
+                                              {%- elsif attributeKey == "material" -%}
+                                                  {{ 'products.attributes.material' | t }}
+                                              {%- elsif attributeKey == "tile_type" -%}
+                                                  {{ 'products.attributes.tile_type' | t }}
+                                              {%- elsif attributeKey == "product_number" -%}
+                                                  {{ 'products.attributes.product_number' | t }}
+                                              {%- elsif attributeKey == "pieces_per_pack" -%}
+                                                  {{ 'products.attributes.pieces_per_pack' | t }}
+                                              {%- elsif attributeKey == "sale_metric" -%}
+                                                  {{ 'products.attributes.sale_metric' | t }}
+                                              {%- elsif filterFields[attributeKey] -%}
+                                                  {{ filterFields[attributeKey] }}
+                                              {%- endif -%}
+                                          </div>
+                                          <div
+                                              class="test product-attributes__column product-attributes__column--light"
+                                              data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}"
+                                          >
+                                              {%- if variantFilter != blank -%}
+                                                  {{ variantFilter }}
+                                              {%- elsif attributeKey == "rooms" -%}
+                                              {%- elsif filterFields[attributeKey].value.first -%}
+                                                  {%- for value in filterFields[attributeKey].value -%}
+                                                      {{ value }}{% unless forloop.last == true %}, {% endunless %}
+                                                  {%- endfor -%}
+                                              {%- elsif filterFields[attributeKey] -%}
+                                                  {{ filterFields[attributeKey] }}
+                                              {%- else -%}
+                                                  {{ attributeValue }}
+                                              {%- endif -%}
+                                              {%- if attributeKey == 'length' or attributeKey == 'width' -%}
+      
+                                              {%- endif -%}
+                                              {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                                  m²
+                                              {%- endif -%}
+                                          </div>
+                                      </div>
+                                  {%- endunless -%}
+                              {%- endunless -%}
+                          {%- endunless -%}
+                      {%- endif -%}
+                  {%- endfor -%}
+                  {%- for attribute in productAttributesShared -%}
+                      {%- assign attributeKey = attribute | first -%}
+                      {%- assign attributeValue = attribute | last -%}
+      
+                      {%- if attributeKey == "width" -%}
+                      {%- elsif attributeKey == "installation_method_list" -%}
+                      {%- elsif attributeKey == "thickness" -%}
+                      {%- elsif attributeKey == "underfloor_heating" -%}
+                      {%- elsif attributeKey == "shade" -%}
+                      {%- elsif attributeKey == "effect" -%}
+                      {%- elsif attributeKey == "design" -%}
+                      {%- elsif attributeKey == "wear_layer" -%}
+                      {%- elsif attributeKey == "for_use_with" -%}
+                      {%- elsif attributeKey == "type" -%}
+                      {%- elsif attributeKey == "wood_species" -%}
+                      {%- elsif attributeKey == "finish" -%}
+                      {%- elsif attributeKey == "rating" -%}
+                      {%- elsif attributeKey == "room" -%}
+                      {%- elsif attributeKey == "length" and variantFilterFields != blank and product.variants.size > 1 -%}
+                      {%- elsif attributeKey == "pack_size" and variantFilterFields != blank and product.variants.size > 1 -%}
+                      {%- elsif attributeKey == "range" -%}
+                      {%- elsif attributeKey == "pile" -%}
+                      {%- elsif attributeKey == "composition" -%}
+                      {%- elsif attributeKey == "pile_height" -%}
+                      {%- elsif attributeKey == "total_carpet_height" -%}
+                      {%- elsif attributeKey == "total_carpet_weight" -%}
+                      {%- elsif attributeKey == "fire_resistance" -%}
+                      {%- elsif attributeKey == "carpet_pattern" -%}
+                      {%- elsif attributeKey == "colour" -%}
+                      {%- elsif attributeKey == "product_number" -%}
+                      {%- elsif attributeKey == "sale_metric" -%}
+                      {%- else -%}
+                          <div class="product-attributes__row cf">
+                              <div class="product-attributes__column product-attributes__column--dark">
+                                  {% if productAttributesSharedLabels[attributeKey] %}
+                                      {{ productAttributesSharedLabels[attributeKey] }}
+                                  {% elsif productAttributesTypeLabels[attributeKey] %}
+                                      {{ productAttributesTypeLabels[attributeKey] }}
+                                  {% else %}
+                                      {{ attributeKey | capitalize | replace: '_', ' ' -}}
+                                  {% endif %}
+                              </div>
+                              <div
+                                  class="product-attributes__column product-attributes__column--light"
+                                  data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}"
+                              >
+                                  {%- if attributeKey == "brand" -%}
+                                      {{ product.vendor }}
+                                  {% elsif productAttributesVariant[attributeKey] %}
+                                      {{ productAttributesVariant[attributeKey] }}
+                                  {% else %}
+                                      {{ attributeValue }}
+                                  {%- endif -%}
+                                  {%- if attributeKey == 'pack_size' and adhesive == false -%}
+                                      m²
+                                  {%- endif -%}
+                              </div>
+                          </div>
+                      {%- endif -%}
+                  {%- endfor -%}
+                  {% comment %}
+                      Type specific attributes
+                  {% endcomment %}
+                  {%- for attribute in productAttributesType -%}
+                      {%- assign attributeKey = attribute | first -%}
+                      {%- assign attributeValue = attribute | last -%}
+                      {%- if attributeKey == "width" -%}
+      
+                      {%- elsif attributeKey == "installation_method_list" -%}
+                      {%- elsif attributeKey == "thickness" -%}
+                      {%- elsif attributeKey == "underfloor_heating" -%}
+                      {%- elsif attributeKey == "shade" -%}
+                      {%- elsif attributeKey == "effect" -%}
+                      {%- elsif attributeKey == "design" -%}
+                      {%- elsif attributeKey == "wear_layer" -%}
+                      {%- elsif attributeKey == "for_use_with" -%}
+                      {%- elsif attributeKey == "type" -%}
+                      {%- elsif attributeKey == "wood_species" -%}
+                      {%- elsif attributeKey == "finish" -%}
+                      {%- elsif attributeKey == "rating" -%}
+                      {%- elsif attributeKey == "length" and variantFilterFields != blank -%}
+                      {%- elsif attributeKey == "pack_size" and variantFilterFields != blank -%}
+                      {%- elsif attributeKey == "rooms" -%}
+                      {%- elsif attributeKey == "range" -%}
+                      {%- elsif attributeKey == "pile" -%}
+                      {%- elsif attributeKey == "composition" -%}
+                      {%- elsif attributeKey == "pile_height" -%}
+                      {%- elsif attributeKey == "total_carpet_height" -%}
+                      {%- elsif attributeKey == "total_carpet_weight" -%}
+                      {%- elsif attributeKey == "fire_resistance" -%}
+                      {%- elsif attributeKey == "carpet_pattern" -%}
+                      {%- elsif attributeKey == "colour" -%}
+                      {%- elsif attributeKey == "product_number" -%}
+                      {%- elsif attributeKey == "sale_metric" -%}
+      
+                      {%- elsif attributeKey == "built_in_underlay" -%}
+      
+                      {%- else -%}
+                          <div class="product-attributes__row cf">
+                              <div class="product-attributes__column product-attributes__column--dark">
+                                  {%- if productAttributesSharedLabels[attributeKey] -%}
+                                      {{ productAttributesSharedLabels[attributeKey] }}
+                                  {%- elsif productAttributesTypeLabels[attributeKey] -%}
+                                      {{ productAttributesTypeLabels[attributeKey] }}
+                                  {%- else -%}
+                                      {{ attributeKey | capitalize | replace: '_', ' ' }}
+                                  {%- endif -%}
+                              </div>
+                              <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                                  {%- if productAttributesVariant[attributeKey] -%}
+                                      {{ productAttributesVariant[attributeKey] }}
+                                  {%- else -%}
+                                      {{ attributeValue }}
+                                  {%- endif -%}
+                              </div>
+                          </div>
+                      {%- endif -%}
+                  {%- endfor -%}
+                  {% if product.metafields.lvt.built_in_underlay %}
+                      <div class="product-attributes__row cf">
+                          <div class="product-attributes__column product-attributes__column--dark">
+                              {%- if productAttributesSharedLabels['built_in_underlay'] -%}
+                                  {{ productAttributesSharedLabels['built_in_underlay'] }}
+                              {%- elsif productAttributesTypeLvtLabels['built_in_underlay'] -%}
+                                  {{ productAttributesTypeLvtLabels['built_in_underlay'] }}
+                              {%- else -%}
+                                  {{ 'built_in_underlay' | capitalize | replace: '_', ' ' }}
+                              {%- endif -%}
+                          </div>
+                          <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- 'built_in_underlay' | downcase | replace: ' ', '_' -}}">
+                              {%- if productAttributesVariant['built_in_underlay'] -%}
+                                  {{ productAttributesVariant['built_in_underlay'] }}
+                              {%- else -%}
+                                  {{ product.metafields.lvt.built_in_underlay }}
+                              {%- endif -%}
+                          </div>
+                      </div>
+                  {% endif %}
+                  <div class="product-attributes__row cf">
+                      <div class="product-attributes__column product-attributes__column--dark">
+                          {{ 'products.attributes.product_type' | t }}
+                      </div>
+                      <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- attributeKey | downcase | replace: ' ', '_' -}}">
+                          {{ product.type }}
+                      </div>
+                  </div>
+                  {% if product.vendor %}
+                      <div class="product-attributes__row cf">
+                          <div class="product-attributes__column product-attributes__column--dark">
+                              Brand
+                          </div>
+                          <div class="product-attributes__column product-attributes__column--light" data-visual-data="{{- 'vendor' | downcase | replace: ' ', '_' -}}">
+                              {{ product.vendor }}
+                          </div>
+                      </div>
+                  {% endif %}
+                </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .luis-accordion__container {
+    display: flex;
+    flex-direction: column;
+  }
+  .luis-accordion__container .accordion__item {
+      border-top: 0;
+  }
+  .luis-accordion__container .accordion__title {
+    font-size: 1.7rem;
+  }
+  .luis-accordion__container .accordion__content {
+    font-size: 1.6rem;
+  }
+  .luis-accordion__container .accordion__link-arrow svg {
+    width: 2.4rem;
+    height: 1.2rem;
+  }
+  .luis-accordion__container .accordion__toggle {
+    padding: 1.2rem 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .luis-accordion__container .accordion__title-icon {
+    width: auto;
+    height: auto;
+    margin-right: 6px;
+  }
+  .luis-accordion__container .accordion__content-container {
+    height: 0;
+    transition: width .4s .4s, border-radius .4s .4s, padding .4s .4s, height .4s .4s, color .4s .4s;
+  }
+  .luis-accordion__container .is-active .accordion__content-container {
+    height: auto;
+  }
+  .luis-accordion__container .is-active .accordion__toggle {
+    margin-bottom: 1.2rem;
+  }
+  .luis-accordion__container .accordion__item.is-active {
+    padding-bottom: 1.2rem;
+  }
+  @media (min-width: 40em) {
+    .luis-accordion__container .accordion__title {
+      font-size: 1.8rem;
+    }
+    .luis-accordion__container .accordion__title-icon {
+      margin-right: 8px;
+    }
+  }
+  @media (min-width: 64em) {
+    .luis-accordion__container .accordion__link-arrow svg {
+      width: 2.4rem;
+      height: 1.2rem;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.read-more-specs');
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const specAttributes = button.closest('div').querySelector('.spec-attributes');
+            
+            // Toggle the 'show-more' class
+            specAttributes.classList.toggle('show-more');
+            
+            // Change button text based on the class toggle
+            if (specAttributes.classList.contains('show-more')) {
+                button.textContent = 'Read less'; // Change text when expanded
+            } else {
+                button.textContent = 'Read more'; // Change text when collapsed
+            }
+        });
+    });
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Product Specifications",
+    "settings": [
+      
+    ],
+    "presets": [
+      {
+          "name": "Product Specifications",
+          "category": "Product Page"
+      }
+    ]
+  }
+{% endschema %}

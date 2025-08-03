@@ -1,0 +1,88 @@
+{% if request.page_type == 'product' %}
+<script>
+  (function(){
+    function getTrustPilotSchema() {
+      let scripts = document.querySelectorAll('script[type="application/ld+json"]');
+
+      for (let i = 0; i < scripts.length; i++) {
+          const scriptTag = scripts[i];
+          let previousSibling = scriptTag.previousSibling;
+          let nextSibling = scriptTag.nextSibling;
+
+          if (previousSibling && previousSibling.nodeType === Node.COMMENT_NODE &&
+              previousSibling.nodeValue.trim() === "Added by Trustpilot" &&
+              nextSibling && nextSibling.nodeType === Node.COMMENT_NODE &&
+              nextSibling.nodeValue.trim() === "/Added by Trustpilot") {
+              return scriptTag;
+          }
+      }
+
+      return null;
+    }
+
+    function getDataFromSchemaEl(schemaEl) {
+      if (schemaEl) {
+        try {
+          return JSON.parse(schemaEl.textContent);
+        } catch (error) {
+          return null
+        }
+      }
+      return null
+    }
+
+    function onReadyElement(selector) {
+      return new Promise(function(resolve, reject) {
+        const el = document.querySelector(selector);
+        if (el) {
+          resolve(el);
+        } else {
+          document.addEventListener('DOMContentLoaded', function() {
+            resolve(document.querySelector(selector));
+          });
+        }
+      });
+    }
+
+    waitForObject(null,
+      function () {
+        const trustPilotSchemaEl = getTrustPilotSchema();
+
+        if (trustPilotSchemaEl) {
+          const trustpilotSchemaData = getDataFromSchemaEl(trustPilotSchemaEl);
+          // console.log(trustpilotSchemaData);
+          if(trustpilotSchemaData) {
+            onReadyElement('#product-schema').then(function(el) {
+              if(el) {
+                const productSchemaEl = el;
+                const productSchemaData = getDataFromSchemaEl(productSchemaEl);
+                if(productSchemaData) {
+                  const newProductSchemaData = productSchemaData.map((schema) => {
+                    if(schema["@type"] == "Product") {
+                      return {
+                        ...schema,
+                        aggregateRating: trustpilotSchemaData.aggregateRating,
+                        review: trustpilotSchemaData.review || [],
+                      }
+                    } else {
+                      return schema;
+                    }
+                  });
+                  productSchemaEl.textContent = JSON.stringify(newProductSchemaData);
+                }
+              }
+            })
+          }
+
+          trustPilotSchemaEl.parentNode.removeChild(trustPilotSchemaEl);
+
+          return true;
+        }
+
+        return false;
+      },
+      {interval: 50, timeout: 20000}
+    );
+  })();
+</script>
+{% endif %}

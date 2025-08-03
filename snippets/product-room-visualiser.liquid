@@ -1,0 +1,17 @@
+<div class="product__visualiser medium-hide">
+    <a href="{{ product.metafields.product_config.room_visualiser_url }}" class="button-icon" title="Use the room visualiser for this product">
+        {% include 'icon-visualiser' %}
+    </a>
+</div>
+<div class="product__visualiser medium-show">
+    <a href="{{ product.metafields.product_config.room_visualiser_url }}" class="button button--secondary button--icon" title="Use the room visualiser for this product">
+        <div class="inline-icon-text inline-icon-text--visualiser">
+            <span class="inline-icon-text__icon inline-icon-text__icon--button">
+                {% include 'icon-visualiser' %}
+            </span>
+            <span class="inline-icon-text__text">
+                Room Visualiser
+            </span>
+        </div>
+    </a>
+</div>

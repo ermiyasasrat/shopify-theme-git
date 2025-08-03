@@ -1,0 +1,116 @@
+{% schema %}
+    {
+        "name": "Trade split quote",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "trade_split_quote_image",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1540."
+            },
+            {
+                "type": "text",
+                "id": "trade_split_quote_image_alt",
+                "label": "Image alt"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "trade_split_quote_slider",
+                "name": "Trade split quote slider",
+                "settings": [
+                    {
+                        "type": "textarea",
+                        "id": "trade_split_quote_slider_text",
+                        "label": "Quote"
+                    },
+                    {
+                        "type": "text",
+                        "id": "trade_split_quote_slider_name",
+                        "label": "Author name",
+                        "info": "E.g. John Smith"
+                    },
+                    {
+                        "type": "text",
+                        "id": "trade_split_quote_slider_location",
+                        "label": "Author location",
+                        "info": "E.g. Leeds, UK"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.trade_split_quote_image == blank
+    and section.blocks == blank
+%}
+    <section class="image-text-split">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.trade_split_quote_image == blank %}
+                    <div class="image-text-split__image">
+                        {% assign image_small_1x = section.settings.trade_split_quote_image | img_url: '360x360' %}
+                        {% assign image_small_2x = section.settings.trade_split_quote_image | img_url: '720x720' %}
+                        {% assign image_medium_1x = section.settings.trade_split_quote_image | img_url: '683x670' %}
+                        {% assign image_medium_2x = section.settings.trade_split_quote_image | img_url: '1366x1340' %}
+                        {% assign image_large_1x = section.settings.trade_split_quote_image | img_url: '960x770' %}
+                        {% assign image_large_2x = section.settings.trade_split_quote_image | img_url: '1920x1540' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.trade_split_quote_image_alt,
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless section.blocks == blank %}
+                    <div class="image-text-split__content image-text-split__content--right">
+                        <div class="image-text-split__content__container">
+                            <div id="trade-quote-slider" class="glide glide--quote">
+                                <img class="image-text-split__quote-sig xlarge-show js-lazy-load-image" data-src="{{ 'icon-hero-sig.svg' | asset_url }}" alt="">
+                                <div class="glide__track" data-glide-el="track">
+                                    <ul class="glide__slides">
+                                        {% for quote in section.blocks %}
+                                            <li class="glide__slide">
+                                                <img class="image-text-split__quote-sig xlarge-hide js-lazy-load-image" data-src="{{ 'icon-hero-sig.svg' | asset_url }}" alt="">
+                                                {% unless quote.settings.trade_split_quote_slider_text == blank %}
+                                                    <div class="image-text-split__quote-title">
+                                                        {{- quote.settings.trade_split_quote_slider_text -}}
+                                                    </div>
+                                                {% endunless %}
+                                                {% unless
+                                                    quote.settings.trade_split_quote_slider_name == blank
+                                                    and quote.settings.trade_split_quote_slider_location == blank
+                                                %}
+                                                    <div class="image-text-split__quote-author">
+                                                        <div>
+                                                            {{- quote.settings.trade_split_quote_slider_name -}}
+                                                        </div>
+                                                        <div>
+                                                            {{- quote.settings.trade_split_quote_slider_location -}}
+                                                        </div>
+                                                    </div>
+                                                {% endunless %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="glide__bullets glide__bullets--quote" data-glide-el="controls[nav]">
+                                    {% for quote in section.blocks %}
+                                        <button class="glide__bullet" data-glide-dir="={{- forloop.index0 -}}"></button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

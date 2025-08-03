@@ -1,0 +1,18 @@
+<div class="offline_product">
+	{% if product.metafields.product_config.offline_product_custom_text != blank %}
+		{{- product.metafields.product_config.offline_product_custom_text -}}
+	{% else %}
+		{{ 'products.product.offline_product.heading' | t }}
+	{% endif %}
+</div>
+{% if product.metafields.product_config.offline_product_custom_text == blank %}
+	<a 
+		class="button" 
+		href="tel:{{ shop.phone | remove: ' ' }}"  
+		title="Call us"
+	>
+		{{ 'products.product.offline_product.call-cta' | t }}
+	</a>
+{% endif %}
+
+{% render 'recommended-products' %}

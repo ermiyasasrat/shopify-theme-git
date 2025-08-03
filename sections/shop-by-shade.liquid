@@ -1,0 +1,60 @@
+<section class="shop-by-shade">
+  <div class="site-wrap">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="shade-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'shade' %}
+          <div class="shade-box">
+            <a href="{{ block.settings.link }}">
+              <div class="shade-color" style="background-color:{{block.settings.background_accent}}"></div>
+              <p>{{ block.settings.title }}</p>
+            </a>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Shop By Shade",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+    ],
+    "blocks": [
+      {
+        "name": "Shade",
+        "type": "shade",
+        "settings": [
+          {
+            "type": "color",
+            "id": "background_accent",
+            "label": "Shade Color",
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Shade Title"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Shade Link"
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Shop By Shade",
+      }
+    ]
+  }
+{% endschema %}

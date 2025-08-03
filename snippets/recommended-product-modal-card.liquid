@@ -1,0 +1,68 @@
+{%- assign relatedProduct = product_handle -%}
+{%- assign relatedProductComparePrice = relatedProduct.compare_at_price | money_without_currency -%}
+
+{%- assign mainVariant = relatedProduct.selected_or_first_available_variant -%}
+{%- if relatedProduct.variants.size == 2 -%}
+	{%- for variant in relatedProduct.variants -%}
+		{%- if variant.title contains "Sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- elsif variant.title contains "sample" and variant.price == 0 -%}
+			{%- assign sampleVariantId = variant.id -%}
+		{%- else -%}
+			{%- assign mainVariant = variant -%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endif -%}
+
+{%- assign productPackSize = mainVariant.metafields.product_attribute.pack_size -%}
+{%- assign relatedProductPricePerMetresSquared = mainVariant.price | divided_by: productPackSize -%}
+{%- assign relatedProductComparePricePerMetresSquared = mainVariant.compare_at_price | divided_by: productPackSize -%}
+
+
+{%- if relatedProduct.available == true -%}
+	{%- assign relatedProductURL = relatedProduct.first_available_variant.url -%}
+{%- else -%}
+	{%- assign relatedProductURL = relatedProduct.url -%}
+{%- endif -%}
+
+<div class="recommended-product-modal-element">
+	<a
+		title="View {{ relatedProduct.title }}"
+		href="{{ relatedProductURL }}"
+	>
+		{% render 'responsive-image',
+			image: relatedProduct.featured_image,
+			image_class: "recommended-product-modal-image",
+			alt: relatedProduct.title
+		%}
+	</a>
+	<a 
+		title="View {{ relatedProduct.title }}"
+		href="{{ relatedProductURL }}"
+		class="recommended-product-modal-desktop-title"
+	>
+		<h3>
+			{{ relatedProduct.title | truncate: 50 }}
+		</h3>
+	</a>
+	<a 
+		title="View {{ relatedProduct.title }}"
+		href="{{ relatedProductURL }}"
+		class="recommended-product-modal-mobile-title"
+	>
+		<h3>
+			{{ relatedProduct.title | truncate: 25 }}
+		</h3>
+	</a>
+	<div class="recommended-product-modal-price">
+		{%- if relatedProductPricePerMetresSquared -%}
+			{%- if relatedProductPricePerMetresSquared != blank -%}
+				{{ relatedProductPricePerMetresSquared | money }}/m²
+			{%- endif -%}
+		{%- else -%}
+			{%- if relatedProduct.price != blank -%}
+				{{ relatedProduct.price | money }}
+			{%- endif -%}
+		{%- endif -%}
+	</div>
+</div>

@@ -1,0 +1,223 @@
+{% schema %}
+    {
+        "name": "Key Collections",
+        "settings": [
+            {
+                "type": "text",
+                "id": "key_collections_title",
+                "label": "Title"
+            },
+            {
+                "type": "textarea",
+                "id": "key_collections_content",
+                "label": "Content"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "key_collections_slider",
+                "name": "Key collections slider",
+                "settings": [
+                    {
+                        "type": "collection",
+                        "id": "key_collections_slide_link",
+                        "label": "Slide collection link"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "key_collections_slide_image",
+                        "label": "Slide image",
+                        "info": "Recommended image size: 792 x 600."
+                    },
+                    {
+                        "type": "text",
+                        "id": "key_collections_slide_image_alt",
+                        "label": "Slide image alt"
+                    },
+                    {
+                        "type": "text",
+                        "id": "key_collections_slide_title",
+                        "label": "Slide title"
+                    },
+                    {
+                        "type": "textarea",
+                        "id": "key_collections_slide_description",
+                        "label": "Slide description"
+                    }
+                ]
+            }
+		],
+		"presets": [
+			{
+				"name": "Key Collections",
+				"category": "Home Page"
+			}
+		]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.key_collections_title == blank
+    and section.blocks == blank
+%}
+    <section class="key-collections">
+        {% unless section.settings.key_collections_title == blank and section.settings.key_collections_content == blank %}
+            <div class="site-wrap">
+                <div class="key-collections__container">
+                    <div class="key-collections__heading">
+                        {% unless section.settings.key_collections_title == blank %}
+                            <h2 class="title title--small key-collections__title">{{- section.settings.key_collections_title -}}</h2>
+                        {% endunless %}
+                        {% unless section.settings.key_collections_content == blank %}
+                            <p class="para">
+                                {{- section.settings.key_collections_content -}}
+                            </p>
+                        {% endunless %}
+                    </div>
+                </div>
+            </div>
+        {% endunless %}
+        {% unless section.blocks == blank %}
+            <div class="site-wrap site-wrap--bleed">
+                <div class="key-collections__container">
+                    <div class="glide glide--key-collections hero slick-key">
+       
+                       <div class="glide__slides" style="display:inline-block !important; width:100%;">
+                            <div>
+                              <div class="glide__slidesd slider-key-collection" id="key-collection-id-sli">
+                                {% for keyCollection in section.blocks %}
+                                    <div class="glide__slide slick_slide">
+                                        <a class="key-collections__slide-link" href="/collections/{{ keyCollection.settings.key_collections_slide_link }}">
+                                            {% unless keyCollection.settings.key_collections_slide_image == blank %}
+                                                <div class="key-collections__slide-image">
+													{% 	render 'responsive-image' 
+														image: keyCollection.settings.key_collections_slide_image,
+														image_class: ''
+														alt: keyCollection.settings.key_collections_slide_image_alt
+													%}
+                                                </div>
+                                            {% endunless %}
+                                            {% unless keyCollection.settings.key_collections_slide_title == blank %}
+                                                <h3 class="key-collections__slide-title">
+                                                    {{- keyCollection.settings.key_collections_slide_title -}}
+                                                </h3>
+                                            {% endunless %}
+                                            {% unless keyCollection.settings.key_collections_slide_description == blank %}
+                                                <p class="para">
+                                                    {{- keyCollection.settings.key_collections_slide_description -}}
+                                                </p>
+                                            {% endunless %}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                         </div>
+                         
+                      </div>
+                            
+                       <div class="key-collect-control glide__controls">
+                      		<div class="arrows glide__arrows">
+                            	   <button class="slick__arrow prev-arrow-sl glide__arrow  glide__arrow--left" data-glide-dir="<">
+                                    <span class="glide__arrow-icon">
+                                     	<svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                                <g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+                                                    <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                     </span>
+                                </button>
+                             	
+                                <button class="slick__arrow next-arrow-sl glide__arrow  glide__arrow--right " data-glide-dir=">">
+                                    <span class="glide__arrow-icon"><svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                              <g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+                                                  <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+                                              </g>
+                                          </g>
+                                      </svg>
+                                  </span>
+                                </button>
+                              
+                         	</div>
+                         <div class="glide__bullets glide__bullets--key-collections">
+                           <div class="slick-slider-dots"></div>
+                         </div>
+                      </div>
+
+                      
+                    </div>
+                </div>
+              
+
+            </div>
+        {% endunless %}
+    </section>
+{% endunless %}
+
+<style>
+    .slick-slider-dots li,
+    .slick-slider-dots-quote li {
+        margin: 0 1rem 0 0;
+        display: inline-block;
+        width: 25px;
+        height: 8px;
+        background: #ebebeb;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        -webkit-transition: background 0.4s;
+        transition: background 0.4s;
+    }
+    .slick-slider-dots-quote li {
+        background: #fff;
+    }
+    .slick-slider-dots-quote li.slick-active {
+        background: #1b2c3d;
+    }
+    .slick-slider-dots li.slick-active {
+        background: #ff877a;
+    }
+    .slick-slider-dots li button,
+    .slick-slider-dots-quote li button {
+        display: none;
+    }
+    .slick__arrow {
+        border: 0;
+    }
+
+    .key-collections__container .slick-slide {
+        margin: 0 15px;
+    }
+    .key-collections__container .slick-list {
+        margin: 0 -15px;
+    }
+
+    @media only screen and (max-width: 993px) {
+        .key-collections__container .slick-list {
+            padding-left: 0 !important;
+        }
+        .key-collections__container .slick-slide {
+            margin: 0 10px;
+        }
+        .key-collections__container .slick-list {
+            margin: 0 -10px;
+        }
+        .trustpilot-slider__container .slick-slide {
+            margin: 0;
+        }
+        .trustpilot-slider__container .slick-list {
+            margin: 0;
+        }
+        .trustpilot-slider__container .glide__controls {
+            position: relative;
+            height: 6rem;
+            width: 13rem;
+            margin-top: 2rem;
+            left: auto;
+            top: auto;
+            -webkit-transform: none;
+            transform: none;
+        }
+    }
+</style>

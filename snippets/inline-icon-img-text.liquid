@@ -1,0 +1,11 @@
+<div class="inline-icon-text{% if modifier %} {{ modifier }}{% endif %}">
+    <span class="inline-icon-text__icon">
+        <img src="{{ icon | asset_url }}"
+             {% if width %}width="{{ width }}"{% endif %}
+             {% if height %}height="{{ height }}"{% endif %}
+             alt="text">
+    </span>
+    <span class="inline-icon-text__text">
+        {{- text -}}
+    </span>
+</div>

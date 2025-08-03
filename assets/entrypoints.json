@@ -1,0 +1,188 @@
+{
+  "entrypoints": {
+    "404": {
+      "liquid": [
+        "\/assets\/404.css.liquid"
+      ],
+      "js": [
+        "\/assets\/404.js"
+      ]
+    },
+    "common": {
+      "liquid": [
+        "\/assets\/common.css.liquid"
+      ],
+      "js": [
+        "\/assets\/common.js"
+      ]
+    },
+    "default": {
+      "liquid": [
+        "\/assets\/default.css.liquid"
+      ],
+      "js": [
+        "\/assets\/default.js"
+      ]
+    },
+    "home": {
+      "liquid": [
+        "\/assets\/home.css.liquid"
+      ],
+      "js": [
+        "\/assets\/home.js"
+      ]
+    },
+    "about": {
+      "liquid": [
+        "\/assets\/about.css.liquid"
+      ],
+      "js": [
+        "\/assets\/about.js"
+      ]
+    },
+    "samples": {
+      "liquid": [
+        "\/assets\/samples.css.liquid"
+      ],
+      "js": [
+        "\/assets\/samples.js"
+      ]
+    },
+    "collection-listing": {
+      "liquid": [
+        "\/assets\/collection-listing.css.liquid"
+      ],
+      "js": [
+        "\/assets\/collection-listing.js"
+      ]
+    },
+    "collection-detail": {
+      "liquid": [
+        "\/assets\/collection-detail.css.liquid"
+      ],
+      "js": [
+        "\/assets\/collection-detail.js"
+      ]
+    },
+    "product-detail": {
+      "liquid": [
+        "\/assets\/product-detail.css.liquid"
+      ],
+      "js": [
+        "\/assets\/product-detail.js"
+      ]
+    },
+    "product-detail-video": {
+      "liquid": [
+        "\/assets\/product-detail-video.css.liquid"
+      ],
+      "js": [
+        "\/assets\/product-detail-video.js"
+      ]
+    },
+    "faq": {
+      "liquid": [
+        "\/assets\/faq.css.liquid"
+      ],
+      "js": [
+        "\/assets\/faq.js"
+      ]
+    },
+    "blog-listing": {
+      "liquid": [
+        "\/assets\/blog-listing.css.liquid"
+      ],
+      "js": [
+        "\/assets\/blog-listing.js"
+      ]
+    },
+    "blog-detail": {
+      "liquid": [
+        "\/assets\/blog-detail.css.liquid"
+      ],
+      "js": [
+        "\/assets\/blog-detail.js"
+      ]
+    },
+    "guide-listing": {
+      "liquid": [
+        "\/assets\/guide-listing.css.liquid"
+      ],
+      "js": [
+        "\/assets\/guide-listing.js"
+      ]
+    },
+    "guide-detail": {
+      "liquid": [
+        "\/assets\/guide-detail.css.liquid"
+      ],
+      "js": [
+        "\/assets\/guide-detail.js"
+      ]
+    },
+    "account": {
+      "liquid": [
+        "\/assets\/account.css.liquid"
+      ],
+      "js": [
+        "\/assets\/account.js"
+      ]
+    },
+    "contact": {
+      "liquid": [
+        "\/assets\/contact.css.liquid"
+      ],
+      "js": [
+        "\/assets\/contact.js"
+      ]
+    },
+    "floor-finder": {
+      "liquid": [
+        "\/assets\/floor-finder.css.liquid"
+      ],
+      "js": [
+        "\/assets\/floor-finder.js"
+      ]
+    },
+    "floor-finder-tool": {
+      "liquid": [
+        "\/assets\/floor-finder-tool.css.liquid"
+      ],
+      "js": [
+        "\/assets\/floor-finder-tool.js"
+      ]
+    },
+    "trade-portal": {
+      "liquid": [
+        "\/assets\/trade-portal.css.liquid"
+      ],
+      "js": [
+        "\/assets\/trade-portal.js"
+      ]
+    },
+    "trade-portal-form": {
+      "liquid": [
+        "\/assets\/trade-portal-form.css.liquid"
+      ],
+      "js": [
+        "\/assets\/trade-portal-form.js"
+      ]
+    },
+    "booking": {
+      "liquid": [
+        "\/assets\/booking.css.liquid"
+      ],
+      "js": [
+        "\/assets\/booking.js"
+      ]
+    },
+    "cart": {
+      "liquid": [
+        "\/assets\/cart.css.liquid"
+      ],
+      "js": [
+        "\/assets\/cart.js"
+      ]
+    }
+  }
+}

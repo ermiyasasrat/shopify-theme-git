@@ -1,0 +1,22 @@
+<div class="product__out-of-stock">
+    <div class="product__out-of-stock-text">
+        <p class="para">
+            {% if variantOutOfStock %}
+                {{ 'products.out_of_stock.variant' | t }}
+            {% else %}
+				{{ 'products.out_of_stock.product' | t }}
+            {% endif %}
+        </p>
+    </div>
+    {%- comment -%}
+        The BIS_text_config is overwritten by the Back in Stock config.
+        "Email when available" is just a placeholder.
+    {%- endcomment -%}
+    <button type="button" id="BIS_trigger" class="button">
+        <span id="BIS_text_config" class="button__text">
+            {{ 'products.out_of_stock.email' | t }}
+        </span>
+    </button>
+</div>
+
+{% render 'recommended-products' %}

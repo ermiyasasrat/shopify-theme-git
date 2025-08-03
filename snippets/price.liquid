@@ -1,0 +1,109 @@
+{% comment %}
+    Renders a list of product's price (regular, sale)
+
+    Accepts:
+    - product: {Object} Product Liquid object (optional)
+    - use_variant: {Boolean} Renders selected or first variant price instead of overall product pricing (optional)
+    - show_badges: {Boolean} Renders 'Sale' and 'Sold Out' tags if the product matches the condition (optional)
+    - price_class: {String} Adds a price class to the price element (optional)
+
+    Usage:
+    {% render 'price', product: product %}
+{% endcomment %}
+{%- liquid
+	if use_variant
+	  assign target = selectedVariant
+	else
+	  assign target = product
+	endif
+  
+	assign compare_at_price = target.compare_at_price
+	assign price = target.price | default: 1999
+	assign available = target.available | default: false
+	assign money_price = price | money
+	if settings.currency_code_enabled
+	  assign money_price = price | money_with_currency
+	endif
+  
+	if target == product and product.price_varies
+	  assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+	endif
+  -%}
+
+  {% render 'product-ld-json' 
+	productPricePerMetresSquared: productPricePerMetresSquared,
+	squareMetrePence: squareMetrePence
+%}
+
+  <div class="price">
+	{% if product.metafields.product_config.offline_product == true
+		or product.metafields.product_config.offline_product == "true"
+		or product.metafields.product_config.offline_product == "TRUE"
+	%}
+	  {% include 'product-offline' %}
+  {% else %}
+	<div class="product__details-prices">
+        <span class="prod_save"></span>
+        <span class="prod_p">
+    		{% if current_variant.compare_at_price > current_variant.price %}
+    			{%- assign wasPrice = true -%}
+    			<div class="product__rrp {{current_variant.metafields.product_config.sale_metric}} ">
+    				{%- if current_variant.metafields.product_config.sale_metric == 'Pack' -%}
+    					<!--Was:--> <span id="product-rrp" data-visual-data="rrp">{{ current_variant.compare_at_price | divided_by: productPackSize | money }}</span>/m²
+    				{%- else current_variant.metafields.product_config.sale_metric == 'Box' -%}
+    					<!--Was:--> <span id="product-rrp" data-visual-data="rrp">{{ current_variant.compare_at_price | money }}</span>	
+    				{%- endif -%}
+    				{%- if current_variant.metafields.product_config.sale_metric == 'Tile' -%}
+    					<span>
+    						{{ 'products.product.product_types.per_tile' | t }}
+    					</span>
+    				{%- endif -%}
+    			</div>
+    		{% endif %}
+    
+    		<div class="product__price {% if product.compare_at_price != blank %}product__price__sale-colour{% endif %}">
+    			{%- if current_variant.metafields.product_config.sale_metric == 'Pack'
+    				or current_variant.metafields.product_config.sale_metric == 'Roll'
+    			-%}
+    				{% assign squareMetrePence = productPricePerMetresSquared | times: 100 %}
+    				<span data-visual-data="price_per_metres_squared">
+    					{% if wasPrice == true %}
+    						{{ 'products.product.now' | t }} 
+    					{% endif %}
+    					{{ squareMetrePence | money }}/m²
+    				</span>
+    			{%- elsif current_variant.metafields.product_config.sale_metric == 'Board' -%}
+    				<span data-visual-data="price_per_metres_squared">
+    					{% if wasPrice == true %}
+    						{{ 'products.product.now' | t }} 
+    					{% endif %} 
+    					{{ squareMetrePence | money }}
+    				</span>
+    			{%- else -%}
+    				{% if wasPrice == true %}
+    					{{ 'products.product.now' | t }} 
+    				{% endif %} 
+    				<span data-visual-data="price">{{ squareMetrePence | money }}</span>
+    			{%- endif -%}
+    			{%- if current_variant.metafields.product_config.sale_metric == 'Tile' -%}
+    				<span>
+    					{{ 'products.product.product_types.per_tile' | t }}
+    				</span>
+    			{%- endif -%}
+    		</div>
+          </span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <div class="t price-discount-tag-container orig_save">
+              {% comment %}
+              {{ 'products.product.save' | t }}
+              {% endcomment %}
+              <span>
+                   {{ formatPercentage }}% OFF
+              </span>
+            </div>
+          {% endif %}
+    	</div>
+    {% endif %}
+  </div>
+  
+  

@@ -1,0 +1,80 @@
+{% if request.page_type != 'index' %}
+<script id="samples-button-template" type="text/template">
+	{% raw %}
+		<div class="product-samples-button-wrap">
+			<button type="button" class="product-samples-button" product-samples-button>{{ text.button }}</button>
+			</div>	  
+	{% endraw %}
+</script>
+{% endif %}
+
+<script id="samples-widget-template" type="text/template">
+	{% raw %}
+		<div class="product-samples-widget" data-samples-widget>
+			<div class="product-samples-widget__modal">
+			<button class="product-samples-widget__close" data-samples-widget-close>Close</button>
+			<div class="product-samples-widget__content">
+				<div class="product-samples-widget__text">
+				<h3 style="margin: 0 0 10px; font-size: 18px;">{{ text.box_title }}</h3>
+				<p>{{ text.box_description }}</p>
+				</div>
+				<div class="product-samples-widget__list">
+				<div class="product-samples-widget__grid" data-samples-widget-grid>
+					{% if samples.size > 0 %}
+					{% for item in samples %}
+						<div class="product-samples-item">
+						<div class="product-samples-item__inner">
+							<a href="#" class="product-samples-item__remove" data-sample-id='{{ item.selectedVariant }}' data-samples-widget-remove>Remove</a>
+							<figure class="product-samples-item__image" style="background-image: url({{ item.sample_image | img_url: 'large' }})"></figure>
+						</div>
+						</div>
+					{% endfor %}
+					{% endif %}
+					{% if samples.size < 3 %}
+					{% assign placeholder_count = 3 | minus: samples.size %}
+					{% for i in (1..placeholder_count) %}
+						<div class="product-samples-placeholder" data-samples-placeholder><span>{{ text.box_item_placeholder }}</span></div>
+					{% endfor %}
+					{% endif %}
+				</div>
+				</div>
+				<div class="product-samples-widget__button">
+				<button class="product-samples-widget__checkout" data-samples-widget-checkout>{{ text.box_button }}</button>
+				</div>
+			</div>
+			</div>
+			<button class="product-samples-widget__trigger" data-samples-widget-trigger>
+			{{ text.box_trigger }}{% if samples.size > 0 %} ({{ samples.size }}){% endif %}
+			</button>
+		</div>	  
+	{% endraw %}
+</script>
+
+{% if request.page_type != 'index' %}
+<script id="samples-modal-template" type="text/template">
+	{% raw %}
+		<div class="product-samples-modal" role="dialog" data-samples-modal>
+			<div class="product-samples-modal__inner">
+			<button class="product-samples-modal__close" data-samples-modal-close>Close</button>
+			<div class="product-samples-modal__box">
+				<p>{{ text.modal_text }}</p>
+			</div>
+			</div>
+		</div>	  
+	{% endraw %}
+</script>
+
+<style>
+	.product-samples-widget__trigger {
+	top: 30%;
+	-webkit-transform: rotate(-90deg) translate3d(0, -50%, 0);
+			transform: rotate(-90deg) translate3d(0, -50%, 0);
+	-webkit-transform-origin: right;
+		-ms-transform-origin: right;
+			transform-origin: right;
+	bottom: auto !important;
+	right: 0 !important;
+	left: auto;
+	}
+</style>
+{% endif %}

@@ -1,0 +1,18 @@
+.search__input.field__input {
+	padding-right: 5rem;
+}
+
+  .bc-sf-search-form {
+	  position: relative;
+  }
+  .search__button svg {
+	width: 1.5rem;
+	height: 1.5rem;
+  }
+  
+  /* Remove extra spacing for search inputs in Safari */
+  input::-webkit-search-decoration {
+	-webkit-appearance: none;
+  }
+  
+  

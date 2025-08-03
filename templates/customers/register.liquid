@@ -1,0 +1,43 @@
+<div class="account">
+    <div class="site-wrap">
+        <div id="CustomerRegisterForm" class="account-form">
+            {% form 'create_customer' %}
+                <h1 class="account-title account-title-small">
+                    Create account
+                </h1>
+                <p class="account-title-small">
+                    Register with us so that you can keep track of your orders.
+                </p>
+                {%- if form.errors -%}
+                    <div class="account-form-errors">
+                        {{ form.errors | default_errors }}
+                    </div>
+                {%- endif -%}
+                <div class="account-form__field">
+                    <label class="account-form__label" for="FirstName">First Name</label>
+                    <input type="text" name="customer[first_name]" id="FirstName" class="input input-text account-form__input" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+                </div>
+                <div class="account-form__field">
+                    <label class="account-form__label" for="LastName">Last Name</label>
+                    <input type="text" name="customer[last_name]" id="LastName" class="input input-text account-form__input" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+                </div>
+                <div class="account-form__field">
+                    <label class="account-form__label account-form__label--required" for="Email">Email address</label>
+                    <input type="email" name="customer[email]" id="Email" class="input input-text account-form__input {% if form.errors contains 'email' %} input--error{% endif %}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+                </div>
+                <div class="account-form__field">
+                    <label class="account-form__label account-form__label--required" for="CreatePassword">Password</label>
+                    <input type="password" name="customer[password]" id="CreatePassword" class="input input-text account-form__input{% if form.errors contains 'password' %} input--error{% endif %}">
+                </div>
+                <button class="button button--solid" type="submit">
+                    <span class="button__text">
+                        Register
+                    </span>
+                </button>
+                <div class="account__extra-link">
+                    or <a href="/account/login" title="Track Shipment" class="link link--arrow">Log in</a>
+                </div>
+            {% endform %}
+        </div>
+    </div>
+</div>

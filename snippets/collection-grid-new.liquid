@@ -1,0 +1,222 @@
+{%- assign filterFields = product.metafields.filters -%}
+
+<div class="FilterFields" style="display:none;">
+  {{ filterFields | json }}
+  {{ product.variants.first.metafields.filters | json }}
+</div>
+
+{%- if product.first_available_variant != null -%}
+  {%- assign variantFilterFields = product.first_available_variant.metafields.filters -%}
+{%- else -%}
+  {%- assign variantFilterFields = filterFields -%}
+{%- endif -%}
+
+{%- assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 -%}
+{%- assign productAttributesType = product.metafields[productType] -%}
+{%- assign productAttributesShared = product.metafields.product_attribute -%}
+{%- assign productAttributesSharedLabels = shop.metafields.product_attribute -%}
+{%- assign productAttributesTypeLabels = shop.metafields[productType] -%}
+{%- assign listOfAttributes = 'width,thickness,length' | split: ',' -%}
+
+{% assign test = product.variants.first.metafields.filters %}
+{%- assign productTypeAttribute = false -%}
+
+{%- if listOfAttributes == blank -%}
+  {%- assign listOfAttributes = 'width,thickness,length' | split: ',' -%}
+{%- endif -%}
+
+{%- if listOfAttributes contains 'product_type' -%}
+  {%- assign productTypeAttribute = true -%}
+{%- endif -%}
+
+{% for variant in product.variants %}
+  {% if forloop.first %}
+    {% assign variantFilterFields = variant.metafields.filters %}
+    <div class="variantFilterFields" style="display:none;">
+      {{ variantFilterFields | json }}
+    </div>
+  {% endif %}
+{% endfor %}
+
+<div class="collection-attributes product-{{product.id}}">
+  {% assign counter = 1 %}
+
+  {%- for filter in filterFields -%}
+    {%- assign attributeKey = filter | first -%}
+    {%- assign attributeValue = filter | last -%}
+    {%- if listOfAttributes contains attributeKey -%}
+      {% if counter > 3 %}
+      {% else %}
+        <div class="collection-attribute count-{{ counter }}">
+          <div class="collection-attribute-icon">
+            {% if attributeKey == 'width' %}
+              <!-- SVG for Width -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                <g clip-path="url(#clip0_3325_4070)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M3.24853 10.1855L1.47912 8.42325L1.21407 8.15935L1.47912 7.89519L3.24853 6.13301L3.77349 6.66112L2.64411 7.78605H13.3559L12.2266 6.66112L12.7517 6.13301L14.5211 7.89519L14.786 8.15935L14.5211 8.42325L12.7517 10.1855L12.2266 9.65737L13.3559 8.53244H2.64411L3.77349 9.65737L3.24853 10.1855ZM15.2533 12.4509V3.86743H16V12.4509H15.2533ZM0 12.4509V3.86743H0.746707V12.4509H0Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4070">
+                    <rect width="16" height="16" fill="white" transform="translate(0 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% elsif attributeKey == 'thickness' %}
+              <!-- SVG for Thickness -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                <g clip-path="url(#clip0_3325_4075)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0.900391 7.78593H16.8998V8.53248H0.900391V7.78593ZM10.9262 5.32071L9.16404 7.08991L8.89995 7.35489L8.63601 7.08991L6.87383 5.32071L7.40175 4.79557L8.52662 5.92509V0.15918H9.27333V5.92509L10.3982 4.79557L10.9263 5.32071H10.9262ZM10.3981 11.5228L9.27328 10.3933V16.1592H8.52656V10.3933L7.4017 11.5228L6.87378 10.9979L8.63596 9.2285L8.89989 8.96347L9.16399 9.2285L10.9262 10.9979L10.3981 11.5228H10.3981Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4075">
+                    <rect width="16" height="16" fill="white" transform="translate(0.900391 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% elsif attributeKey == 'length' %}
+              <!-- SVG for Length -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                <g clip-path="url(#clip0_3325_4080)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.77518 3.40768L8.53782 1.63835L8.8016 1.37338L9.06578 1.63835L10.828 3.40768L10.3001 3.9325L9.17523 2.80334V13.5154L10.3001 12.3859L10.828 12.9111L9.06578 14.6804L8.8016 14.9454L8.53782 14.6804L6.77518 12.9111L7.30314 12.3859L8.42797 13.5154V2.80334L7.30314 3.9325L6.77518 3.40768ZM4.50977 15.4127H13.0934V16.1596H4.50977V15.4127ZM4.50977 0.15918H13.0934V0.905655H4.50977V0.15918Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4080">
+                    <rect width="16" height="16" fill="white" transform="translate(0.800781 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% endif %}
+          </div>
+          <div class="collection-attribute-text">
+            <span class="collection-grid-element-heading">
+              {% if attributeKey == 'width' %}
+                {{ 'products.attributes.width' | t }}:
+              {% elsif attributeKey == 'thickness' %}
+                {{ 'products.attributes.thickness' | t }}:
+              {% elsif attributeKey == 'length' %}
+                Length:
+              {% endif %}
+            </span>
+            <span class="collection-grid-element-value test" data-test=" {{ attributeKey }}">
+              {%- if filterFields[attributeKey].value.first -%}
+                {%- for value in filterFields[attributeKey].value -%}
+                  {{ value -}}
+                  {%- unless forloop.last == true %}, {% endunless %}
+                {%- endfor -%}
+              {%- elsif filterFields[attributeKey] -%}
+                {{ filterFields[attributeKey] }}
+              {%- else -%}
+                {{ attributeValue }}
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+
+        {% assign counter = counter | plus: 1 %}
+      {% endif %}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if product.variants.first.metafields.product_attribute.width != blank -%}
+    {% if listOfAttributes contains 'width' %}
+      <div class="collection-attribute count-{{ counter }}">
+        <div class="collection-attribute-icon">
+          <!-- SVG for Width -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+            <g clip-path="url(#clip0_3325_4070)">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.24853 10.1855L1.47912 8.42325L1.21407 8.15935L1.47912 7.89519L3.24853 6.13301L3.77349 6.66112L2.64411 7.78605H13.3559L12.2266 6.66112L12.7517 6.13301L14.5211 7.89519L14.786 8.15935L14.5211 8.42325L12.7517 10.1855L12.2266 9.65737L13.3559 8.53244H2.64411L3.77349 9.65737L3.24853 10.1855ZM15.2533 12.4509V3.86743H16V12.4509H15.2533ZM0 12.4509V3.86743H0.746707V12.4509H0Z" fill="#143156"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_3325_4070">
+                <rect width="16" height="16" fill="white" transform="translate(0 0.15918)"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="collection-attribute-text">
+          <span class="collection-grid-element-heading">Width: </span>
+          <span class="collection-grid-element-value test" data-test="new-width">
+            {{ product.variants.first.metafields.product_attribute.width }}
+          </span>
+        </div>
+      </div>
+
+      {% assign counter = counter | plus: 1 %}
+    {% endif %}
+  {%- endif -%}
+
+  {%- for filter in variantFilterFields -%}
+    {%- assign attributeKey = filter | first -%}
+    {%- assign attributeValue = filter | last -%}
+    {%- if listOfAttributes contains attributeKey -%}
+      {% if counter > 3 %}
+      {% else %}
+        <div class="collection-attribute count-{{counter}}">
+          <div class="collection-attribute-icon">
+            {% if attributeKey == 'width' %}
+              <!-- SVG for Width -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                <g clip-path="url(#clip0_3325_4070)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M3.24853 10.1855L1.47912 8.42325L1.21407 8.15935L1.47912 7.89519L3.24853 6.13301L3.77349 6.66112L2.64411 7.78605H13.3559L12.2266 6.66112L12.7517 6.13301L14.5211 7.89519L14.786 8.15935L14.5211 8.42325L12.7517 10.1855L12.2266 9.65737L13.3559 8.53244H2.64411L3.77349 9.65737L3.24853 10.1855ZM15.2533 12.4509V3.86743H16V12.4509H15.2533ZM0 12.4509V3.86743H0.746707V12.4509H0Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4070">
+                    <rect width="16" height="16" fill="white" transform="translate(0 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% elsif attributeKey == 'thickness' %}
+              <!-- SVG for Thickness -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                <g clip-path="url(#clip0_3325_4075)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0.900391 7.78593H16.8998V8.53248H0.900391V7.78593ZM10.9262 5.32071L9.16404 7.08991L8.89995 7.35489L8.63601 7.08991L6.87383 5.32071L7.40175 4.79557L8.52662 5.92509V0.15918H9.27333V5.92509L10.3982 4.79557L10.9263 5.32071H10.9262ZM10.3981 11.5228L9.27328 10.3933V16.1592H8.52656V10.3933L7.4017 11.5228L6.87378 10.9979L8.63596 9.2285L8.89989 8.96347L9.16399 9.2285L10.9262 10.9979L10.3981 11.5228H10.3981Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4075">
+                    <rect width="16" height="16" fill="white" transform="translate(0.900391 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% elsif attributeKey == 'length' %}
+              <!-- SVG for Length -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                <g clip-path="url(#clip0_3325_4080)">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.77518 3.40768L8.53782 1.63835L8.8016 1.37338L9.06578 1.63835L10.828 3.40768L10.3001 3.9325L9.17523 2.80334V13.5154L10.3001 12.3859L10.828 12.9111L9.06578 14.6804L8.8016 14.9454L8.53782 14.6804L6.77518 12.9111L7.30314 12.3859L8.42797 13.5154V2.80334L7.30314 3.9325L6.77518 3.40768ZM4.50977 15.4127H13.0934V16.1596H4.50977V15.4127ZM4.50977 0.15918H13.0934V0.905655H4.50977V0.15918Z" fill="#143156"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_3325_4080">
+                    <rect width="16" height="16" fill="white" transform="translate(0.800781 0.15918)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            {% endif %}
+          </div>
+          <div class="collection-attribute-text">
+            <span class="collection-grid-element-heading">
+              {% if attributeKey == 'width' %}
+                {{ 'products.attributes.width' | t }}:
+              {% elsif attributeKey == 'thickness' %}
+                {{ 'products.attributes.thickness' | t }}:
+              {% elsif attributeKey == 'length' %}
+                Length:
+              {% endif %}
+            </span>
+            <span class="collection-grid-element-value">
+              {%- if filterFields[attributeKey].value.first -%}
+                {%- for value in filterFields[attributeKey].value -%}
+                  {{ value -}}
+                  {%- unless forloop.last == true %}, {% endunless %}
+                {%- endfor -%}
+              {%- elsif filterFields[attributeKey] -%}
+                {{ filterFields[attributeKey] }}
+              {%- else -%}
+                {{ attributeValue }}
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+        {% assign counter = counter | plus: 1 %}
+      {% endif %}
+    {%- endif -%}
+  {%- endfor -%}
+</div>

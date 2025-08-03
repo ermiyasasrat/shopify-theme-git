@@ -1,0 +1,102 @@
+{% schema %}
+    {
+        "name": "Samples how to banner",
+        "settings": [
+            {
+                "id": "samples_banner_heading",
+                "type": "text",
+                "label": "Samples banner heading"
+            },
+            {
+                "id": "samples_browse_title",
+                "type": "text",
+                "label": "Samples browse title"
+            },
+            {
+                "id": "samples_browse_text",
+                "type": "text",
+                "label": "Samples browse text"
+            },
+            {
+                "id": "samples_request_sample_title",
+                "type": "text",
+                "label": "Samples request sample title"
+            },
+            {
+                "id": "samples_request_sample_text",
+                "type": "text",
+                "label": "Samples request sample title"
+            },
+            {
+                "id": "samples_post_title",
+                "type": "text",
+                "label": "Samples post title"
+            },
+            {
+                "id": "samples_post_text",
+                "type": "text",
+                "label": "Samples post text"
+            }
+        ]
+    }
+{% endschema %}
+
+<div id="samples-how-to-banner" class="site-usp-banner site-usp-banner--large">
+    <div class="site-wrap">
+        {% unless section.settings.samples_banner_heading == blank %}
+            <h2 class="title title--small site-usp-banner__heading">
+                {{- section.settings.samples_banner_heading -}}
+            </h2>
+        {% endunless %}
+        <ul class="site-usp-banner__wrap site-usp-banner__wrap--large">
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--browse site-usp-banner__icon--large">
+                        {% include 'icon-browse' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{- section.settings.samples_browse_title -}}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{- section.settings.samples_browse_text -}}
+                </div>
+            </li>
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--click site-usp-banner__icon--large">
+                        {% include 'icon-click' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{- section.settings.samples_request_sample_title -}}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{- section.settings.samples_request_sample_text -}}
+                </div>
+            </li>
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--post site-usp-banner__icon--large">
+                        {% include 'icon-post' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{- section.settings.samples_post_title -}}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{- section.settings.samples_post_text -}}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

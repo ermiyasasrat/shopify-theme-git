@@ -1,0 +1,137 @@
+{% schema %}
+    {
+        "name": "USPs",
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "show_usps_bar",
+                "label": "Show USPs Bar",
+                "default": true
+            },
+            {
+                "id": "usp_delivery",
+                "type": "text",
+                "label": "USP delivery"
+            },
+            {
+                "id": "usp_delivery_link",
+                "type": "text",
+                "label": "USP delivery link"
+            },
+            {
+                "id": "usp_sample",
+                "type": "text",
+                "label": "USP sample"
+            },
+            {
+                "id": "usp_sample_link",
+                "type": "text",
+                "label": "USP sample link"
+            },
+            {
+                "id": "usp_returns",
+                "type": "text",
+                "label": "USP returns"
+            },
+            {
+                "id": "usp_returns_link",
+                "type": "text",
+                "label": "USP returns link"
+            },
+            {
+                "id": "usp_rrp",
+                "type": "text",
+                "label": "USP rrp"
+            },
+            {
+                "id": "usp_rrp_link",
+                "type": "text",
+                "label": "USP rrp link"
+            },
+            {
+                "id": "usp_guarantee",
+                "type": "text",
+                "label": "USP guarantee"
+            },
+            {
+                "id": "usp_guarantee_link",
+                "type": "text",
+                "label": "USP guarantee link"
+            },
+            {
+                "id": "klarna-text",
+                "type": "text",
+                "label": "Klarna Text"
+            }
+        ]
+    }
+{% endschema %}
+<style>
+    /* Site Usp Banner Inline Style */
+    .site-usp-banner{background:#fff;margin:0 auto;max-width:192rem;padding:0 2rem;position:relative;z-index:2}@media (min-width:80em){.site-usp-banner{padding:0 5%}}.site-usp-banner--large{padding:5rem 0;z-index:unset}@media (min-width:1024px){.site-usp-banner--large{padding:10rem 0 9rem}}@media (min-width:120em){.site-usp-banner--large{padding:13rem 0 15rem}}.site-usp-banner__heading{margin-bottom:5rem;text-align:center}.site-usp-banner__wrap{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:1.6rem 0 1.3rem;position:relative}@media (max-width:79.999em){.site-usp-banner__wrap{height:5.9rem}.site-usp-banner__slide{left:0;opacity:0;position:absolute;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);width:100%;z-index:1}}@media (min-width:80em){.site-usp-banner__wrap{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;padding:1.1rem 0 1.2rem}}.site-usp-banner__wrap--large{display:block;height:auto;padding:0}@media (min-width:1024px){.site-usp-banner__wrap--large{display:-webkit-box;display:-ms-flexbox;display:flex}.site-usp-banner__item{margin-right:5rem;text-align:center}.site-usp-banner__item:last-of-type{margin-right:0}}.site-usp-banner__slide{-webkit-transition:opacity 1s;transition:opacity 1s}.site-usp-banner__slide.is-active{opacity:1;-webkit-transition:opacity 1s .5s;transition:opacity 1s .5s;z-index:2}.site-usp-banner__link{color:#1b2c3d;display:block;font-size:1.4rem;text-decoration:none;-webkit-transition:.4s;transition:.4s}.site-usp-banner__link:hover .inline-icon-text__text:after{width:100%}@media (max-width:1023px){.site-usp-banner__item{margin-bottom:3rem}.site-usp-banner__item:last-of-type{margin-bottom:0}}@media (min-width:120em){.site-usp-banner__wrap--large{padding:0 8.33333%}.site-usp-banner__item{margin-right:12rem}}.site-usp-banner__expand{padding-right:2rem;position:relative;text-decoration:none;width:100%}.site-usp-banner__expand-arrow{position:absolute;right:0;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);-webkit-transform-origin:50% 0;transform-origin:50% 0}@media (min-width:1024px){.site-usp-banner__expand{cursor:default;padding-right:0;text-align:center}.site-usp-banner__expand-arrow{display:none}}.is-active .site-usp-banner__expand-arrow{-webkit-transform:rotate(-180deg) translateY(-50%);transform:rotate(-180deg) translateY(-50%)}.site-usp-banner__expand-arrow svg g{stroke:#ff877a}.site-usp-banner__icon{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;vertical-align:middle;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;margin-right:1rem;width:5rem}.site-usp-banner__icon svg{display:block}.site-usp-banner__icon-text{display:inline-block;vertical-align:middle}.site-usp-banner__icon--large{margin-right:2rem}.site-usp-banner__icon--delivery svg{height:2rem;width:3.4rem}.site-usp-banner__icon--delivery.site-usp-banner__icon--large svg{height:2.9rem;width:5rem}@media (min-width:1024px){.site-usp-banner__icon--large{display:block;margin:0 auto 2rem;width:auto}.site-usp-banner__icon--large svg{margin:0 auto}.site-usp-banner__icon--delivery.site-usp-banner__icon--large svg{height:4.5rem;width:8rem}}.site-usp-banner__icon--returns svg{height:2.4rem;width:2.8rem}.site-usp-banner__icon--returns.site-usp-banner__icon--large svg{height:3.6rem;width:4rem}@media (min-width:1024px){.site-usp-banner__icon--returns.site-usp-banner__icon--large svg{height:5.6rem;width:6.5rem}}.site-usp-banner__icon--samples svg{height:2.8rem;width:2.8rem}.site-usp-banner__icon--samples.site-usp-banner__icon--large svg{height:4.1rem;width:4.1rem}@media (min-width:1024px){.site-usp-banner__icon--samples.site-usp-banner__icon--large svg{height:6.5rem;width:6.6rem}}.site-usp-banner__icon--guarantee svg,.site-usp-banner__icon--savings svg{height:2.8rem;width:2.8rem}.site-usp-banner__icon--guarantee.site-usp-banner__icon--large svg{height:4rem;width:4rem}.site-usp-banner__title{display:inline-block;font-size:1.6rem;letter-spacing:-.01rem;line-height:2.3rem;vertical-align:middle}@media (min-width:1024px){.site-usp-banner__icon--guarantee.site-usp-banner__icon--large svg{height:6.4rem;width:6.4rem}.site-usp-banner__icon--browse svg{height:5.1rem;width:5.1rem}.site-usp-banner__icon--click svg{height:4.8rem;width:4.8rem}.site-usp-banner__icon--post svg{height:5.4rem;width:5.5rem}.site-usp-banner__title{display:block;font-size:2.3rem;letter-spacing:0;line-height:2.7rem;margin-bottom:1rem}}@media (max-width:1023px){.site-usp-banner__description{display:none;padding-top:2rem}}.is-active .site-usp-banner__description{display:block}.site-usp-banner__indicators{height:3rem;position:absolute;right:3rem;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%)}@media (min-width:48em){.site-usp-banner__indicators{right:3%}}@media (min-width:80em){.site-usp-banner__indicators{display:none}}.site-usp-banner__indicator{background:#c6d5d5;border:.1rem solid #c6d5d5;border-radius:100%;display:inline-block;height:.3rem;margin-right:.4rem;width:.3rem}.site-usp-banner__indicator:last-child{margin-right:0}.site-usp-banner__indicator.is-active{background:#ff877a;border:.1rem solid #ff877a}
+</style>
+{%- if section.settings.show_usps_bar -%}
+<div class="site-usp-banner">
+    <ul class="site-usp-banner__wrap" id="usp-carousel">
+        <li class="site-usp-banner__slide is-active">
+            <a title="{{ section.settings.usp_delivery }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_delivery_link }}">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-delivery',
+                    text: section.settings.usp_delivery
+                } %}
+            </a>
+        </li>
+        <li class="site-usp-banner__slide">
+            <a title="{{ section.settings.usp_sample }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_sample_link }}">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-samples',
+                    text: section.settings.usp_sample
+                } %}
+            </a>
+        </li>
+        <li class="site-usp-banner__slide">
+            <a title="{{ section.settings.usp_returns }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_returns_link }}">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-returns',
+                    text: section.settings.usp_returns
+                } %}
+            </a>
+        </li>
+        <li class="site-usp-banner__slide">
+            <a title="{{ section.settings.usp_rrp }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_rrp_link }}">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-savings',
+                    text: section.settings.usp_rrp
+                } %}
+            </a>
+        </li>
+        <li class="site-usp-banner__slide">
+            <a title="{{ section.settings.usp_guarantee }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_guarantee_link }}">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-guarantee',
+                    text: section.settings.usp_guarantee
+                } %}
+            </a>
+        </li>
+        <li class="site-usp-banner__slide klarna-announcement klarna-mobile-only">
+            <img
+                src="{{ 'klarna.svg' | asset_url }}"
+                loading="lazy"
+                class="klarna-icon"
+                alt="Pay With Klarna"
+            />
+            <span>
+                {{ section.settings.klarna-text }}
+            </span>
+        </li>
+    </ul>
+    <div class="site-usp-banner__indicators" id="usp-carousel-dots">
+        <span class="site-usp-banner__indicator is-active"></span>
+        <span class="site-usp-banner__indicator"></span>
+        <span class="site-usp-banner__indicator"></span>
+        <span class="site-usp-banner__indicator"></span>
+        <span class="site-usp-banner__indicator"></span>
+        <span class="site-usp-banner__indicator klarna-mobile-only"></span>
+    </div>
+</div>
+{%- endif -%}

@@ -1,0 +1,54 @@
+{% schema %}
+    {
+        "name": "Hero",
+        "settings": [
+            {
+                "type": "text",
+                "id": "returns_hero_title",
+                "label": "Title"
+            },
+            {
+                "type": "richtext",
+                "id": "returns_hero_content",
+                "label": "Content"
+            },
+            {
+                "type": "image_picker",
+                "id": "returns_hero_image",
+                "label": "Hero Image"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.returns_hero_title == blank
+    and section.settings.returns_hero_content == blank
+    and section.settings.returns_hero_image == blank
+%}
+<section class="woolley-hero-wrap">
+  <div class="woolley-hero">
+  {% unless
+      section.settings.returns_hero_title == blank
+      and section.settings.returns_hero_content == blank
+  %}
+    <div class="woolley-hero-text">
+        {% unless section.settings.returns_hero_title == blank %}
+            <h2 class="title">
+                {{- section.settings.returns_hero_title -}}
+            </h2>
+        {% endunless %}
+        {% unless section.settings.returns_hero_content == blank %}
+            <div class="para image-text-split__para">
+                {{- section.settings.returns_hero_content -}}
+            </div>
+        {% endunless %} 
+    </div>
+  {% endunless %}
+    <div class="woolley-hero-image">    
+      <div class="returns-upper-image" style="background-image: url('{{ section.settings.returns_hero_image | img_url: '1200x800' }}');">
+      </div>
+    </div>
+  </div>
+</section>
+{% endunless %}

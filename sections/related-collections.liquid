@@ -1,0 +1,79 @@
+{{ 'related-collection.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .main_relatedcollection--wrapper.related-collection-{{ section.id }} {
+    padding-top:{{section.settings.top_spacing}}px;
+    padding-bottom:{{section.settings.bottom_spacing}}px;
+    background: #f1e7e3;
+  }
+  @media screen and (max-width:768px){
+    .main_relatedcollection--wrapper.related-collection-{{ section.id }} {
+      padding-bottom:40px;
+    }
+  }
+{%- endstyle -%}
+
+
+{% assign image_meta = collection.metafields.custom.related_collection_image.value %}
+{% assign link_meta = collection.metafields.custom.related_collection_link.value %}
+{% assign title_meta = collection.metafields.custom.related_collection_name.value %}
+
+{% if title_meta != blank %}
+<div class="main_relatedcollection--wrapper related-collection-{{ section.id }}">
+  <div class="main_relatedcollection--container site-wrap site-wrap--max">
+    <div class="related_collection--inner">
+      
+      {% for image in image_meta %}
+        <a href="{{link_meta[forloop.index0]  }}" class="link_related-collection">
+          <div class="main-related-collection">
+            <div class="related-collection_image">
+              <img
+                src="{{ image.src | image_url: width:250 , height:250  }}"
+                height="{{ image.height }}"
+                width="{{ image.width }}"
+                alt="{{ title_meta[forloop.index0] }}"
+              >
+            </div>
+            <div class="related-collection_name">
+              {{ title_meta[forloop.index0] }}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% schema %}
+{
+  "name": "Related Collections",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "id": "top_spacing",
+      "label": "Top Spacing",
+      "default": 20,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "id": "bottom_spacing",
+      "label": "Bottom Spacing",
+      "default": 20,
+      "step": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,93 @@
+{%- liquid
+  assign PRODUCT_SAMPLE_TYPE = 'product_sample_item'
+
+  assign itemProductType = item.product.type | downcase | replace: ' ', '_' | slice: 0, 20
+  assign itemTitle = item.product.title
+
+  assign isOneSqMeterItem = item.properties['_isOneSqMeterItem']
+
+  if itemProductType == PRODUCT_SAMPLE_TYPE
+    assign isSampleItem = true
+  else
+    assign isSampleItem = false
+  endif
+
+  assign itemUrl = item.url
+  assign itemImage = item.image
+  assign itemTitle = item.product.title
+  if isOneSqMeterItem
+    assign itemTitle = item.properties['Main Product']
+    assign mainHandle = item.properties['Main Product'] | handleize
+
+    if item.properties['_mainProductUrl'] != blank
+      assign itemUrl = item.properties['_mainProductUrl']
+    else
+      assign itemUrl = '/products/' | append: mainHandle
+    endif
+
+    assign mainProduct = all_products[mainHandle]
+    if mainProduct.title != blank
+      assign itemImage = mainProduct.images.first
+    endif
+  endif
+  if isSampleItem
+    if item.variant.metafields.advsample_var_attr.source_product_handle != blank
+      assign itemUrl = '/products/' | append: item.variant.metafields.advsample_var_attr.source_product_handle
+    else
+      assign itemUrl = ''
+    endif
+  endif
+
+-%}
+<tr id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item" role="row" data-cart-item-id="{{ item.id }}" data-is-sample-item="{{ isSampleItem }}" data-product-variant="{{item.properties['Product Variant']}}" data-is-one-sq-meter-item="{{ item.properties['_isOneSqMeterItem'] }}">
+  <td class="cart-item__product-title" role="cell" headers="CartDrawer-ColumnProductTitle">
+    {% if itemUrl %}
+      <a href="{{ itemUrl | append:'?variant=' | append: item.id }}" class="cart-item__name h4 break">
+        {{- itemTitle | escape -}}
+      </a>
+    {% else %}
+      <p class="cart-item__name h4 break">
+        {{- itemTitle | escape -}}
+      </p>
+    {% endif %}
+  </td>
+  <td class="cart-item__media" role="cell" headers="CartDrawer-ColumnProductImage">
+    {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+    {% if itemUrl %}
+      <a href="{{ itemUrl }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+    {% endif %}
+    {% if isOneSqMeterItem and item.properties['_mainProductImage'] != blank %}
+      <img
+        class="cart-item__image"
+        src="{{ item.properties['_mainProductImage'] }}"
+        alt="{{ itemTitle }}"
+        loading="lazy"
+        width="150"
+        height="150"
+      >
+    {% else %}
+      {% if itemImage %}
+        <img
+          class="cart-item__image"
+          src="{{ itemImage | image_url: width: 300 }}"
+          alt="{{ itemImage.alt | escape }}"
+          loading="lazy"
+          width="150"
+          height="{{ 150 | divided_by: itemImage.aspect_ratio | ceil }}"
+        >
+      {% endif %}
+    {% endif %}
+  </td>
+
+  {% if isOneSqMeterItem %}
+    <td class="cart-item__details" role="cell" headers="CartDrawer-ColumnProduct">
+      <div class="product-option">
+        {{ 'products.product.price.unit_price' | t }}: <span class="single_p"> {{ item.final_line_price | money }} </span>
+      </div>
+    </td>
+  {% else %}
+    {%- render 'cart-drawer-item-details', item: item, isSampleItem: isSampleItem -%}
+  {% endif %}
+  {%- render 'cart-drawer-item-totals', item: item, isOneSqMeterItem: isOneSqMeterItem, isSampleItem: isSampleItem -%}
+  {%- render 'cart-drawer-quantity-popover', item: item, isOneSqMeterItem: isOneSqMeterItem, isSampleItem: isSampleItem -%}
+</tr>

@@ -1,0 +1,212 @@
+<style>
+    .video-carousel {
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .carousel-track {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 2rem;
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: calc(100% / 3); // Desktop: 3 items visible
+      scroll-snap-align: start;
+      position: relative;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .item-info {
+      padding: 1rem;
+      display: flex;
+      gap: 1rem;
+      img {
+        width: 80px;
+        height: 80px;
+      }
+      .text {
+        flex: 1;
+        h3 { margin: 0; font-size: 1.2rem; }
+        p { font-size: 0.875rem; }
+        .price { font-weight: bold; color: #333; }
+      }
+    }
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: #eee;
+    margin-top: -1.5rem;
+    .progress-indicator {
+      height: 100%;
+      width: 20%; // Dynamically controlled via JS
+      background: #222;
+      transition: width 0.3s ease;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .carousel-item {
+      width: calc(100% / {{ section.settings.desktop_visible_blocks }});
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item {
+      width: calc(100% / {{ section.settings.mobile_visible_blocks }});
+    }
+    .carousel-track {
+      scroll-padding-left: 1rem;
+      scroll-padding-right: 1rem;
+    }
+  }
+
+    </style>
+
+<section class="video-carousel">
+  <div class="carousel-header">
+    <h2>{{ section.settings.title }}</h2>
+    <div class="nav-arrows">
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    </div>
+  </div>
+
+  <div class="carousel-track">
+    {% for block in section.blocks %}
+      <div class="carousel-item">
+        <video src="{{ block.settings.video_url }}" controls poster="{{ block.settings.video_thumbnail }}"></video>
+        <div class="item-info">
+          <img src="{{ block.settings.product_image | image_url: '300x300' }}" alt="{{ block.settings.product_name }} "width="40px" height="40px">
+          <div class="text">
+            <h3>{{ block.settings.product_name }}</h3>
+            <p>{{ block.settings.description }}</p>
+            <span class="price">{{ block.settings.product_price }}</span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-indicator"></div>
+  </div>
+</section>
+
+<script>
+    const track = document.querySelector('.carousel-track');
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const progress = document.querySelector('.progress-indicator');
+
+let scrollAmount = 0;
+const itemWidth = track.querySelector('.carousel-item').offsetWidth + 16;
+
+next.addEventListener('click', () => {
+  track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+  updateProgress(itemWidth);
+});
+
+prev.addEventListener('click', () => {
+  track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+  updateProgress(-itemWidth);
+});
+
+function updateProgress(delta) {
+  scrollAmount += delta;
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  const progressRatio = Math.min(Math.max(scrollAmount / maxScroll, 0), 1);
+  progress.style.width = `${progressRatio * 100}%`;
+}
+    </script>
+
+{% schema %}
+{
+  "name": "Video Carousel",
+  "class":"Carousel",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Carousel Title",
+      "default": "Tested Beyond Limits. Proven In The Wild."
+    },
+    {
+    "type": "range",
+    "id": "desktop_visible_blocks",
+    "label": "Visible Blocks on Desktop",
+    "min": 1,
+    "max": 6,
+    "step": 0.5,
+    "default": 4.5
+    },
+   {
+    "type": "range",
+    "id": "mobile_visible_blocks",
+    "label": "Visible Blocks on Mobile",
+    "min": 1,
+    "max": 6,
+    "step": 0.5,
+    "default": 1.5
+   }
+  ],
+  "blocks": [
+    {
+      "type": "video_block",
+      "name": "Video Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Product Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_price",
+          "label": "Product Price"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video File URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Video Thumbnail Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

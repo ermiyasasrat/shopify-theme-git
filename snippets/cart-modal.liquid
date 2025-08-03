@@ -1,0 +1,781 @@
+<!-- Trigger/Open The Modal -->
+<button id="modal-open-btn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div id="modal-close-btn">Close</div>
+  <!-- Modal content -->
+  <div class="modal-content">
+   	<div class="step" data-step="contact_information" data-last-step="false">
+       <form class="edit_checkout animate-floating-labels" action="" method="post" name='checkout-form' id="checkout-form">
+          <div class="step__sections">
+             <div class="section section--contact-information">
+                <div class="section__header">
+                   <div class="layout-flex layout-flex--tight-vertical layout-flex--loose-horizontal layout-flex--wrap">
+                      <h2 class="section__title layout-flex__item layout-flex__item--stretch">
+                         Contact information
+                      </h2>
+<!--                       <p class="layout-flex__item">
+                         Already have an account?
+                         <a href="#">
+                         Log in
+                         </a>        
+                      </p> -->
+                   </div>
+                </div>
+                <div class="section__content" >
+                   <div class="fieldset">
+                      <div  class="field field--required">
+                         <div class="field__input-wrapper">
+                           <label class="field__label field__label--visible" for="checkout_email">Email</label>
+                            <input placeholder="Email"  class="field__input" type="email" name="email" id="checkout_email" required>
+                           <p style="color:red" class='error-message'>Fill this field</p>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="fieldset-description" >
+                      <div class="section__content">
+                         <div class="checkbox-wrapper">
+                            <div class="checkbox__input">
+                              <input class="input-checkbox" type="checkbox">
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                            <label class="checkbox__label" for="checkout_buyer_accepts_marketing">
+                            Don't keep me updated with sales & offers
+                            </label>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="section section--shipping-address" data-shipping-address="">
+                <div class="section__header">
+                   <h2 class="section__title" id="section-delivery-title">
+                      Shipping address
+                   </h2>
+                </div>
+                <div class="section__content">
+                   <div class="fieldset">
+                      <div class="address-fields" data-address-fields="">
+                        <div class="d-flex-md">
+                         <div class="field field--required field--half" data-address-field="first_name">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_first_name">First name</label>
+                               <input placeholder="First name"  class="field__input" type="text" id="checkout_shipping_address_first_name" name="first_name">
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                         <div class="field field--required field--half" data-address-field="last_name">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_last_name">Last name</label>
+                               <input placeholder="Last name" class="field__input" aria-required="true" type="text" id="checkout_shipping_address_last_name" name="last_name"> 
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                        </div>
+                        
+                        <!-- Phone Cut -->
+                         <div data-address-field="phone" class="field field--required">
+                            <div class="field__input-wrapper field__input-wrapper--icon-right">
+                               <label class="field__label field__label--visible" for="checkout_shipping_address_phone">Phone</label>
+                               <input placeholder="Phone" autocomplete="shipping tel" autocorrect="off" data-backup="phone" data-phone-formatter="true" data-phone-formatter-country-select="[name='checkout[shipping_address][country]']" class="field__input field__input--numeric" aria-required="true" size="30" type="tel" name="phone" id="checkout_shipping_address_phone"  value="" required>
+                               <div class="field__icon">
+                                  <div data-tooltip="true" id="phone_tooltip" class="tooltip-container">
+                                     <button type="button" class="tooltip-control" data-tooltip-control="true" aria-label="More information" aria-describedby="tooltip-for-phone" aria-controls="tooltip-for-phone" aria-pressed="false" placeholder="Phone">
+                                        <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-16 icon-svg--block icon-svg--center" role="presentation" aria-hidden="true" focusable="false">
+                                           <use xlink:href="#question">
+                                          <svg id="question"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm.7 13H6.8v-2h1.9v2zm2.6-7.1c0 1.8-1.3 2.6-2.8 2.8l-.1 1.1H7.3L7 7.5l.1-.1c1.8-.1 2.6-.6 2.6-1.6 0-.8-.6-1.3-1.6-1.3-.9 0-1.6.4-2.3 1.1L4.7 4.5c.8-.9 1.9-1.6 3.4-1.6 1.9.1 3.2 1.2 3.2 3z"></path></svg></svg></use>
+                                        </svg>
+                                     </button>
+                                     <span class="tooltip" role="tooltip" id="tooltip-for-phone">In case we need to contact you about your order</span>
+                                  </div>
+                               </div>
+                              <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                        <!-- Phone Cut -->
+                        
+                        
+                         <div data-address-field="company" data-autocomplete-field-container="true" class="field field--optional">
+                            <div class="field__input-wrapper">
+                              <label class="field__label field__label--visible" for="checkout_shipping_address_company">Company (optional)</label>
+                               <input placeholder="Company (optional)" class="passMe field__input" size="30" type="text" name="company" id="checkout_shipping_address_company">
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+
+                         <div data-address-field="address1" data-autocomplete-field-container="true" class="field field--required">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_address1">Address Line 1</label>
+                               <input placeholder="Address Line 1" autocomplete="shipping address-line1" autocorrect="off" data-backup="address1" class="field__input" type="text" name="address1" id="checkout_shipping_address_address1"  value="" required>
+                              	<p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+
+                         <div data-address-field="address2" data-autocomplete-field-container="true" class="field field--optional">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_address2">Address Line 2</label>
+                               <input placeholder="Address Line 2" autocomplete="shipping address-line2" autocorrect="off" data-backup="address2" class="passMe field__input" type="text" name="address2" id="checkout_shipping_address_address2"  value="">
+                              	<p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                                                
+                        
+                         <div data-address-field="city" data-autocomplete-field-container="true" class="field field--required">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_city">County</label>
+                               <input placeholder="County" autocomplete="shipping address-level2" autocorrect="off" data-backup="province" class="passMe field__input" aria-required="true" type="text" name="province" id="checkout_shipping_address_province">
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                        
+                         <div data-address-field="city" data-autocomplete-field-container="true" class="field field--required">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_city">City</label>
+                               <input placeholder="City" autocomplete="shipping address-level2" autocorrect="off" data-backup="city" class="field__input" aria-required="true" size="30" type="text" name="city" id="checkout_shipping_address_city">
+                               <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                        
+                        <div class="d-flex-md">
+                        
+                         <div class="field field--required field--half field--show-floating-label" data-address-field="country" data-autocomplete-field-container="true">
+                            <div class="field__input-wrapper field__input-wrapper--select">
+                               <label class="field__label field__label--visible" for="checkout_shipping_address_country">Country/region</label>
+                               <select size="1" autocomplete="shipping country" data-backup="country" class="field__input field__input--select" aria-required="true" name="country" id="checkout_shipping_address_country" placeholder="Country/region">
+                                  <option data-code="GB" value="United Kingdom" selected>United Kingdom</option>
+                               </select>
+                               <div class="field__caret">
+                                  <svg class="icon-svg icon-svg--color-adaptive-lighter icon-svg--size-10 field__caret-svg" role="presentation" aria-hidden="true" focusable="false">
+                                     <use xlink:href="#caret-down">
+                                                 <svg id="caret-down"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M0 3h10L5 8" fill-rule="nonzero"></path></svg></svg>
+										</use>
+                                  </svg>
+                               </div>
+                            </div>
+                         </div>
+ 
+                         <div class="field field--required field--half" data-address-field="zip" data-autocomplete-field-container="true">
+                            <div class="field__input-wrapper"><label class="field__label field__label--visible" for="checkout_shipping_address_zip">Postcode</label>
+                               <input placeholder="Postcode" autocomplete="shipping postal-code" autocorrect="off" data-backup="zip" data-autocomplete-trigger="true" data-autocomplete-title="Suggestions" data-autocomplete-single-item="1 item available" data-autocomplete-multi-item="{{number}} items available" data-autocomplete-item-selection="{{number}} of {{total}}" data-autocomplete-close="Close suggestions" class="field__input field__input--zip" aria-required="true" size="30" type="text" name="zip" id="checkout_shipping_address_zip"  value="" required>
+                                <p style="color:red" class='error-message'>Fill this field</p>
+                            </div>
+                         </div>
+                        </div>
+                        
+								<!--Phone Cut-->
+                        
+                        
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="step__footer" data-step-footer="">
+             <button type="submit" id="complete_checkout_btn" class="step__footer__continue-btn btn" href="javascript:void(0)">
+                <span class="btn__content">Complete Checkout</span>
+             </button>
+            
+            <a class="btn rtCart" href="javascript:void(0)">
+                <span id="return_cart_btn">Return to cart</span>
+             </a>
+            <p class='error-message-2'>all the fields</p>
+            
+          </div>
+       </form>
+    </div>
+  </div>
+
+</div>
+
+<style>
+/*   #myBtn{ display:none; } */
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin:6% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%; /* Could be more or less, depending on screen size */
+  max-width:600px
+}
+  @media (max-width:620px){
+/*     .modal-content {
+	    margin:6% auto;
+    } */
+    .modal{
+    padding:20px;
+    }
+  }  
+  
+a{
+  text-decoration: none; 
+}  
+
+/* The Close Button */
+#modal-close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+  .error-message {
+  	display: none;
+  }
+  .error-message-2{
+  	display: none;
+  }
+  
+  /*style form*/
+  .step {
+    max-width: 572px;
+    margin: auto;
+   }
+  .section {
+    position: relative;
+  }
+  .section__header {
+    position: relative;
+  }
+  
+  .layout-flex--tight-vertical {
+    margin-bottom: -0.1428571429rem;
+    margin-top: -0.1428571429rem;
+}
+
+.layout-flex--wrap {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.layout-flex {
+    -webkit-box-align: baseline;
+    -webkit-align-items: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin: -0.2857142857rem;
+}
+  .layout-flex--loose-horizontal {
+    margin-left: -0.5714285714rem;
+    margin-right: -0.5714285714rem;
+}
+  
+  .layout-flex--loose-horizontal .layout-flex__item {
+    padding-left: 0.5714285714rem;
+    padding-right: 0.5714285714rem;
+}
+
+.layout-flex--tight-vertical .layout-flex__item {
+    padding-bottom: 0.1428571429rem;
+    padding-top: 0.1428571429rem;
+}
+.main h2, .main .heading-2 {
+    color: #333333;
+}
+.section__title {
+    color: #333333;
+}
+.layout-flex__item--stretch {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.layout-flex__item {
+    padding: 0.1428571429rem;
+}
+ h2.section__title {
+    font-size: 1.2857142857em;
+    line-height: 1.3em;
+ }
+  .layout-flex--loose-horizontal .layout-flex__item {
+    padding-left: 0.5714285714rem;
+    padding-right: 0.5714285714rem;
+}
+.layout-flex--tight-vertical .layout-flex__item {
+    padding-bottom: 0.1428571429rem;
+    padding-top: 0.1428571429rem;
+}
+  
+  .fieldset {
+    margin: -0.4285714286em;
+    zoom: 1;
+  
+  }
+  .field {
+    width: 100%;
+/*     float: left; */
+    padding: 0.4285714286em;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .field__input-wrapper {
+    position: relative;
+  }
+  .floating-labels .main .field__label {
+    color: #737373;
+}
+
+.animate-floating-labels .field__label {
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+.floating-labels .field__label {
+    font-size: 0.8571428571em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 0.4285714286em;
+    margin-left: 1px;
+    padding: 0 0.9166666667em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity: 0;
+}
+.main .field__label {
+    color: #333333;
+}
+.field__label--visible {
+    display: block;
+}
+.field__label {
+    text-align: left;
+    font-weight: 500;
+    margin: 0.5em 0;
+    display: none;
+}
+
+
+.field__input {
+    border: 1px transparent solid;
+    background-clip: padding-box;
+    border-radius: 5px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.9285714286em 0.7857142857em;
+    word-break: normal;
+    line-height: inherit;
+  min-height:45px;
+}
+    .animate-floating-labels .field__input {
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+   .field__input {
+    background-color: white;
+    color: #333333;
+    border-color: #d9d9d9;
+}
+  
+  .floating-labels .field--show-floating-label .field__label {
+    -webkit-transform: none;
+    transform: none;
+    opacity: 1;
+}
+.floating-labels .main .field__label {
+    color: #737373;
+}
+.animate-floating-labels .field__label {
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+.floating-labels .field__label {
+    font-size: 0.8571428571em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 0.4285714286em;
+    margin-left: 1px;
+    padding: 0 0.9166666667em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity: 0;
+}
+  .floating-labels .main .field__label {
+    color: #737373;
+}
+.animate-floating-labels .field__label {
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+.floating-labels .field__label {
+    font-size: 0.8571428571em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 0.4285714286em;
+    margin-left: 1px;
+    padding: 0 0.9166666667em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity: 0;
+}
+  .fieldset-description {
+    margin-top: 0.9285714286em;
+}
+  .radio-wrapper:last-child, .checkbox-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+.radio-wrapper, .checkbox-wrapper {
+    display: table;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+.checkbox-wrapper {
+    zoom: 1;
+    margin-bottom: 1em;
+}
+  .radio__input, .checkbox__input {
+    display: table-cell;
+}
+.radio__input, .checkbox__input {
+    padding-right: 0.75em;
+    white-space: nowrap;
+}
+   .radio__label, .checkbox__label {
+    display: table-cell;
+    width: 100%;
+}
+.radio__label, .checkbox__label {
+    cursor: pointer;
+    vertical-align: middle;
+}
+  
+  .section--shipping-address{
+    padding-top: 2em;	
+        position: relative;
+    }
+  
+  .section__header {
+    position: relative;
+    margin-bottom: 1em;
+}
+  
+  .floating-labels .field__label {
+    font-size: 0.8571428571em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 0.4285714286em;
+    margin-left: 1px;
+    padding: 0 0.9166666667em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity: 0;
+}
+  .field__label--visible {
+    display: block;
+}
+  .main .field__input {
+    background-color: white;
+    color: #333333;
+    border-color: #d9d9d9;
+}
+.field__input--select {
+    padding-right: 2.0714285714em;
+    white-space: nowrap;
+  -webkit-appearance: none;
+    -moz-appearance: none;
+  background:unset;
+}
+.field--show-floating-label .field__input {
+    padding-top: 1.5em;
+    padding-bottom: 0.3571428571em;
+}
+   .field__label{
+  	font-size: 0.8571428571em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 0.4285714286em;
+    margin-left: 1px;
+    padding: 0 0.9166666667em;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity:0;
+  }
+  .field--show-floating-label .field__label {
+    -webkit-transform: none;
+    transform: none;
+    opacity: 1;
+}
+  .field__caret {
+    display: block;
+    width: 2.1428571429em;
+    height: 43%;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
+}
+  .field__caret {
+    border-left: 1px rgba(179,179,179,0.5) solid;
+  }
+  
+  .field__icon .icon-svg--color-adaptive-lighter, .main .field__caret .icon-svg--color-adaptive-lighter {
+    color: #919191;
+    fill: currentColor;
+}
+ .icon-svg--color-adaptive-lighter {
+    color: #919191;
+    fill: currentColor;
+}
+.field__caret-svg {
+    position: absolute;
+    margin-left: -2px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.icon-svg--size-10 {
+    width: 10px;
+    height: 10px;
+}
+  .hidden {
+    display: none !important;
+}
+  
+  .tooltip-container .tooltip-control {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+	}
+  .icon-svg--size-16 {
+    width: 16px;
+    height: 16px;
+  }
+  .icon-svg--block {
+      display: block;
+  }
+  .icon-svg--center {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+  .tooltip-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+  .field__icon {
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 2.8571428571rem;
+}
+  .field__input-wrapper--icon-right .field__icon {
+    right: 0;
+}
+
+  .tooltip-container .tooltip-control {
+    background: transparent;
+    border: 0;
+}
+  .tooltip {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 80%;
+    right: -0.3333333333em;
+    width: 180px;
+    margin: 0 0 5px 0;
+    padding: 0.75em 1em;
+    border-radius: 4px;
+    white-space: normal;
+    font-size: 0.8571428571em;
+    font-style: normal;
+    text-align: center;
+    color: #fff;
+    display: block;
+    z-index: 200;
+    -webkit-transition: all 0.3s cubic-bezier(0.3, 0, 0, 1);
+    transition: all 0.3s cubic-bezier(0.3, 0, 0, 1);
+    -webkit-transform: rotateX(
+20deg) scale(0.8);
+    transform: rotateX(
+20deg) scale(0.8);
+    -webkit-transform-origin: 90% 120%;
+    transform-origin: 90% 120%;
+    -webkit-backface-visibility: hidden;
+    background-color: rgba(51,51,51,0.9);
+    visibility: hidden;
+    opacity: 0;
+}
+  .tooltip-container:hover .tooltip{
+  	    -webkit-transform: rotateX(
+0deg) scale(1);
+    transform: rotateX(
+0deg) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+  }
+  .step__footer .btn{
+    z-index: 2;
+    position: relative;
+    margin-top: 1em;
+    
+        cursor: pointer;
+    display: inline-block;
+    background-color: #24486d;
+    background-clip: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px transparent solid;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    padding: 1.4em 1.7em;
+    text-align: center;
+    position: relative;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-box-shadow 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-box-shadow 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, -webkit-box-shadow 0.2s ease-in-out;
+}
+  .step__footer .btn:hover {
+    background-color: #172f47;
+    color: white;
+}
+  .step__footer .btn.rtCart{
+  	 background: transparent;
+    color: #24486d;
+  }
+  .step__footer .btn.rtCart:hver{
+  	 background: transparent;
+    color: #24486d;
+  }
+  .modal{
+  
+    z-index:999;
+  }
+  @media (min-width: 750px){
+    .section__header {
+        margin-bottom: 1.5em;
+    }
+    
+    .section--shipping-address{
+    padding-top: 3em;	
+    }
+    .section__header {
+    margin-bottom: 1.5em;
+	}
+    .fieldset .field--half {
+    width: 50%;
+	}
+    .field--third {
+    width: 33.3333333333%;
+	}
+    .tooltip {
+    -webkit-transform-origin: center 120%;
+    transform-origin: center 120%;
+    right: 50%;
+    margin-right: -90px;
+	}
+    .tooltip {
+    -webkit-transform-origin: center 120%;
+    transform-origin: center 120%;
+    right: 50%;
+    margin-right: -90px;
+	}
+     .step__footer .btn{
+    margin-top: 1.5em;
+	}
+    .d-flex-md{
+    	display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex
+    }
+  }
+</style>

@@ -1,0 +1,66 @@
+{% schema %}
+    {
+        "name": "About text split indent",
+        "settings": [
+            {
+                "type": "html",
+                "id": "about_text_indent_split_content",
+                "label": "About text indent split content"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_text_indent_split_image",
+                "label": "Image",
+                "info": "Recommended image size: 1390 x 926."
+            },
+            {
+                "type": "text",
+                "id": "about_text_indent_split_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.about_text_indent_split_content == blank
+    and section.settings.about_text_indent_split_image == blank
+%}
+    <section class="image-text-split image-text-split--beige">
+        <div class="site-wrap">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.about_text_indent_split_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--indent">
+                        {% assign image_small_1x = section.settings.about_text_indent_split_image | img_url: '265x175' %}
+                        {% assign image_small_2x = section.settings.about_text_indent_split_image | img_url: '530x350' %}
+                        {% assign image_medium_1x = section.settings.about_text_indent_split_image | img_url: '605x397' %}
+                        {% assign image_medium_2x = section.settings.about_text_indent_split_image | img_url: '1210x794' %}
+                        {% assign image_large_1x = section.settings.about_text_indent_split_image | img_url: '695x463' %}
+                        {% assign image_large_2x = section.settings.about_text_indent_split_image | img_url: '1390x926' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.about_text_indent_split_image_alt,
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless section.settings.about_text_indent_split_content == blank %}
+                    <div class="image-text-split__content image-text-split__content--indent">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                <div class="para">
+                                    {{- section.settings.about_text_indent_split_content -}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

@@ -1,0 +1,242 @@
+{% liquid
+  assign productMinQty = item.variant.metafields.product_config.minimum_qty
+  assign productPackSize = item.variant.metafields.product_attribute.pack_size
+  assign type = item.variant.metafields.product_config.sale_metric
+  assign EVEN_PACK_RESTRICTION_TAG_NAME = 'EvenPackRestriction'
+  assign qtyStepIncrement = item.variant.quantity_rule.increment | plus: 0
+
+  if productMinQty == blank
+    assign productMinQty = 0
+  else
+    assign productMinQty = productMinQty | plus: 0
+  endif
+
+  unless productPackSize == blank
+    assign productPackSize = productPackSize | plus: 0
+  endunless
+
+  if item.product.tags contains EVEN_PACK_RESTRICTION_TAG_NAME
+    assign evenPackRestriction = true
+  endif
+
+  if evenPackRestriction
+    assign qtyStepIncrement = 2
+  endif
+
+%}
+
+{%- liquid
+  assign has_qty_rules = false
+  if qtyStepIncrement > 1 or productMinQty > 1 or item.variant.quantity_rule.max != null
+    assign has_qty_rules = true
+  endif
+
+  assign has_vol_pricing = false
+  if item.variant.quantity_price_breaks.size > 0
+    assign has_vol_pricing = true
+  endif
+-%}
+
+
+<td
+  class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}"
+  role="cell"
+  headers="CartDrawer-ColumnQuantity"
+>
+  <quantity-popover>
+    <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
+      <span class="quantity__label">Qty:</span>
+      <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
+        {% if isOneSqMeterItem %}
+          {% assign itemQty = 1 %}
+        {% else %}
+          {% assign itemQty = item.quantity %}
+        {% endif %}
+        <cart-drawer-item-quantity-input class="quantity cart-quantity">
+          {% unless isOneSqMeterItem or isSampleItem %}
+            <button class="quantity__button" name="minus" type="button">
+              <span class="visually-hidden">
+                {{-
+                  'products.product.quantity.decrease'
+                  | t: product: item.product.title
+                  | escape
+                -}}
+              </span>
+              {% render 'icon-minus' %}
+            </button>
+          {% endunless %}
+          <input
+            class="quantity__input"
+            type="number"
+            {% if isOneSqMeterItem or isSampleItem %}disabled{% endif %}
+            data-quantity-variant-id="{{ item.variant.id }}"
+            name="updates[]"
+            value="{{ itemQty }}"
+            {% # theme-check-disable %}
+            data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
+            min="{{ productMinQty }}"
+            data-min="{{ productMinQty }}"
+            data-even-packs="{{ evenPackRestriction }}"
+            {% if item.variant.quantity_rule.max != null %}
+              max="{{ item.variant.quantity_rule.max }}"
+            {% endif %}
+            step="{{ qtyStepIncrement }}"
+            {% # theme-check-enable %}
+            aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
+            id="Drawer-quantity-{{ item.index | plus: 1 }}"
+            data-index="{{ item.index | plus: 1 }}"
+          >
+          {% unless isOneSqMeterItem or isSampleItem %}
+            <button class="quantity__button" name="plus" type="button">
+              <span class="visually-hidden">
+                {{-
+                  'products.product.quantity.increase'
+                  | t: product: item.product.title
+                  | escape
+                -}}
+              </span>
+              {% render 'icon-plus' %}
+            </button>
+          {% endunless %}
+        </cart-drawer-item-quantity-input>
+      </div>
+
+      <span class="quantity__unit">
+        {% if isOneSqMeterItem %}
+          {{ item.properties['Product Unit'] }}
+        {% else %}
+          {% if type %}
+            {{ type }}{% if item.quantity > 1 %}{% if type == 'Box' %}es{% else %}s{% endif %}{% endif %}
+          {% endif %}
+        {% endif %}
+      </span>
+
+
+      <cart-remove-button
+        id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
+        data-index="{{ item.index | plus: 1 }}"
+      >
+        <button
+          type="button"
+          class="button button--tertiary cart-remove-button"
+          aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}"
+          data-variant-id="{{ item.variant.id }}"
+        >
+          {% render 'icon-remove' %}
+        </button>
+      </cart-remove-button>
+    </div>
+    {% if productMinQty > 0 %}
+      <div
+        class="cart-item-basket__notice"
+      >
+        {%- if type == "Pack" -%}
+          {%- assign minMetre = productMinQty | times: productPackSize -%}
+          {{ 'products.product.minimums.pack' | t: minPack: productMinQty, minMetre: minMetre }}
+        {%- elsif type == "Box" or type == "Tile" -%}
+          {{ 'products.product.minimums.box' | t: minPack: productMinQty }}
+        {%- elsif type == "Roll" -%}
+          {{ 'products.product.minimums.roll' | t: minPack: productMinQty }}
+        {%- elsif type == "Board" -%}
+          {%- assign minMetre = productMinQty | times: productPackSize -%}
+          {{ 'products.product.minimums.board' | t: minPack: productMinQty, minMetre: minMetre }}
+        {%- else -%}
+          {{ 'products.product.minimums.box' | t: minPack: productMinQty }}
+        {%- endif -%}
+      </div>
+    {% endif %}
+    {% unless isOneSqMeterItem %}
+      {%- if has_qty_rules or has_vol_pricing -%}
+        <button
+          type="button"
+          class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary"
+          aria-expanded="false"
+        >
+          {% render 'icon-info' %}
+          <span>
+            {%- if has_vol_pricing -%}
+              {{ 'products.product.volume_pricing.note' | t }}
+            {%- elsif has_qty_rules -%}
+              {{ 'products.product.quantity.note' | t }}
+            {%- endif -%}
+          </span>
+        </button>
+      {%- endif -%}
+      {%- if has_vol_pricing or has_qty_rules -%}
+        <div
+          class="cart-items__info global-settings-popup quantity-popover__info md-whiteframe-1dp"
+          tabindex="-1"
+          hidden
+        >
+          {%- if has_qty_rules == false -%}
+            <span class="volume-pricing-label caption">
+              {{- 'products.product.volume_pricing.title' | t -}}
+            </span>
+          {%- endif -%}
+          <div class="quantity__rules caption">
+            {%- if qtyStepIncrement > 1 -%}
+              <span class="divider">
+                {{-
+                  'products.product.quantity.multiples_of'
+                  | t: quantity: qtyStepIncrement
+                -}}
+              </span>
+            {%- endif -%}
+            {%- if productMinQty > 1 -%}
+              <span class="divider">
+                {{-
+                  'products.product.quantity.min_of'
+                  | t: quantity: productMinQty
+                -}}
+              </span>
+            {%- endif -%}
+            {%- if item.variant.quantity_rule.max != null -%}
+              <span class="divider">
+                {{-
+                  'products.product.quantity.max_of'
+                  | t: quantity: item.variant.quantity_rule.max
+                -}}
+              </span>
+            {%- endif -%}
+          </div>
+          <button
+            class="button-close button button--tertiary"
+            type="button"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {%- render 'icon-close' -%}
+          </button>
+          {%- if item.variant.quantity_price_breaks.size > 0 -%}
+            <volume-pricing class="parent-display">
+              <ul class="list-unstyled">
+                <li>
+                  <span>{{ productMinQty }}+</span>
+                  <span>{{ item.variant.price | money_with_currency }}/ea</span>
+                </li>
+                {%- for price_break in item.variant.quantity_price_breaks -%}
+                  <li>
+                    <span>
+                      {{- price_break.minimum_quantity -}}
+                      <span aria-hidden="true">+</span></span
+                    >
+                    <span>{{ price_break.price | money_with_currency }}/ea</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </volume-pricing>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {% endunless %}
+
+
+    <div
+      id="CartDrawer-LineItemError-{{ item.index | plus: 1 }}"
+      class="cart-item__error"
+      role="alert"
+    >
+      <small class="cart-item__error-text"></small>
+      {%- render 'icon-error' -%}
+    </div>
+  </quantity-popover>
+</td>

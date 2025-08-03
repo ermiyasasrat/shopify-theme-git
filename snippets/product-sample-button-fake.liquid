@@ -1,0 +1,107 @@
+<link href="https://product-samples.herokuapp.com/complied/main.min.css"
+      rel="preload"
+      as="style"
+      onload="this.rel='stylesheet'"
+>
+<noscript><link rel="stylesheet" href="https://product-samples.herokuapp.com/complied/main.min.css"></noscript>
+<link href="https://product-samples.herokuapp.com/complied/main.min.js?shop={{ shop.permanent_domain }}"
+    rel="prefetch"
+    as="script"
+>
+<div class="product-samples-widget-f product-samples-widget--empty-f">
+  <button class="product-samples-widget__trigger-f">
+    My Sample
+  </button>
+</div>
+<style>
+    .product-samples-widget-f{z-index:100}.product-samples-widget{z-index:101}.product-samples-widget__trigger-f{box-sizing:border-box;top:30%;transform:rotate(-90deg) translate3d(0,-50%,0);transform-origin:right;bottom:auto;right:0;left:auto;display:inline-block;background:#fff;color:#000;padding:6px 24px 6px 40px;text-align:center;cursor:pointer;border:2px solid #000;transition:.25s ease-in-out;text-transform:uppercase;font-size:14px;line-height:22px;position:fixed;z-index:2147483646;border-bottom:0;border-radius:0}.product-samples-widget__trigger-f:hover{background:#000;color:#fff}.product-samples-widget__trigger-f:before{content:"";position:absolute;display:block;width:8px;height:8px;left:10px;top:50%;border-top:2px solid #000;border-left:2px solid #000;transform:rotate(45deg) translate3d(0,-50%,0);transition:.25s ease-in-out}
+</style>
+{% style %}
+    /* Combined common styles for .product-samples-button in both media queries */
+    .product-samples-button {
+        background-color: #24486d;
+        border-radius: 10rem;
+        width: 100%;
+        height: 52px;
+        border: none;
+        box-shadow: none;
+        color: #FFFFFF;
+        text-transform: initial;
+        font-family: Averta-regular;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 2rem;
+        letter-spacing: 0;
+        padding: 0;
+    }
+
+    /* Media query for larger screens */
+    @media only screen and (min-width: 48em) {
+        .product-samples-button {
+            width: 216px;
+        }
+    }
+
+    /* Media query for smaller screens */
+    @media only screen and (max-width: 47.999em) {
+        .js-product-samples {
+            width: 100%;
+        }
+    }
+
+    /* Other styles */
+    .priceGroupList thead th {
+        padding: 10px 5px;
+    }
+
+    .bc-sf-filter-product-item-buttons .shopify-product-form {
+        width: 48%;
+    }
+
+    .bc-sf-filter-product-item-buttons .product-samples-button {
+        width: 100%;
+        height: 4rem;
+        font-size: 1.4rem;
+        line-height: 4rem;
+    }
+
+    .product-samples-button:hover {
+        background-color: #1B2C3D;
+    }
+{% endstyle %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var productSamplesContainer = '.product-samples-widget';
+        var productSamplesTriggerFakeEl = document.querySelector('.product-samples-widget__trigger-f');
+        var productSamplesContainerFakeEl = document.querySelector('.product-samples-widget-f');
+        var productCount = productSampleUtils.countProductSamples();
+
+        if(productSamplesTriggerFakeEl) {
+            if(productCount > 0) {
+                productSamplesTriggerFakeEl.textContent = 'My Sample (' + productCount + ')';
+            }
+            productSamplesTriggerFakeEl.addEventListener('click', function(event) {
+                observeElementOnAdded(productSamplesContainer, function (element) {
+                    var productSamplesTriggerEl = document.querySelector('.product-samples-widget__trigger');
+                    productSamplesTriggerEl.click();
+                });
+            });
+        }
+
+        resourceManager.loadResourceOnInteractive([
+            { "name": "script", "url": 'https://product-samples.herokuapp.com/complied/main.min.js?shop={{ shop.permanent_domain }}' }
+        ], {
+            triggerEvents: {
+                immediately: productCount > 0,
+                readyInteractive: true,
+                elementsIntersection: 'product-quantity-input, variant-selects, pickup-availability'
+            },
+            beforeLoad: function () {
+                observeElementOnAdded(productSamplesContainer, function (element) {
+                    domRemoveElement(productSamplesContainerFakeEl);
+                });
+            }
+        });
+    });
+</script>

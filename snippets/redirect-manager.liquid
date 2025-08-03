@@ -1,0 +1,13 @@
+{% if settings.enable_redirect_to_without_slash %}
+  {% unless request.page_type == 'index' %}
+    <script>
+      (function() {
+          var currentUrl = window.location.href;
+          if (currentUrl.endsWith('/')) {
+              var newUrl = currentUrl.slice(0, -1);
+              window.location.replace(newUrl);
+          }
+      })();
+    </script>
+  {% endunless %}
+{% endif %}

@@ -1,0 +1,123 @@
+{% schema %}
+    {
+        "name": "Home split text",
+        "settings": [
+            {
+                "type": "text",
+                "id": "home_split_text_title",
+                "label": "Home split title"
+            },
+            {
+                "type": "html",
+                "id": "home_split_text_content",
+                "label": "Home split content"
+            },
+            {
+                "type": "url",
+                "id": "home_split_text_link_one",
+                "label": "Home split link one"
+            },
+            {
+                "type": "text",
+                "id": "home_split_text_link_text_one",
+                "label": "Home split link text one"
+            },
+            {
+                "type": "url",
+                "id": "home_split_text_link_two",
+                "label": "Home split link two"
+            },
+            {
+                "type": "text",
+                "id": "home_split_text_link_text_two",
+                "label": "Home split link text two"
+            },
+            {
+                "type": "image_picker",
+                "id": "home_split_text_image",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1540."
+            },
+            {
+                "type": "text",
+                "id": "home_split_text_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.home_split_text_title == blank
+    and section.settings.home_split_text_content == blank
+    and section.settings.home_split_text_link_one == blank
+    and section.settings.home_split_text_link_text_one == blank
+    and section.settings.home_split_text_link_two == blank
+    and section.settings.home_split_text_link_text_two == blank
+%}
+    <section class="image-text-split image-text-split--beige">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.home_split_text_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--switch">
+                        {% assign image_small_1x = section.settings.home_split_text_image | img_url: '360x360' %}
+                        {% assign image_small_2x = section.settings.home_split_text_image | img_url: '720x720' %}
+                        {% assign image_medium_1x = section.settings.home_split_text_image | img_url: '683x670' %}
+                        {% assign image_medium_2x = section.settings.home_split_text_image | img_url: '1366x1340' %}
+                        {% assign image_large_1x = section.settings.home_split_text_image | img_url: '960x770' %}
+                        {% assign image_large_2x = section.settings.home_split_text_image | img_url: '1920x1540' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.home_split_text_image_alt,
+                            lazy: true
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.home_split_text_title == blank
+                    and section.settings.home_split_text_content == blank
+                    and section.settings.home_split_text_link_one == blank
+                    and section.settings.home_split_text_link_text_one == blank
+                    and section.settings.home_split_text_link_two == blank
+                    and section.settings.home_split_text_link_text_two == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--switch">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.home_split_text_title == blank %}
+                                    <h2 class="title title--small image-text-split__title">
+                                        {{- section.settings.home_split_text_title -}}
+                                    </h2>
+                                {% endunless %}
+                                {% unless section.settings.home_split_text_content == blank %}
+                                    <div class="para image-text-split__para">
+                                        {{- section.settings.home_split_text_content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless section.settings.home_split_text_link_one == blank and section.settings.home_split_text_link_two == blank %}
+                                    <div class="image-text-split__buttons">
+                                        {% unless section.settings.home_split_text_link_one == blank and section.settings.home_split_text_link_text_one == blank %}
+                                            <a title="{{- section.settings.home_split_text_link_text_one -}}" class="button button--secondary" href="{{- section.settings.home_split_text_link_one -}}">
+                                                {{- section.settings.home_split_text_link_text_one -}}
+                                            </a>
+                                        {% endunless %}
+                                        {% unless section.settings.home_split_text_link_two == blank and section.settings.home_split_text_link_text_two == blank %}
+                                            <a title="{{- section.settings.home_split_text_link_text_two -}}" class="button button--secondary" href="{{- section.settings.home_split_text_link_two -}}">
+                                                {{- section.settings.home_split_text_link_text_two -}}
+                                            </a>
+                                        {% endunless %}
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

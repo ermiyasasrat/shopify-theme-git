@@ -1,0 +1,234 @@
+{% if section.settings.enable-prod-card %}
+  
+{% render 'prepare-style', file: 'template-collection.css' %}
+{% render 'prepare-style', file: 'component-loading-overlay.css' %}
+{% comment %}{{ 'component-card.css' | asset_url | stylesheet_tag }}{% endcomment %}
+{% comment %}{{ 'component-price.css' | asset_url | stylesheet_tag }}{% endcomment %}
+{% render 'prepare-style', file: 'component-rte.css' %}
+
+  {% else %}
+
+{% comment %} Soldout {% endcomment %}
+{% assign sold_out = false %}
+{% assign sold_out_class = '' %}
+{% unless card_product.available %}
+	{% assign sold_out = true %}
+	{% assign sold_out_class = 'sold-out' %}
+{% endunless %}
+
+{% comment %} On Sale {% endcomment %}
+{%- assign on_sale = false -%}
+{%- assign sale_class = '' -%}
+{%- if card_product.compare_at_price > card_product.price -%}
+	{%- assign on_sale = true -%}
+	{%- assign sale_class =  'on-sale' -%}
+{%- endif -%}
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 %}
+{% assign productUpsells = product.metafields.product_upsells.product | split: '|' %}
+{% assign productRelated = product.metafields.related_products.product | split: '|' %}
+{% if product.variants.size > 1 %}
+    {% assign productPrice = current_variant.price | money_without_currency %}
+    {% assign productComparePrice = current_variant.compare_at_price | money_without_currency %}
+    {% assign productPricePerMetresSquared = current_variant.metafields.product_config.price_per_metres_squared %}
+    {% assign productComparePricePerMetresSquared = current_variant.metafields.product_config.compare_price_per_metres_sq %}
+    {% assign productWarranty = current_variant.metafields.product_attribute.warranty %}
+    {% assign productRollWidth = current_variant.metafields[productType].roll_width %}
+{% else %}
+    {% assign productPrice = product.price | money_without_currency %}
+    {% assign productComparePrice = product.compare_at_price | money_without_currency %}
+    {% assign productPricePerMetresSquared = product.metafields.product_config.price_per_metres_squared %}
+    {% assign productComparePricePerMetresSquared = product.metafields.product_config.compare_price_per_metres_sq %}
+    {% assign productWarranty = product.metafields.product_attribute.warranty %}
+    {% assign productRollWidth = product.metafields[productType].roll_width %}
+{% endif %}
+
+{% assign productNumber = current_variant.metafields.product_config.product_number %}
+{% assign productMinQty = current_variant.metafields.product_config.minimum_qty %}
+{% assign productRrp = current_variant.metafields.filters.rrp %}
+{% assign productLength = current_variant.metafields.filters.length %}
+{% assign productWidth = current_variant.metafields.product_attribute.width %}
+{% assign productPackSize = current_variant.metafields.product_attribute.pack_size %}
+
+{% endif %}
+
+<div
+  class="product-recommendations"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+>
+  <div class="site-wrap">
+    {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+      <div class="heading">
+        {% if recommendations.intent == 'related' %}
+          <h2>don’t miss out</h2>
+        {% elsif recommendations.intent == 'complementary' %}
+          <h2>Pair it with</h2>
+        {% endif %}
+        {% if section.settings.button_link != blank %}<a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>{% endif %}
+      </div>
+      <ul>
+        {%- for product in recommendations.products limit: 3 -%}
+          {% if section.settings.enable-prod-card %}
+          <li class="product" data-product-id="{{ product.id }}">
+                    {% render 'card-product',
+                      card_product: product,
+                      hide_features: section.settings.hide-features
+                    %}
+                  </li>
+          {% else %}
+            <li class="product">
+            <a href="{{ product.url }}">
+              <img
+                class="product__img"
+                src="{{ product.featured_image | image_url: width: 300, height: 300 }}"
+                alt="{{ product.featured_image.alt }}"
+              />
+  
+              <p class="product__title">{{ product.title }}</p>
+            {% comment %}  <p class="product__price">{{ product.price | money}}</p> {% endcomment %}
+              {% assign productwoolOfflive = card_product.metafields.product_config.offline_product | downcase %}
+            	{%- if productwoolOfflive == "true" -%}
+              	{%- else -%}
+            	{% render 'collection-price',
+            		product: product,
+            		productPricePerMetresSquared: productPricePerMetresSquared,
+            		on_sale: on_sale,
+            		productPackSize: productPackSize
+            	%}
+              {%- endif -%} 
+            </a>
+          </li>
+          {% endif %}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+
+{% javascript %}
+  const handleIntersection = (entries, observer) => {
+    if (!entries[0].isIntersecting) return;
+
+    observer.unobserve(productRecommendationsSection);
+
+    const url = productRecommendationsSection.dataset.url;
+
+    fetch(url)
+      .then(response => response.text())
+      .then(text => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.product-recommendations');
+
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          productRecommendationsSection.innerHTML = recommendations.innerHTML;
+        }
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  };
+
+  const productRecommendationsSection = document.querySelector('.product-recommendations');
+  const observer = new IntersectionObserver(handleIntersection, {rootMargin: '0px 0px 200px 0px'});
+
+  observer.observe(productRecommendationsSection);
+{% endjavascript %}
+
+<style>
+.product-recommendations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    background: #F7F2F0;
+    padding: 32px 0 56px;
+}
+.product-recommendations .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+.product-recommendations h2 {
+    color: #1B2C3D;
+    font-family: 'Averta-Semibold';
+    font-size: 24px;
+    line-height: normal;
+    text-transform: uppercase;
+}
+.product-recommendations .heading .button {
+    padding: 8px 40px;
+    border-radius: 100px;
+    border: 1px solid #1B2C3D;
+    color: #1b2c3d;
+    background: transparent;
+    font-family: Averta Demo PE;
+    font-size: 12px;
+    line-height: 22px;
+    min-width: auto;
+}
+.product-recommendations .heading .button:hover {
+    background: #1B2C3D;
+    color: #fff;
+}
+.product-recommendations ul{
+    display: grid;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: center;
+    grid-template-columns: repeat(1, 1fr);
+}
+.product-recommendations li.product{
+  max-width: 400px;
+}
+.product-recommendations .product__title {
+  font-size: 1.6rem;
+}
+@media only screen and (min-width: 768px) and (max-width: 1299px) {
+  .product-recommendations ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .product-recommendations ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
+{% schema %}
+  {
+    "name": "Product recommendations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable-prod-card",
+        "label": "Enable Product Card",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "hide-features",
+        "label": "Hide Product Features",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text",
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button URL",
+      },
+    ],
+    "presets": [
+        {
+            "name": "Product recommendations",
+            "category": "Product Page"
+        }
+    ]
+  }
+{% endschema %}

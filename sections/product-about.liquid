@@ -1,0 +1,49 @@
+<section class="about-us{% if template.name == 'product' %} product{% endif %}">
+  <div class="about-wrap">
+    <div class="about-content">
+      <h2>{{ section.settings.title }}</h2>
+      {{ section.settings.content }}
+      <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+    </div>
+    <div class="about-image">
+      <img width="671" height="476" src="{{ section.settings.image | img_url: "master" }}" alt="{{ section.settings.image.alt }}">
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Product About",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+      },
+    ],
+    "presets": [
+      {
+        "name": "Product About",
+      }
+    ]
+  }
+{% endschema %}

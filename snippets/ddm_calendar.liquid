@@ -1,0 +1,36 @@
+<script>
+  if(typeof jQuery == 'undefined'){
+    var headTag = document.getElementsByTagName("head")[0];
+    var jqTag   = document.createElement('script');	
+    jqTag.type  = 'text/javascript';
+
+    jqTag.src   = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js';
+    headTag.appendChild(jqTag);
+
+  }
+var template_name = '{{template.name}}';
+var diff_process = false;  
+
+{% if template.name == 'product' %}
+
+	var product_id = "{{ product.id }}";
+  var collection_id = [];
+    {% for collection in product.collections %}
+    	collection_id.push("{{ collection.id }}");
+	{% endfor %}
+                           
+                           
+  {% for coll_data in shop.metafields.DDM.processing_days %}
+    
+    if(diff_process == false){
+      var c_id = '{{coll_data.id}}';
+      if ($.inArray(c_id, collection_id) != -1){
+          var diff_processing_period = '{{coll_data.processing_days}}';
+          diff_process = true;
+      }
+    }   
+  {% endfor %}
+
+{% endif %}
+</script>
+

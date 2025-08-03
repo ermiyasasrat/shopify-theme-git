@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28" height="28" aria-label="Bubble icon button" role="img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<filter>
+<feGaussianBlur in="SourceAlpha" stdDeviation="0,4"/>
+<feOffset dx="0" dy="4" result="offsetblur"/>
+<feComponentTransfer>
+<feFuncA slope="0.4" type="linear"/>
+</feComponentTransfer>
+<feComposite in2="offsetblur" operator="in"/>
+<feMerge>
+<feMergeNode/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+<path d="m50 0c-27.6 0-50 22.4-50 50s22.4 50 50 50h30.8v-10.6c11.7-9.2 19.2-23.4 19.2-39.4 0-27.6-22.4-50-50-50zm-18 54.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5zm18 0c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5zm18 0c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5z" filter="#33c9df204aeec9aa096f1fd360bd4160"/>
+</svg>

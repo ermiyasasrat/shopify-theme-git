@@ -1,0 +1,7 @@
+<script type="text/javascript">
+    {% if show_title %}
+        console.log("Dumping");
+    {% endif %}
+
+	console.log({{ dump | json }});
+</script>

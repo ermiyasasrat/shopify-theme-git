@@ -1,0 +1,306 @@
+{%- assign filterFields = product.metafields.filters -%}
+
+<div class="FilterFields" style="display:none;">
+  {{ filterFields | json }}
+  {{ product.variants.first.metafields.filters | json }}
+</div>
+
+{%- if product.first_available_variant != null -%}
+  {%- assign variantFilterFields = product.first_available_variant.metafields.filters -%}
+{%- else -%}
+  {%- assign variantFilterFields = filterFields -%}
+{%- endif -%}
+
+{%- assign productType = product.type | downcase | replace: ' ', '_' | slice: 0, 20 -%}
+{%- assign productAttributesType = product.metafields[productType] -%}
+{%- assign productAttributesShared = product.metafields.product_attribute -%}
+{%- assign productAttributesSharedLabels = shop.metafields.product_attribute -%}
+{%- assign productAttributesTypeLabels = shop.metafields[productType] -%}
+{%- assign listOfAttributes = collection.metafields.my_fields.specs_table | split: ',' -%}
+
+{% assign test = product.variants.first.metafields.filters %}
+{%- assign productTypeAttribute = false -%}
+{%- assign defaultAttributes = 'effect,range,width,installation_method_list,design,brand,underfloor_heating' -%}
+
+{%- if listOfAttributes == blank -%}
+  {%- assign listOfAttributes = defaultAttributes -%}
+{%- endif -%}
+
+{%- if listOfAttributes contains 'product_type' -%}
+  {%- assign productTypeAttribute = true -%}
+{%- endif -%}
+
+{% for variant in product.variants %}
+  {% if forloop.first %}
+    {% assign variantFilterFields = variant.metafields.filters %}
+    <div class="variantFilterFields" style="display:none;">
+      {{ variantFilterFields | json }}
+    </div>
+  {% endif %}
+{% endfor %}
+
+{% comment %}
+  <!-- <div class="test" style="display:none;">
+    {{ test | json }}
+  </div>
+  <div class="" style="display:none;">
+    listofAttributes/specs-table: {{ listOfAttributes | json }}
+    <br>
+    filterFields: {{ filterFields | json }}
+  </div>
+  <div class="" style="display:none;">
+   Variant Filter Fields: {{ variantFilterFields | json -}}
+    {{ product.variants.first.metafields.filters | json }}
+  <br>
+  Width:  {{ product.variants.first.metafields.product_attribute.width | json }}
+  <br>
+
+    <br>
+    First even non available Variant Fields: {{ product.variants.first.metafields.filters | json -}}
+    <br>
+    First Available Variant:
+    {{ product.first_available_variant.metafields.filters | json }}
+  </div> -->
+{% endcomment %}
+<div class="collection-abstract-grid product-{{product.id}}">
+  {% assign counter = 1 %}
+
+  {%- for filter in filterFields -%}
+    {%- assign attributeKey = filter | first -%}
+    {%- assign attributeValue = filter | last -%}
+    {%- if listOfAttributes contains attributeKey -%}
+      {% if attributeKey != 'installation_method' %}
+        {% if counter > 6 %}
+        {% else %}
+          <div class="collection-grid-element count-{{ counter }}">
+            <span class="collection-grid-element-heading">
+              {% if attributeKey == 'width' %}
+                {{ 'products.attributes.width' | t }}
+              {% elsif attributeKey == 'installation_method_list' %}
+                {{ 'products.attributes.installation_method' | t }}
+              {% elsif attributeKey == 'range' %}
+                {{ 'products.attributes.range' | t }}
+              {% elsif attributeKey == 'thickness' %}
+                {{ 'products.attributes.thickness' | t }}
+              {% elsif attributeKey == 'underfloor_heating' %}
+                {{ 'products.attributes.underfloor_heating' | t }}
+              {% elsif attributeKey == 'shade' %}
+                {{ 'products.attributes.shade' | t }}
+              {% elsif attributeKey == 'length' %}
+                Length
+              {% elsif attributeKey == 'effect' %}
+                {{ 'products.attributes.effect' | t }}
+              {% elsif attributeKey == 'design' %}
+                {{ 'products.attributes.design' | t }}
+              {% elsif attributeKey == 'wear_layer' %}
+                {{ 'products.attributes.wear_layer' | t }}
+              {% elsif attributeKey == 'for_use_with' %}
+                {{ 'products.attributes.for_use_with' | t }}
+              {% elsif attributeKey == 'type' %}
+                {{ 'products.attributes.type' | t }}
+              {% elsif attributeKey == 'wood_species' %}
+                {{ 'products.attributes.wood_species' | t }}
+              {% elsif attributeKey == 'finish' %}
+                {{ 'products.attributes.finish' | t }}
+              {% elsif attributeKey == 'rating' %}
+                {{ 'products.attributes.rating' | t }}
+              {%- elsif attributeKey == 'brand' -%}
+                {{ 'products.attributes.brand' | t }}
+              {% elsif attributeKey == 'rooms' %}
+                {{ 'products.attributes.rooms' | t }}
+              {% elsif attributeKey == 'for-use-with' %}
+                {{ 'products.attributes.for-use-with' | t }}
+              {%- elsif attributeKey == 'pack_size' -%}
+                {{ 'products.attributes.pack_size' | t }}
+              {%- elsif attributeKey == 'pile' -%}
+                {{ 'products.attributes.pile' | t }}
+              {%- elsif attributeKey == 'composition' -%}
+                {{ 'products.attributes.composition' | t }}
+              {%- elsif attributeKey == 'pile_height' -%}
+                {{ 'products.attributes.pile_height' | t }}
+              {%- elsif attributeKey == 'total_carpet_height' -%}
+                {{ 'products.attributes.total_carpet_height' | t }}
+              {%- elsif attributeKey == 'total_carpet_weight' -%}
+                {{ 'products.attributes.total_carpet_weight' | t }}
+              {%- elsif attributeKey == 'fire_resistance' -%}
+                {{ 'products.attributes.fire_resistance' | t }}
+              {%- elsif attributeKey == 'carpet_pattern' -%}
+                {{ 'products.attributes.carpet_pattern' | t }}
+              {%- elsif attributeKey == 'colour' -%}
+                {{ 'products.attributes.colour' | t }}
+              {%- elsif attributeKey == 'edge_detail' -%}
+                {{ 'products.attributes.edge_detail' | t }}
+              {%- elsif attributeKey == 'material' -%}
+                {{ 'products.attributes.material' | t }}
+              {%- elsif attributeKey == 'tile_type' -%}
+                {{ 'products.attributes.tile_type' | t }}
+              {% elsif filterFields[attributeKey] %}
+                {{- filterFields[attributeKey] -}}
+              {% endif %}
+            </span>
+            <span class="collection-grid-element-value test" data-test=" {{ attributeKey }}">
+              {%- if filterFields[attributeKey].value.first -%}
+                {%- for value in filterFields[attributeKey].value -%}
+                  {{ value -}}
+                  {%- unless forloop.last == true %}, {% endunless %}
+                {%- endfor -%}
+
+              {%- elsif attributeKey == 'brand' -%}
+                {{ product.vendor }}
+              {%- elsif filterFields[attributeKey] -%}
+                {{ filterFields[attributeKey] }}
+              {%- else -%}
+                {{ attributeValue }}
+              {%- endif -%}
+              {%- if attributeKey == 'pack_size' -%}
+                m²
+              {%- endif -%}
+            </span>
+          </div>
+
+          {% assign counter = counter | plus: 1 %}
+        {% endif %}
+      {% endif %}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if product.variants.first.metafields.product_attribute.width != blank -%}
+    {% if listOfAttributes contains 'width' %}
+      <div class="collection-grid-element count-{{ counter }}">
+        <span class="collection-grid-element-heading">Width </span>
+
+        <span class="collection-grid-element-value test" data-test="new-width">
+          {{ product.variants.first.metafields.product_attribute.width }}
+        </span>
+      </div>
+
+      {% assign counter = counter | plus: 1 %}
+    {% endif %}
+  {%- endif -%}
+
+  {%- for filter in variantFilterFields -%}
+    {%- assign attributeKey = filter | first -%}
+    {%- assign attributeValue = filter | last -%}
+    {%- if listOfAttributes contains attributeKey -%}
+      {% if attributeKey != 'installation_method' %}
+        {% if counter > 6 %}
+        {% else %}
+          <div class="collection-grid-element count-{{counter}}">
+            <span class="collection-grid-element-heading">
+              {% if attributeKey == 'width' %}
+                {{ 'products.attributes.width' | t }}
+              {% elsif attributeKey == 'installation_method_list' %}
+                {{ 'products.attributes.installation_method' | t }}
+              {% elsif attributeKey == 'range' %}
+                {{ 'products.attributes.range' | t }}
+              {% elsif attributeKey == 'thickness' %}
+                {{ 'products.attributes.thickness' | t }}
+              {% elsif attributeKey == 'length' %}
+                Length
+              {% elsif attributeKey == 'underfloor_heating' %}
+                {{ 'products.attributes.underfloor_heating' | t }}
+              {% elsif attributeKey == 'shade' %}
+                {{ 'products.attributes.shade' | t }}
+              {% elsif attributeKey == 'effect' %}
+                {{ 'products.attributes.effect' | t }}
+              {% elsif attributeKey == 'design' %}
+                {{ 'products.attributes.design' | t }}
+              {% elsif attributeKey == 'wear_layer' %}
+                {{ 'products.attributes.wear_layer' | t }}
+              {% elsif attributeKey == 'for_use_with' %}
+                {{ 'products.attributes.for_use_with' | t }}
+              {% elsif attributeKey == 'type' %}
+                {{ 'products.attributes.type' | t }}
+              {% elsif attributeKey == 'wood_species' %}
+                {{ 'products.attributes.wood_species' | t }}
+              {% elsif attributeKey == 'finish' %}
+                {{ 'products.attributes.finish' | t }}
+              {% elsif attributeKey == 'rating' %}
+                {{ 'products.attributes.rating' | t }}
+              {%- elsif attributeKey == 'brand' -%}
+                {{ 'products.attributes.brand' | t }}
+              {% elsif attributeKey == 'rooms' %}
+                {{ 'products.attributes.rooms' | t }}
+              {% elsif attributeKey == 'for-use-with' %}
+                {{ 'products.attributes.for-use-with' | t }}
+              {%- elsif attributeKey == 'pack_size' -%}
+                {{ 'products.attributes.pack_size' | t }}
+              {%- elsif attributeKey == 'pile' -%}
+                {{ 'products.attributes.pile' | t }}
+              {%- elsif attributeKey == 'composition' -%}
+                {{ 'products.attributes.composition' | t }}
+              {%- elsif attributeKey == 'pile_height' -%}
+                {{ 'products.attributes.pile_height' | t }}
+              {%- elsif attributeKey == 'total_carpet_height' -%}
+                {{ 'products.attributes.total_carpet_height' | t }}
+              {%- elsif attributeKey == 'total_carpet_weight' -%}
+                {{ 'products.attributes.total_carpet_weight' | t }}
+              {%- elsif attributeKey == 'fire_resistance' -%}
+                {{ 'products.attributes.fire_resistance' | t }}
+              {%- elsif attributeKey == 'carpet_pattern' -%}
+                {{ 'products.attributes.carpet_pattern' | t }}
+              {%- elsif attributeKey == 'colour' -%}
+                {{ 'products.attributes.colour' | t }}
+              {%- elsif attributeKey == 'edge_detail' -%}
+                {{ 'products.attributes.edge_detail' | t }}
+              {%- elsif attributeKey == 'material' -%}
+                {{ 'products.attributes.material' | t }}
+              {%- elsif attributeKey == 'tile_type' -%}
+                {{ 'products.attributes.tile_type' | t }}
+              {% elsif filterFields[attributeKey] %}
+                {{- filterFields[attributeKey] -}}
+              {% endif %}
+            </span>
+            <span class="collection-grid-element-value">
+              {%- if filterFields[attributeKey].value.first -%}
+                {%- for value in filterFields[attributeKey].value -%}
+                  {{ value -}}
+                  {%- unless forloop.last == true %}, {% endunless %}
+                {%- endfor -%}
+              {%- elsif attributeKey == 'brand' -%}
+                {{ product.vendor }}
+              {%- elsif filterFields[attributeKey] -%}
+                {{ filterFields[attributeKey] }}
+              {%- else -%}
+                {{ attributeValue }}
+              {%- endif -%}
+              {%- if attributeKey == 'pack_size' -%}
+                m²
+              {%- endif -%}
+            </span>
+          </div>
+          {% assign counter = counter | plus: 1 %}
+        {% endif %}
+      {% endif %}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if listOfAttributes contains 'brand' -%}
+    {% if counter > 6 %}
+    {% else %}
+      <div class="collection-grid-element count-{{ counter }}">
+        <span class="collection-grid-element-heading">
+          {{ 'products.attributes.brand' | t }}
+        </span>
+        <span class="collection-grid-element-value">
+          {{ product.vendor }}
+        </span>
+      </div>
+      {% assign counter = counter | plus: 1 %}
+    {% endif %}
+  {%- endif -%}
+  {%- if productTypeAttribute == true -%}
+    {% if counter > 6 %}
+    {% else %}
+      <div class="collection-grid-element count-{{ counter }}">
+        <span class="collection-grid-element-heading">
+          {{ 'products.attributes.product_type' | t }}
+        </span>
+        <span class="collection-grid-element-value">
+          {{ product.type }}
+        </span>
+      </div>
+
+      {% assign counter = counter | plus: 1 %}
+    {%- endif -%}
+  {%- endif -%}
+</div>

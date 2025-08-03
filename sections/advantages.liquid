@@ -1,0 +1,58 @@
+<section class="our-advantages">
+  <div class="site-wrap">
+    <div class="advantages-boxes">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'advantages_boxes' %}
+          <div class="advantage-box">
+            <div class="icon">
+              <img width="32" height="32" loading="lazy" src="{{ block.settings.advantage_icon | image_url: width: 32, height: 32 }}" alt="{{ block.settings.advantage_icon.alt }}">
+            </div>
+            <h3>{{ block.settings.advantage_text }}</h3>
+            <p>{{ block.settings.advantage_content }}</p>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+  {
+    "name": "Our Advantages",
+    "max_blocks": 4,
+    "settings": [
+      
+    ],
+    "blocks": [
+      {
+        "type": "advantages_boxes",
+        "name": "Advantage Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "advantage_icon",
+            "label": "Advantage Icon",
+          },
+          {
+            "type": "text",
+            "id": "advantage_text",
+            "label": "Advantage Text",
+          },
+          {
+            "type": "text",
+            "id": "advantage_content",
+            "label": "Advantage Content",
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Our Advantages",
+      }
+    ]
+  }
+{% endschema %}

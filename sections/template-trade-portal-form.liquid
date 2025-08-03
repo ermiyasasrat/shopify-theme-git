@@ -1,0 +1,125 @@
+<section class="page">
+    <div class="site-wrap">
+        <div class="page__container page__container--full">
+            <div class="page__form">
+                {% for tag in customer.tags %}
+                    {% if tag == 'wholesale' %}
+                        {% assign trade_account = true %}
+                    {% endif %}
+                {% endfor %}
+                <h1 class="title title--small page__title">{{ page.title }}</h1>
+                <div class="wysiwyg">
+                    {{ page.content }}
+                </div>
+                {% if trade_account %}
+                    Good news, it looks like you already have a trade account.
+                {% else %}
+                    {% form 'contact' %}
+                        {% if form.posted_successfully? %}
+                            <div class="contact-form__intro">
+                                <p class="contact-form__success">
+                                    Thank you for your application for a trade account. We will send you an account invitation as soon as possible.
+                                </p>
+                            </div>
+                        {% else %}
+                            {%- if form.errors -%}
+                                <div class="contact-form-errors">
+                                    {{ form.errors | default_errors }}
+                                </div>
+                            {% endif %}
+                            <div style="display:none;" class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormType">Trade Enquiry</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <input class="input input-text" value="**TRADE ENQUIRY**" type="text" id="ContactFormType" name="contact[type]">
+                            </div>
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormEmail">Email address*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <input class="input input-text" value="{% if customer.email %}{{ customer.email }}{% endif %}" type="email" id="ContactFormEmail" name="contact[email]">
+                            </div>
+              
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormPhone">Phone*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <input class="input input-text" value="" type="text" id="ContactFormPhone" name="contact[Phone]">
+                            </div>
+              
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormTrader">What type of trader are you?*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <select class="input input-select" type="select" id="ContactFormTrader" name="contact[trader]">
+                                    <option value=""></option>
+                                    <option value="Sole Trader">Sole Trader</option>
+                                    <option value="limited_company">Limited Company</option>
+                                </select>
+                            </div>
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormMainBusiness">What is your main business?*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <select class="input input-select" type="select" id="ContactFormMainBusiness" name="contact[main_business]">
+                                    <option value=""></option>
+                                    <option value="Architect">Architect</option>
+                                    <option value="Bathroom Fitter">Bathroom Fitter</option>
+                                    <option value="Carpenter">Carpenter</option>
+                                    <option value="Commercial Landlord">Commercial Landlord</option>
+                                    <option value="Contractors">Contractors</option>
+                                    <option value="Domestic Landlord">Domestic Landlord</option>
+                                    <option value="Flooring Retailer">Flooring Retailer</option>
+                                    <option value="General Builder">General Builder</option>
+                                    <option value="General Tradesmen">General Tradesmen</option>
+                                    <option value="House Builder">House Builder</option>
+                                    <option value="Interior Designer">Interior Designer</option>
+                                    <option value="Kitchen Fitter">Kitchen Fitter</option>
+                                    <option value="Professional Floor Fitter">Professional Floor Fitter</option>
+                                    <option value="Property Developers">Property Developers</option>
+                                </select>
+                            </div>
+                            <div class="contact-form__field">
+                                <label class="contact-form__label" for="ContactFormName">Company Name</label>
+                                <input class="input input-text" type="text" id="ContactFormCompanyName" name="contact[company_name]">
+                            </div>
+                            <div class="contact-form__field">
+                                <label class="contact-form__label" for="ContactFormWebsite">Please provide us with your link to your website</label>
+                                <p class="contact-form__info">(You could also use your professional business profile - Checkatrade, Rated People, Facebook, etc)</p>
+                                <input class="input input-text" type="tel" id="ContactFormWebsite" name="contact[website]">
+                            </div>
+                            <div class="contact-form__field">
+                                <label class="contact-form__label" for="ContactFormRegNumber">Company Registration Number</label>
+                                <p class="contact-form__info">(Only for LTD companies)</p>
+                                <input class="input input-text" type="text" id="ContactFormRegNumber" name="contact[reg_number]">
+                            </div>
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormOrderFrequency">How often do you order flooring?*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <select class="input input-select" id="ContactFormOrderFrequency" name="contact[order_frequency]">
+                                    <option value=""></option>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                    <option value="Yearly">Yearly</option>
+                                </select>
+                            </div>
+                            <div class="contact-form__field js-is-required">
+                                <label class="contact-form__label" for="ContactFormAnnualSpend">Please provide your estimated annual spending on flooring*</label>
+                                <span class="contact-form__error">This is a required field</span>
+                                <select class="input input-select" id="ContactFormAnnualSpend" name="contact[annual_spend]">
+                                    <option value=""></option>
+                                    <option value="£0 - £10,000">£0 - £10,000</option>
+                                    <option value="£11,000 - £25,000">£11,000 - £25,000</option>
+                                    <option value="£26,000 - £50,000">£26,000 - £50,000</option>
+                                    <option value=">£51,000 - £99,000">£51,000 - £99,000</option>
+                                    <option value=">£100,000 +">£100,000 +</option>
+                                </select>
+                            </div>
+                            <a href="/pages/privacy-policy" class="contact-form__heading">Privacy Notice</a>
+                            <a href="/pages/privacy-policy" class="contact-form__privacy">Stories flooring will collect and use your information to communicate with you about your account, orders and relevant marketing messages in accordance with our data & privacy notice.</a>
+                            <div class="contact-form__field contact-form__field--split">
+                                <input class="button contact-form__submit" type="submit" value="Submit">
+                            </div>
+                        {% endif %}
+                    {% endform %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

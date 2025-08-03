@@ -1,0 +1,33 @@
+{% assign script_to_replace = "window.startPreviewBarInjector = function(){ previewBarInjector.init(); }" %}
+{% assign content_for_header = content_for_header | replace: "previewBarInjector.init();", script_to_replace %}
+<script>
+    window.SHOP_DATA_STORAGE = Object.assign({}, window.SHOP_DATA_STORAGE, {
+        isPreviewMode: true
+    });
+</script>
+{{ content_for_header }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if(window.SHOP_DATA_STORAGE && window.SHOP_DATA_STORAGE.isPreviewMode) {
+            onReadyInteractive(() => {
+                window.startPreviewBarInjector();
+            })
+        }
+    });
+</script>
+<style>
+    #preview-bar-iframe {
+        width: 60% !important;
+    }
+    @media only screen and (max-width: 47.9999em) {
+        #preview-bar-iframe {
+            height: 260px !important;
+        }
+    }
+    @media only screen and (min-width: 48em) {
+        #preview-bar-iframe {
+            width: 60% !important;
+            min-width: 768px;
+        }
+    }
+</style>

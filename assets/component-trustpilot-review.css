@@ -1,0 +1,34 @@
+.app-section-reviews {
+	 /*background: #fafafa;*/
+    background: #1b2c3d;
+	padding: 3rem 0;
+}
+.trustpilot-wd-large-review {
+	max-width: 1300px;
+	margin: 0 auto;
+	padding: 0;
+}
+.trustpilot-wd-large-review:not(.has-review) .trustpilot-widget-element{
+  display: none;
+}
+.trustpilot-wd-large-review.small-review .trustpilot-widget-element iframe{
+  height: 300px !important;
+}
+.trustpilot-wd-large-review > .trustpilot-review-inner {
+	max-width: 100%;
+	border-color: #ffffff40;
+	padding: 3.2rem 2rem;
+	background-color: #fff;
+	border-radius: 0.8rem;
+}
+
+@media (min-width: 48em) {
+	.trustpilot-wd-large-review {
+		padding: 0 5rem;
+	}
+}
+@media (min-width: 80em) {
+	.trustpilot-wd-large-review {
+		padding: 0 5%;
+	}
+}

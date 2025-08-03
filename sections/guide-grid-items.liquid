@@ -1,0 +1,122 @@
+{% schema %}
+    {
+        "name": "Guide Grid Items",
+        "blocks": [
+            {
+                "type": "guide_items",
+                "name": "Guide Grid Item",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "guide_items_title",
+                        "label": "Title"
+                    },
+                    {
+                       "type": "link_list",
+                       "id": "guide_linklist",
+                       "label": "Guide category navigation"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless section.blocks == blank %}
+    <div class="site-wrap guide-grid-items">
+        {% assign filterItems = %}
+        {% for itemFilter in section.blocks %}
+            {% capture filterItems %}{{ filterItems }}{% unless filterItems contains itemFilter.settings.guide_items_title %}{{ itemFilter.settings.guide_items_title }},{% endunless %}{% endcapture %}
+        {% endfor %}
+        {% assign filterItems = filterItems | split: ',' %}
+        {% unless filterItems == blank %}
+            <ul class="guide-grid-items__nav">
+                {% for itemFilter in filterItems %}
+                    {% if forloop.index == 1 %}
+                        {% assign firstCategory = itemFilter %}
+                    {% endif %}
+                    <li class="guide-grid-items__nav-item">
+                        <button type="button" class="button button--grey guide-grid-items__nav-button js-guide-nav-items{% if forloop.index == 1 %} is-active{% endif %}" data-filter-target="{{ itemFilter }}">
+                            {{ itemFilter }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <select class="guide-grid-items__select" id="js-guide-nav-select">
+                {% for itemFilter in filterItems %}
+                    <option value="{{ itemFilter }}"{% if forloop.index == 1 %} selected{% endif %}>
+                        {{ itemFilter }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% endunless %}
+        <div class="guide-grid-items__grid">
+            {%- for item in section.blocks -%}
+          		{%- assign nav = item.settings.guide_linklist -%}
+				{%- for link in linklists[nav].links -%}
+					{%- assign linkType = link.type -%}
+					{%- assign thisPage = link.object -%}
+					<div 
+						data-handle="{{ link.object.handle }}" 
+						class="guide-grid-items__grid-item js-guide-grid-item {% if firstCategory == item.settings.guide_items_title %} is-active {% endif %}" 
+						data-filter-item="{{ item.settings.guide_items_title }}"
+					>
+						<a href="{{ link.url }}" class="guide-grid-items__link" title="{{ item.settings.guide_items_title }}">
+							{%- if item.settings.guide_items_image -%}
+								<div class="guide-grid-items__image">
+									<img
+										src="{{ item.settings.guide_items_image | img_url: 'master' }}"
+										class="guide-grid-items__image-element"
+										alt="{{ link.title }}"
+									/>
+								</div>
+							{%- elsif thisPage.image != blank -%}
+								<div class="guide-grid-items__image">
+									<img
+										src="{{ thisPage.image | img_url: 'master' }}"
+										class="guide-grid-items__image-element"
+										alt="{{ link.title }}"
+									/>
+								</div>
+							{%- else -%}
+								<div class="guide-grid-items__image">
+									<img
+										src="{{ thisPage.metafields.guide-detail.featured-image }}"
+										class="guide-grid-items__image-element"
+										alt="{{ link.title }}"
+									/>
+								</div>
+							{%- endif -%}
+						</a>
+						<h2 class="guide-grid-items__title">
+							{{ link.title }}
+						</h2>
+						<div class="guide-excerpt">
+							{%- if thisPage.excerpt != blank -%}
+								<p>
+									{{ thisPage.excerpt }}
+								</p>
+								<a 
+									href="{{ link.url }}" 
+									title="{{ thisPage.title }}"
+								>
+									Read More...
+								</a>
+							{%- else -%}
+								<p>
+									{{ thisPage.metafields.guide-detail.intro-content | strip_html | replace: 'Read more...', '' }} 
+									<a 
+										href="{{ link.url }}" 
+										title="{{ item.settings.guide_items_title }}"
+									>
+										Read More...
+									</a>
+								</p>
+							{%- endif -%}
+						</div>
+					</div>
+				{%- endfor -%}
+            {%- endfor -%}
+        </div>
+    </div>
+{% endunless %}

@@ -1,0 +1,63 @@
+{{ 'section-list-collections.css' | asset_url | stylesheet_tag }}
+<div class="list-collections-outer-container">
+  <div class="list-collections-inner-container site-wrap">
+    {%- for collection in section.settings.list_collections -%}
+      {%- if collection.url == "/collections/flooring-accessories" or collection.url == "/collections/allur-decking" -%}
+        <div class="list-collections-element">
+          <a style="background-image:url({{ collection.image | img_url: 'master' }})" href="{{ collection.url }}" title="{{ collection.title }}" class="list-collection-anchor-image">
+            <h2 class="list-collections-element-title">
+              {{ collection.title }}
+            </h2>
+          </a>
+          <div class="list-collections-element-text">
+            {{ collection.description }}
+          </div>
+          <div class="list-collections-cta-button-container">
+            <a class="list-collections-cta-button button button--secondary" title="{{ collection.title }}" href="{{ collection.url }}">
+              View All
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <div class="list-collections-element">
+          <a style="background-image:url({{ collection.image | img_url: 'master' }})" href="{{ collection.url }}" title="{{ collection.title }}" class="list-collection-anchor-image">
+            <h2 class="list-collections-element-title">
+              {{ collection.title }}
+            </h2>
+          </a>
+          <div class="list-collections-element-text">
+            {{ collection.description }}
+          </div>
+          <div class="list-collections-cta-button-container">
+            <a class="list-collections-cta-button button button--secondary" title="{{ collection.title }}" href="{{ collection.url }}">
+              View All
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+	{
+		"name": "Limit Collections",
+		"tag": "section",
+		"class": "section",
+    "settings": [
+      {
+        "type": "collection_list",
+        "id": "list_collections",
+        "label": "Collection List",
+        "info": "Select Collections"
+      }
+    ],
+		"presets": [
+			{
+				"name": "Limit Collections",
+				"category": "Collection",
+				"settings": {}
+			}
+		]
+	}
+{% endschema %}

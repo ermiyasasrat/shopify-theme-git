@@ -1,0 +1,61 @@
+<div class="blog-detail__related" id="relatedblogs">
+  <h3 class="blog-detail__related-title">Related stories</h3>
+
+  <ul class="blog-detail__related-list">
+    {% assign counter = 0 %}
+    {% for tag in article.tags %}
+      {% assign skip_articles = article.handle | split: '.....' %}
+      {% for related_article in blog.articles %}
+        {% if related_article.tags contains tag and counter < 3 %}
+          {% unless skip_articles contains related_article.handle %}
+            {% assign counter = counter | plus: 1 %}
+            {% assign temp = related_article.handle | split: '.....' %}
+            {% assign skip_articles = skip_articles | concat: temp %}
+            <li class="blog-detail__related-item">
+              <a href="{{ related_article.url }}" class="blog-detail__related-link">
+                <div class="blog-detail__related-image">
+                  <img
+                    data-src="{{ related_article.image | img_url: '83x83', crop: 'center' }}"
+                    data-srcset="{{ related_article.image | img_url: '166x166', crop: 'center' }} 2x"
+                    alt="{{ story.title }}"
+                    class="js-lazy-load-image"
+                  >
+                </div>
+                <div>
+                  <div class="blog-detail__additional">
+                    {{ related_article.published_at | date: '%d.%m.%y' }}
+                    {% if related_article.tags.first %}
+                      <span class="blog-detail__splitter"></span>
+
+{% assign first_tag = related_article.tags | first %}
+{% assign tag_without_prefix = first_tag | remove_first: 'Type_' %}
+{% assign tag_without_prefix = tag_without_prefix | remove_first: 'Laminate_' %}
+{% assign tag_without_prefix = tag_without_prefix | remove_first: 'Floor_' %}
+
+
+  {{ tag_without_prefix }}
+
+
+
+                     {% comment %}
+                      {{ related_article.tags | first | remove_first: 'Type_' }}
+ {% endcomment %}
+                      <!-- // NLR - Tag is showing first but it's not wanted. -->
+                      {% comment %}
+                        {% assign tagsArray = related_article.tags | split: ',' %}
+                        {{ tagsArray[2] }}
+                      {% endcomment %}
+                    {% endif %}
+                  </div>
+                  <h2 class="blog-detail__related-post-title">
+                    {{ related_article.title }}
+                  </h2>
+                </div>
+              </a>
+            </li>
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>

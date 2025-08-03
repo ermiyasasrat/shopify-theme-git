@@ -1,0 +1,140 @@
+{% schema %}
+{
+    "name": "Trustpilot Slider",
+    "blocks": [
+        {
+            "type": "trustpilot_slider_items",
+            "name": "Items",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "trustpilot_slider_items_link",
+                    "label": "Link"
+                },
+                {
+                    "type": "text",
+                    "id": "trustpilot_slider_items_name",
+                    "label": "Name"
+                },
+                {
+                    "type": "text",
+                    "id": "trustpilot_slider_items_title",
+                    "label": "Title"
+                },
+                {
+                    "type": "text",
+                    "id": "trustpilot_slider_items_text",
+                    "label": "Text"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+<div class="trustpilot-slider">
+    <div class="site-wrap">
+        <div class="trustpilot-slider__container glide ">
+                    <div class="glide__slides " id="review-slider-trustpot">
+                        {% for item in section.blocks %}
+                            <div class="glide__slide">
+                                <a class="trustpilot-review" target="_blank" href="{{- item.settings.trustpilot_slider_items_link -}}">
+                                    <svg class="trustpilot-review__rating" viewBox="0 0 251 46">
+                                      <g class="tp-star">
+                                          <path class="tp-star__canvas" d="M0 46.330002h46.375586V0H0z"></path>
+                                          <path class="tp-star__shape" d="M39.533936 19.711433L13.230239 38.80065l3.838216-11.797827L7.02115 19.711433h12.418975l3.837417-11.798624 3.837418 11.798624h12.418975zM23.2785 31.510075l7.183595-1.509576 2.862114 8.800152L23.2785 31.510075z" fill="#FFF"></path>
+                                      </g>
+                                      <g class="tp-star">
+                                          <path class="tp-star__canvas" d="M51.24816 46.330002h46.375587V0H51.248161z"></path>
+                                          <path class="tp-star__shape" d="M74.990978 31.32991L81.150908 30 84 39l-9.660206-7.202786L64.30279 39l3.895636-11.840666L58 19.841466h12.605577L74.499595 8l3.895637 11.841466H91L74.990978 31.329909z" fill="#FFF"></path>
+                                      </g>
+                                      <g class="tp-star">
+                                          <path class="tp-star__canvas" d="M102.532209 46.330002h46.375586V0h-46.375586z"></path>
+                                          <path class="tp-star__shape" d="M142.066994 19.711433L115.763298 38.80065l3.838215-11.797827-10.047304-7.291391h12.418975l3.837418-11.798624 3.837417 11.798624h12.418975zM125.81156 31.510075l7.183595-1.509576 2.862113 8.800152-10.045708-7.290576z" fill="#FFF"></path>
+                                      </g>
+                                      <g class="tp-star">
+                                          <path class="tp-star__canvas" d="M153.815458 46.330002h46.375586V0h-46.375586z"></path>
+                                          <path class="tp-star__shape" d="M193.348355 19.711433L167.045457 38.80065l3.837417-11.797827-10.047303-7.291391h12.418974l3.837418-11.798624 3.837418 11.798624h12.418974zM177.09292 31.510075l7.183595-1.509576 2.862114 8.800152-10.045709-7.290576z" fill="#FFF"></path>
+                                      </g>
+                                      <g class="tp-star">
+                                          <path class="tp-star__canvas" d="M205.064416 46.330002h46.375587V0h-46.375587z"></path>
+                                          <path class="tp-star__shape" d="M244.597022 19.711433l-26.3029 19.089218 3.837419-11.797827-10.047304-7.291391h12.418974l3.837418-11.798624 3.837418 11.798624h12.418975zm-16.255436 11.798642l7.183595-1.509576 2.862114 8.800152-10.045709-7.290576z" fill="#FFF"></path>
+                                      </g>
+                                  </svg>
+                                <p class="trustpilot-review__title">{{ item.settings.trustpilot_slider_items_title -}}</p>
+                                <p class="trustpilot-review__text">{{- item.settings.trustpilot_slider_items_text -}}</p>
+                                <p class="trustpilot-review__name">{{- item.settings.trustpilot_slider_items_name -}}</p>
+                            </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                <div class="glide__controls">
+                    <div class="glide__arrows" data-glide-el="controls">
+                        <button class="glide__arrow glide__arrow--left prev-arrow" data-glide-dir="<">
+                            <span class="glide__arrow-icon">
+                              <svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                  <g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+                                    <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+                                  </g>
+                                </g>
+                              </svg>
+                          </span>
+                        </button>
+                        <button class="glide__arrow glide__arrow--right next-arrow" data-glide-dir=">">
+                            <span class="glide__arrow-icon">
+                          	<svg width="12px" height="8px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                              <g class="icon-stroke" transform="translate(-375.000000, -136.000000)" stroke="#24486D" stroke-width="1.5">
+                                                  <polyline points="376 137.660156 381.052246 142.712402 386.104492 137.660156"></polyline>
+                                              </g>
+                                          </g>
+                                      </svg>
+                          </span>
+                        </button>
+                    </div>
+                </div>
+            <div class="trustpilot-slider__text">
+              Rated <strong>{{ shop.metafields.arena.review_rating }}</strong> / 5 based on <a target="_blank" href="https://uk.trustpilot.com/review/storiesflooring.co.uk?utm_medium=trustbox&amp;utm_source=Slider">{{ shop.metafields.arena.review_count }} reviews</a>. Showing our latest reviews.
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+    .trustpilot-slider__container .slick-slide {
+        margin: 0 7.5px;
+    }
+    .trustpilot-slider__container .slick-list {
+        margin: 0 -7.5px;
+    }
+    .trustpilot-slider__container .glide__controls {
+        top: 40%;
+        left: 50%;
+        bottom: auto;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        width: 100%;
+    }
+    .trustpilot-slider__container .glide__arrows {
+        display: block;
+        width: 100%;
+    }
+    @media only screen and (max-width: 993px) {
+        .trustpilot-slider__container .slick-slide {
+            margin: 0;
+        }
+        .trustpilot-slider__container .slick-list {
+            margin: 0;
+        }
+        .trustpilot-slider__container .glide__controls {
+            position: relative;
+            height: 6rem;
+            width: 13rem;
+            margin-top: 2rem;
+            left: auto;
+            top: auto;
+            -webkit-transform: none;
+            transform: none;
+        }
+    }
+</style>

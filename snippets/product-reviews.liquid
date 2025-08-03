@@ -1,0 +1,9 @@
+{% unless current_variant.sku == blank %}
+    <div class="trustpilot-widget" data-locale="en-GB" data-template-id="544a426205dc0a09088833c6" data-businessunit-id="5fcfadfbc9a213000101e017" data-style-height="400px" data-style-width="100%" data-theme="dark" data-sku="{{ current_variant.sku }}" data-name="{{ product.title }}" data-review-languages="en">
+        <a title="Trustpilot" href="https://uk.trustpilot.com/review/storiesflooring.co.uk" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+{% else %}
+    <div class="para">
+        There are no reviews for this product
+    </div>
+{% endunless %}

@@ -1,0 +1,50 @@
+{{ 'home-bottom-text.css' | asset_url | stylesheet_tag }}
+
+<div style="max-width: {{ section.settings.max-width }}px;" class="home-bottom-text-outer-container">
+	<div class="home-bottom-text-inner-container">
+		{%- for block in section.blocks -%}
+			<div class="home-bottom-text-description">
+				{{ block.settings.description }}
+			</div>
+		{%- endfor -%}
+	</div>
+</div>
+
+{% schema %}
+	{
+		"name": "Home Bottom Text",
+		"tag": "section",
+		"class": "section",
+		"settings": [
+			{
+				"type": "range",
+				"id": "max-width",
+				"label": "Max Width",
+				"step": 20,
+				"min": 400,
+				"max": 1600,
+				"default": 600
+			}
+		],
+		"blocks": [
+			{
+				"type": "text",
+				"name": "Text",
+				"settings": [
+					{
+						"type": "richtext",
+						"id": "description",
+						"label": "Text"
+					}
+				]
+			}
+		],
+		"presets": [
+			{
+				"name": "Home Bottom Text",
+				"category": "Home",
+				"settings": {}
+			}
+		]
+	}
+{% endschema %}

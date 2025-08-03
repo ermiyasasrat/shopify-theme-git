@@ -1,0 +1,14 @@
+{% if sold_out == true or on_sale == true %}
+	<div class="dn_filter_product_item_label">
+		{% if sold_out %}
+			<span class="soldout dn_filter_label">
+				{{ 'products.product.sold_out' | t }}
+			</span>
+		{% endif %}
+		{% if on_sale and sold_out == false %}
+			<span class="sale dn_filter_label">
+				{{ 'products.product.on_sale' | t }}
+			</span>
+		{% endif %}
+	</div>
+{% endif %}

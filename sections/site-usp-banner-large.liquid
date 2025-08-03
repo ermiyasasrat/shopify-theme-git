@@ -1,0 +1,126 @@
+{% schema %}
+    {
+        "name": "USPs large",
+        "settings": [
+            {
+                "id": "usp_delivery_large",
+                "type": "text",
+                "label": "USP delivery large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_delivery_text_large",
+                "type": "text",
+                "label": "USP delivery text large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_returns_large",
+                "type": "text",
+                "label": "USP returns large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_returns_text_large",
+                "type": "text",
+                "label": "USP returns text large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_sample_large",
+                "type": "text",
+                "label": "USP sample large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_sample_text_large",
+                "type": "text",
+                "label": "USP sample text large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_guarantee_large",
+                "type": "text",
+                "label": "USP guarantee large",
+                "info": "This will change anywhere the large banner has been included."
+            },
+            {
+                "id": "usp_guarantee_text_large",
+                "type": "text",
+                "label": "USP guarantee text large",
+                "info": "This will change anywhere the large banner has been included."
+            }
+        ]
+    }
+{% endschema %}
+
+<div id="site-usp-banner-large" class="site-usp-banner site-usp-banner--large">
+    <div class="site-wrap">
+        <ul class="site-usp-banner__wrap site-usp-banner__wrap--large">
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--delivery site-usp-banner__icon--large">
+                        {% include 'icon-delivery' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{ section.settings.usp_delivery_large }}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{ section.settings.usp_delivery_text_large }}
+                </div>
+            </li>
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--returns site-usp-banner__icon--large">
+                        {% include 'icon-returns' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{ section.settings.usp_returns_large }}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{ section.settings.usp_returns_text_large }}
+                </div>
+            </li>
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--samples site-usp-banner__icon--large">
+                        {% include 'icon-samples' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{ section.settings.usp_sample_large }}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{ section.settings.usp_sample_text_large }}
+                </div>
+            </li>
+            <li class="site-usp-banner__item">
+                <button type="button" class="site-usp-banner__expand button-reset">
+                    <div class="site-usp-banner__icon site-usp-banner__icon--guarantee site-usp-banner__icon--large">
+                        {% include 'icon-guarantee' %}
+                    </div>
+                    <h3 class="site-usp-banner__title">
+                        {{ section.settings.usp_guarantee_large }}
+                    </h3>
+                    <span class="site-usp-banner__expand-arrow">
+                        {% include 'icon-nav-arrow' %}
+                    </span>
+                </button>
+                <div class="site-usp-banner__description para">
+                    {{ section.settings.usp_guarantee_text_large }}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

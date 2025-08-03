@@ -1,0 +1,63 @@
+{% unless collection.metafields.collection_quote.quote_text == blank %}
+    <section class="image-text-split collection-x-section">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+				{% unless collection.template_suffix == "no-images" %}
+					{% unless collection.metafields.collection_quote.quote_image == blank %}
+						<div class="image-text-split__image image-text-split__image--switch">
+							{% assign image_large_1x = collection.metafields.collection_quote.quote_image %}
+							{% include 'picture',
+								large1x: image_large_1x,
+								alt: collection.title,
+								lazy: true
+							%}
+						</div>
+					{% endunless %}
+				{% endunless %}
+                <div class="image-text-split__content image-text-split__content--right">
+                    <div class="image-text-split__content__container">
+                        <div id="collection-quote-slider" class="glide glide--quote">
+                            <img class="image-text-split__quote-sig xlarge-show js-lazy-load-image" data-src="{{ 'icon-hero-sig.svg' | asset_url }}" title="{{collection.title}}" alt="{{collection.title}}">
+                            <div class="glide__track" data-glide-el="xtrack">
+                                <ul class="glide__slides">
+                                    {% for quote in collection.metafields.collection_quote.quote_text %}
+                                        <li class="glide__slide">
+                                            <img class="image-text-split__quote-sig xlarge-hide js-lazy-load-image" data-src="{{ 'icon-hero-sig.svg' | asset_url }}" title="{{collection.title}}" alt="{{collection.title}}">
+                                            {% unless quote == blank %}
+                                                <div class="image-text-split__quote-title">
+                                                    {{- quote -}}
+                                                </div>
+                                            {% endunless %}
+                                            {% unless
+                                                collection.metafields.collection_quote.quote_author[forloop.index0] == blank
+                                                and collection.metafields.collection_quote.quote_location[forloop.index0] == blank
+                                            %}
+                                                <div class="image-text-split__quote-author">
+                                                    <div>
+                                                        {{- collection.metafields.collection_quote.quote_author[forloop.index0] -}}
+                                                    </div>
+                                                    <div>
+                                                        {{- collection.metafields.collection_quote.quote_location[forloop.index0] -}}
+                                                    </div>
+                                                </div>
+                                            {% endunless %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                          
+                              {% comment %}
+                                <div class="glide__bullets glide__bullets--quote" data-glide-el="controls[nav]">
+                                    {% for quote in collection.metafields.collection_quote.quote_text %}
+                                        <button class="glide__bullet" data-glide-dir="={{- forloop.index0 -}}"></button>
+                                    {% endfor %}
+                                </div>
+                              {% endcomment %}
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endunless %}

@@ -1,0 +1,60 @@
+<section class="page">
+    <div class="site-wrap">
+        <div class="page__container page__container--full">
+            <div class="page__form">
+                <h1 class="title title--small page__title">{{ page.title }}</h1>
+                {% unless form.posted_successfully? %}
+                    <div class="wysiwyg">
+                        {{ page.content }}
+                    </div>
+                {% endunless %}
+                {% form 'contact' %}
+                    {% if form.posted_successfully? %}
+                        <div class="contact-form__intro">
+                            <div class="contact-form__success wysiwyg">
+                                <p>
+                                    Thanks for choosing Stories Flooring, it means a lot to us and we're really excited about helping you to find your dream flooring.
+                                </p>
+                                <p>
+                                    If you have any questions in advance of your appointment, please feel free to send an email to the address below! We’re here to help every step the way.
+                                </p>
+                                <p>
+                                    <a href="mailto:videoappointments@storiesflooring.co.uk">videoappointments@storiesflooring.co.uk</a>
+                                </p>
+                            </div>
+                        </div>
+                    {% else %}
+                        {%- if form.errors -%}
+                            <div class="contact-form-errors">
+                                {{ form.errors | default_errors }}
+                            </div>
+                        {% endif %}
+                        <div class="contact-form__field">
+                            <label class="contact-form__label" for="ContactFormName">Name*</label>
+                            <input class="input input-text" required="true" type="text" id="ContactFormName" name="contact[name]">
+                        </div>
+                        <div class="contact-form__field">
+                            <label class="contact-form__label" for="ContactFormEmail">Email address*</label>
+                            <input class="input input-text" required="true" type="email" id="ContactFormEmail" name="contact[email]">
+                        </div>
+                        <div class="contact-form__field">
+                            <label class="contact-form__label" for="ContactFormPhone">Phone number*</label>
+                            <input class="input input-text" required="true" type="tel" id="ContactFormPhone" name="contact[phone]">
+                        </div>
+                        <div class="contact-form__field">
+                            <label class="contact-form__label" for="ContactFormTimeDate">Appointment time and date*</label>
+                            <input class="input input-text js-datepicker" required="true" type="text" id="ContactFormTimeDate" name="contact[time-date]"></textarea>
+                        </div>
+                        <div class="contact-form__field">
+                            <label class="contact-form__label" for="ContactFormTimeDate">Tell us about your project*</label>
+                            <textarea class="input input-text input-textarea" required="true" id="ContactProject" name="contact[project]"></textarea>
+                        </div>
+                        <div class="contact-form__field contact-form__field--split">
+                            <input class="button contact-form__submit" type="submit" value="Submit">
+                        </div>
+                    {% endif %}
+                {% endform %}
+            </div>
+        </div>
+    </div>
+</section>

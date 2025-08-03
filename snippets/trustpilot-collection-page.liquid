@@ -1,0 +1,23 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    function reinitTrustpilot() {
+      const widgets = document.querySelectorAll('.main-collection-grid-details .trustpilot-widget');
+      widgets.forEach(function(el) {
+        if(!el.querySelector('iframe')) {
+          window.Trustpilot.loadFromElement(el);
+        }
+      })
+    }
+
+    document.addEventListener('NewRenderFiltersLoaded', function(event) {
+      reinitTrustpilot();
+    });
+
+    const infiniteScrollPagination = document.querySelector('infinite-scroll-pagination');
+    if(infiniteScrollPagination) {
+      infiniteScrollPagination.addEventListener('NewProductsContentLoaded', function(event) {
+        reinitTrustpilot();
+      });
+    }
+  });
+</script>

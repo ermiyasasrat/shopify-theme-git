@@ -1,0 +1,73 @@
+{% schema %}
+    {
+        "name": "Announcement bar",
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "show_announcement",
+                "label": "Show announcement",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "announcement_home_page_only",
+                "label": "Home page only",
+                "default": true
+            },
+            {
+                "type": "text",
+                "id": "announcement_title",
+                "label": "Announcement title"
+            },
+            {
+                "type": "html",
+                "id": "announcement_message",
+                "label": "Announcement message",
+				"info": "HTML allowed"
+            }
+        ]
+    }
+{% endschema %}
+
+{%- if section.settings.show_announcement -%}
+    {%- if section.settings.announcement_home_page_only == false or template.name == 'index' -%}
+        <style>
+            .announcement-bar {
+                background: #dcc6bc;
+                padding: 1.2rem 0 1.7rem
+            }
+            .announcement-bar__title {
+                font-family: Averta-Semibold, sans-serif;
+                font-size: 1.4rem;
+                letter-spacing: -.01rem;
+                line-height: 2.2rem
+            }
+            @media (min-width: 80em) {
+                .announcement-bar {
+                    text-align: center;
+                    padding: 1.4rem 0 1.5rem
+                }
+                .announcement-bar__title {
+                    margin-right: 1rem
+                }
+                .announcement-bar__message, .announcement-bar__title {
+                    display: inline-block
+                }
+            }
+        </style>
+        <div class="announcement-bar">
+            <div class='site-wrap'>
+                {%- if section.settings.announcement_title != '' -%}
+                    <div class="announcement-bar__title">
+                        {{ section.settings.announcement_title }}
+                    </div>
+                {%- endif -%}
+                {%- if section.settings.announcement_message != '' -%}
+                    <div class="announcement-bar__message">
+                      <p> {{ section.settings.announcement_message }} </p> 
+                    </div>
+                {%- endif -%}
+            </div>
+        </div>
+    {%- endif -%}
+{%- endif -%}

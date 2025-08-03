@@ -1,0 +1,99 @@
+<div class="account">
+    <div class="site-wrap">
+        <div class="account-grid">
+            <div class="account-grid__item account-grid__item--half">
+                <div id="CustomerLoginForm" class="account-form account-form--login is-active">
+                    {% form 'customer_login' %}
+                        <h1 class="account-title account-title-small">
+                            Login
+                        </h1>
+                        <p class="account-title-small">
+                            Log into your account to see your orders, or place a new one.
+                        </p>
+                        {%- if form.errors -%}
+                            <div class="account-form-errors">
+                                {{ form.errors | default_errors }}
+                            </div>
+                        {%- endif -%}
+                        <div class="account-form__field">
+                            <label class="account-form__label" for="CustomerEmail">Email address</label>
+                            <input type="email" name="customer[email]" id="CustomerEmail" class="input input-text account-form__input{% if form.errors contains 'email' %} input--error{% endif %}" autocorrect="off" autocapitalize="off" autofocus>
+                        </div>
+                        {% if form.password_needed %}
+                            <div class="account-form__field">
+                                <label class="account-form__label" for="CustomerPassword">Password</label>
+                                <input type="password" value="" name="customer[password]" id="CustomerPassword" class="input input-text account-form__input{% if form.errors contains 'password' %} input--error{% endif %}">
+                            </div>
+                            <p class="account-form__field text-right">
+                                <a title="Forgotten Password" class="link link--arrow" href="#recover" id="RecoverPassword">Forgot your password?</a>
+                            </p>
+                        {% endif %}
+                        <button class="button button--solid" type="submit">
+                            <span class="button__text">
+                                Log in
+                            </span>
+                        </button>
+                        <div class="account__extra-link">
+                            or <span class="link-container">{{ 'Create account' | customer_register_link }}</span>
+                        </div>
+                    {% endform %}
+                </div>
+
+                <div id="RecoverPasswordForm" class="account-form account-form--login">
+                    <h2 class="account-title">
+                        Reset your password
+                    </h2>
+                    <p class="account-form__field">
+                        We will send you an email to reset your password
+                    </p>
+                    {% form 'recover_customer_password' %}
+                        {%- if form.errors -%}
+                            <div class="account-form-errors">
+                                {{ form.errors | default_errors }}
+                            </div>
+                        {%- endif -%}
+                        {% comment %}
+                            Add a hidden span to indicate the form was submitted succesfully.
+                        {% endcomment %}
+                        {% if form.posted_successfully? %}
+                            <span class="reset-password-success">
+                                We've sent you an email with a link to update your password.
+                            </span>
+                        {% endif %}
+                        <div class="account-form__field">
+                            <label class="account-form__label" for="RecoverEmail">Email</label>
+                            <input class="input input-text account-form__input" autocapitalize="off" autocorrect="off" id="RecoverEmail" name="email" type="email" value="">
+                        </div>
+                        <div class="account-form__field">
+                            <button class="button button--solid" type="submit">
+                                <span class="button__text">
+                                    Submit
+                                </span>
+                            </button>
+                        </div>
+                        <a class="link" href="#cancel-recover" id="HideRecoverPasswordLink">Cancel</a>
+                    {% endform %}
+                </div>
+            </div>
+
+            {% comment %}
+                If accounts are set as optional, the following will be shown as an option
+                during checkout, not on the default /login page.
+            {% endcomment %}
+            {% if shop.checkout.guest_login %}
+                <div class="account-grid__item account-grid__item--half account-grid__item--mt-small">
+                    <h2 class="title-sans--small account-title-small">
+                        Continue as guest
+                    </h2>
+                    {% form 'guest_login' %}
+                        <button class="button button--solid" type="submit">
+                            <span class="button__text">
+                                Submit
+                            </span>
+                        </button>
+                    {% endform %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

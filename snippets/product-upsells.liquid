@@ -1,0 +1,81 @@
+{% comment %}<script src="{{ 'product-upsells.js' | asset_url }}" defer="defer"></script>{% endcomment %}
+
+<div id="product-upsells" class="product-upsells">
+    <h3 class="product-upsells__title">You might also need...</h3>
+    <div class="product-upsells__products">
+        {% for upsellHandle in productUpsells %}
+            {% assign upsellProduct = all_products[upsellHandle] %}
+            {% if upsellProduct.selected_or_first_available_variant.available %}
+				<product-upsells>
+					<div class="product-upsells__product js-upsells-product">
+						<a href="{{ upsellProduct.url }}" class="product-upsells__link no-link" title="Go to {{ upsellProduct.title }}">
+							{% if upsellProduct.featured_image %}
+								{% 	render 'responsive-image',
+									image: upsellProduct.featured_image,
+									image_class: 'product-upsells__product-image',
+									alt: upsellProduct.title
+								%}
+							{% endif %}
+							<div class="product-upsells__details">
+								<div class="product-upsells__product-title">
+									{{- upsellProduct.title -}}
+								</div>
+              {% assign coverage = upsellProduct.variants[0].metafields.product_config.accessories-coverage %}
+              {% if coverage != blank %}
+              <div class="coveragemetafield">
+                <b>Coverage:</b> {{ coverage }}
+              </div>
+                <style>
+                  .coveragemetafield {
+    padding-top: 0.4em;
+}
+                </style>
+                {% endif %}
+								<div class="product-upsells__product-price product-upsells-small-screen">
+									{{- upsellProduct.price | money -}}
+								</div>
+							</div>
+						</a>
+						<div class="product-upsells__basket">
+							<div class="product-upsell__basket-data">
+								<div class="product-upsells__product-price product-upsells-large-screen">
+									{{- upsellProduct.price | money -}}
+								</div>
+								<div class="product-upsells__quantity">
+									<label class="product-basket__label product-basket__label--upsells" for="product-upsell-quantity">Qty</label>
+									<input type="number" class="product-upsells__input js-upsells-quantity" name="product-upsell-quantity" value="1" min="1" max="999">
+									{% comment %}
+										<div class="product-upsells__recommended-quantity">
+											<button type="button" class="product-upsells__tooltip button-reset js-upsells-recommended-quantity-trigger">i</button>
+											<div class="product-upsells__recommended-quantity-popout js-upsells-recommended-quantity">
+												Recommended amount: 1
+											</div>
+										</div>
+									{% endcomment %}
+								</div>
+								{% comment %}
+									<div class="product-upsells__total">
+										<label class="product-basket__label product-basket__label--upsells" for="product-upsell-quantity">Total</label>
+										<span class="product-upsells__total-price">
+											£<span data-upsells-unit-price="{{ upsellProduct.price | money_without_currency }}" class="js-upsells-total-price">{{ upsellProduct.price | money_without_currency }}</span>
+										</span>
+									</div>
+								{% endcomment %}
+							</div>
+							<button data-upsells-product-id="{{ upsellProduct.selected_or_first_available_variant.id }}" type="button" class="button button--submit button--submit-icon js-upsells-button" title="Add {{ upsellProduct.title }} to your basket">
+								<div class="button__icon">
+									<span class="button__icon-cart">
+										{% render 'icon-cart' %}
+									</span>
+									<span class="button__icon-tick">
+										{% render 'icon-cart-tick' %}
+									</span>
+								</div>
+							</button>
+						</div>
+					</div>
+				</product-upsells>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

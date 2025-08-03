@@ -1,0 +1,23 @@
+{%- if cart.item_count > 0 -%}
+	{%- assign accessories_items = 0 -%}
+	{%- assign total_items = cart.item_count -%}
+	{%- for item in cart.items -%}
+		{%- assign thisPrd = item.product -%}
+		{%- assign icp = item.final_line_price | plus:0 -%}
+			{%- if icp == 0 -%}
+				{%- assign total_items = total_items | minus: 1 -%}
+			{%- endif -%}
+		{%- for ThisCollection in thisPrd.collections -%}
+			{%- if ThisCollection.title contains 'Accessories' -%}
+				{%- assign itq = item.quantity | plus:0 -%}
+				{%- assign accessories_items = accessories_items | plus: itq -%}
+				{%- break -%}
+			{%- endif -%}
+		{%- endfor -%}
+	{%- endfor -%}
+	{%- if accessories_items == total_items -%}
+		<style>.accessories_barring {display: block !important;color: #fff;border: 1px solid red;padding: 5px 15px;margin-top: 15px;font-size: 24px;line-height: 29px;border-radius: 6px;background: #1b2c3d;}.product-basket__total-button {pointer-events: none;cursor: not-allowed;opacity: 0.7;}</style>
+	{%- endif -%}
+{%- else -%}
+	<style>.accessories_barring {display: block !important;color: #fff;border: 1px solid red;padding: 5px 15px;margin-top: 15px;font-size: 24px;line-height: 29px;border-radius: 6px;background: #1b2c3d;}.product-basket__total-button {pointer-events: none;cursor: not-allowed;opacity: 0.7;}</style>
+{%- endif -%}

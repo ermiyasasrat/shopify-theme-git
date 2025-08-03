@@ -1,0 +1,13 @@
+{% assign vendorsList = '' %}
+{% for vendorString in shop.metafields.arena.vendor_logo %}
+    {% assign vendorParts = vendorString | newline_to_br | split: '<br />' %}
+    {% assign vendorName = vendorParts[0] | strip %} 
+    {% assign vendorLogo = vendorParts[1] | strip %} 
+    {% if vendorName and vendorLogo %}
+        {% capture vendorsList %}
+            {{ vendorsList }}
+            {name:"{{ vendorName }}",logo:"{{ vendorLogo }}"},
+        {% endcapture %}
+    {% endif %}
+{% endfor %}
+<script type="text/javascript">SF_VENDORS = [{{ vendorsList | strip }}];</script>

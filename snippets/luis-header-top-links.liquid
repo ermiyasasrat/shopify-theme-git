@@ -1,0 +1,15 @@
+<div class="header-top-links-container site-navigation__menu">
+  <ul class="site-navigation__ul desktop-only">
+    {%- for link in linklists['top-links-in-header'].links -%}
+      <li class="site-nav__item site-navigation__li{% if link.active %} site-navigation__li--active{% endif %}">
+        <div class="site-navigation__link site-navigation__link-div{% if link.active %} site-navigation__link--active{% endif %}"
+             {% if link.current %}aria-current="page"{% endif %}>
+          <a data-link="{{ link.url }}" href="{{ link.url }}" class="site-navigation__link-text"
+             title="{{ link.title | replace: '[layers]', '' }}">
+            {{ link.title | replace: '[layers]', '' }}
+          </a>
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>

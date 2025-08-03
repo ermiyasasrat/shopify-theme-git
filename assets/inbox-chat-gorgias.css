@@ -1,0 +1,91 @@
+.gorgias-chat-container-f.prepared-to-load {
+    display: block;
+}
+
+#gorgias-chat-container-f {
+    visibility: visible;
+    border: none;
+    user-select: none;
+    position: fixed;
+    z-index: 2147483000;
+    color-scheme: light;
+    right: 20px;
+    bottom: 20px;
+    width: 160px;
+    height: 54px;
+    line-height: 20px;
+}
+.messenger-button-iframe-btn-f {
+    line-height: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    background: rgb(235, 235, 235);
+    border: 0;
+    border-radius: 100px;
+    box-shadow: rgba(22, 22, 22, 0.16) 0px 2px 4px;
+    transition: all 200ms ease 0s;
+    padding: 10px 16px;
+    height: 40px;
+    max-width: calc(20ch + 56px);
+    margin: 7px 10px;
+}
+.messenger-button-iframe-inner-f {
+    position: absolute;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    transition: all 200ms ease 0s;
+    left: 16px;
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+}
+.messenger-button-iframe-text-f {
+    position: relative;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: pre;
+    color: rgb(22, 22, 22);
+    margin-left: 24px;
+    transition: opacity 200ms ease 0s;
+}
+
+.messenger-button-iframe-text-f {
+    color: #161616;
+}
+
+#gorgias-chat-container-f.is-open-time .messenger-button-iframe-btn-f{
+    background: #24486d;
+}
+
+#gorgias-chat-container-f.is-open-time .messenger-button-iframe-text-f {
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    #gorgias-chat-container-f {
+        width: 175px;
+        height: 66px;
+    }
+    .messenger-button-iframe-btn-f {
+        padding: 16px 20px;
+        height: 52px;
+        max-width: calc(20ch + 72px);
+    }
+    .messenger-button-iframe-inner-f {
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        background-size: 20px 20px;
+    }
+    .messenger-button-iframe-text-f {
+        margin-left: 32px;
+    }
+}

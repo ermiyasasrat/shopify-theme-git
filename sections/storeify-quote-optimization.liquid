@@ -1,0 +1,197 @@
+<!-- REQUEST_QUOTE_CONDITION_VALUES -->
+    {% assign show_conditions = "0" %}
+    {% assign condition_key = "vendor||vendor||vendor" %}
+    {% assign condition_name = "equal||equal||equal" %}
+    {% assign condition_val = "COREtec||V4 Flooring||Bjelin" %}
+    <!-- END_REQUEST_QUOTE_CONDITION_VALUES -->
+
+{% assign CONDITION_MODE_AND = 1 %}
+{% assign CONDITION_MODE_OR = 0 %}
+
+{% assign keys_array = condition_key | split: '||' %}
+{% assign names_array = condition_name | split: '||' %}
+{% assign values_array = condition_val | split: '||' %}
+{% assign condition_mode = show_conditions | plus: 0 %}
+{% assign can_render_storify = false %}
+
+{% if request.page_type == 'collection' %}
+    {% assign can_render_storify = true %}
+    {%- for product_item in collection.products -%}
+        {% include 'storeify-quote-conditions', product: product_item %}
+        {% if can_render_storify %}{% break %}{% endif %}
+    {%- endfor -%}
+{% elsif request.page_type == 'search' %}
+    {%- for product_item in search.results -%}
+        {% include 'storeify-quote-conditions', product: product_item %}
+        {% if can_render_storify %}{% break %}{% endif %}
+    {%- endfor -%}
+{% elsif request.page_type == 'product' %}
+    {% include 'storeify-quote-conditions' %}
+{% endif %}
+
+{% if can_render_storify %}
+<script type="text/javascript" id="storeify-request-a-quote-script" class="{{ test_variable3 }}">
+    var storeifyRequestaquote = storeifyRequestaquote || {};
+    storeifyRequestaquote.locale = {{shop.locale | json }};
+    storeifyRequestaquote.shop_domain = {{shop.domain | json }};
+    storeifyRequestaquote.shop_url = {{shop.url | json }};
+
+    {% if product %}
+        storeifyRequestaquote.product = {{ product | json }};
+        storeifyRequestaquote.product.options = {{ product.options_with_values | json }};
+
+        {% for variant in product.variants %}
+        storeifyRequestaquote.product.variants[{{forloop.index0}}].inventory_management = '{{variant.inventory_management }}';
+        storeifyRequestaquote.product.variants[{{forloop.index0}}].inventory_quantity = {{variant.inventory_quantity }};
+        storeifyRequestaquote.product.variants[{{forloop.index0}}].inventory_policy = '{{variant.inventory_policy }}';
+        {% endfor %}
+
+        {% assign prdCollectionsify = product.collections | map:'id' %}
+        storeifyRequestaquote.product.collection = {{ prdCollectionsify | json }};
+    {% endif %}
+
+    {% if request.page_type == 'collection' %}
+    storeifyRequestaquote.collection = {
+        id : '{{ collection.id }}',
+        handle : '{{collection.handle}}',
+    };
+    {% endif %}
+
+    {% if customer %}
+    storeifyRequestaquote.customer = {
+        id : {{ customer.id }},
+        first_name : "{{ customer.first_name }}",
+        last_name : "{{ customer.last_name }}",
+        email : "{{ customer.email }}",
+        phone : "{{ customer.phone }}"
+    };
+    {% endif %}
+
+    storeifyRequestaquote.page = {
+        type : '{{ request.page_type }}',
+        path : '{{request.path}}',
+    };
+
+    storeifyRequestaquote.money_format = '{{shop.money_format}}';
+    storeifyRequestaquote.collections = {};
+    storeifyRequestaquote.storeify_requestaquote_json = "/apps/request-a-quote/params";
+    storeifyRequestaquote.root_url = '{{ routes.root_url }}';
+
+    {% if shop.metafields.storeifyquote %}
+        {% assign locale_current = shop.locale %}
+
+        {% if shop.metafields.storeifyquote.quote_lang contains locale_current %}
+        storeifyRequestaquote.lang = {{shop.metafields.storeifyquote.quote_lang[locale_current] | json }};
+        {% else %}
+        storeifyRequestaquote.lang = {% raw %}{"btn_addquote":"Add to Quote","call_for_price":"Request a quote","btn_view":"View Quote","btn_continue":"Continue Shop","add_title":"Add \"{{product}}\" to quote","tbl_name":"Name","tbl_sku":"Sku","tbl_option":"Option","tbl_qty":"QTY","quote_empty":"Your quote is currently empty.","your_price":"Your Price","old_price":"Price","print":"Print PDF","total":"Total","btn_see_price":"Login to see price","draft_order":"Draft Order","date":"Date","status":"Status","view":"View","quote_history":"Quote history","load_more":"Load more >>","subtotal":"Subtotal","total_tax":"Total Tax","excl_shipping":"(Excl. Shipping)","excl_tax_shipping":"(Excl. Tax & Shipping)","input_required":"This field is required.","input_email":"Email Address is invalid: Please enter a valid email address.","search_product":"Search product","search_no_result":"No results found for “{{search_text}}”. Check the spelling or use a different word or phrase.","shipping":"Shipping","free":"Free","shipping_options":"Shipping Options","content_pdf":"PDF Content"};{% endraw %}
+        {% endif %}
+    {% endif %}
+
+    storeifyRequestaquote.show_input_price = 0;
+    storeifyRequestaquote.hide_variants_outofstock = 0;
+    storeifyRequestaquote.search_product = 0;
+    storeifyRequestaquote.btn_cart_to_quote = 0;
+    storeifyRequestaquote.callbackTracking = function(data){  };
+</script>
+<style type="text/css" id="ify-style-remove">
+    .collection-price-container,.product__prices,.price-box,#comparePrice-product-template,#ProductPrice-product-template,#ProductPrice,.product-price,.product__price,#productPrice-product-template,.product__current-price,.product-thumb-caption-price-current,.product-item-caption-price-current,.grid-product__price,span.price,span.product-price,.productitem--price,.product-pricing,span.money,.product-item__price,.product-list-item-price,p.price,div.price,.product-meta__prices,div.product-price,span#price,.price.money,h3.price,a.price,.price-area,.product-item-price,.pricearea,.collectionGrid .collectionBlock-info > p,#ComparePrice,.product--price-wrapper,.product-page--price-wrapper,.color--shop-accent.font-size--s.t--meta.f--main,.ComparePrice,.ProductPrice,.prodThumb .title span:last-child,.price,.product-single__price-product-template,.product-info-price,.price-money,.prod-price,#price-field,.product-grid--price,.prices,.pricing,#product-price,.money-styling,.compare-at-price,.product-item--price,.card__price,.product-card__price,.product-price__price,.product-item__price-wrapper,.product-single__price,.grid-product__price-wrap,a.grid-link,p.grid-link__meta,.collection-price-container,.product__details-prices,product-quantity-input{display:none !important;visibility: hidden !important;opacity: 0 !important;}
+    .shopify-payment-button,#AddToCart-product-template,#AddToCart,#addToCart-product-template,.product__add-to-cart-button,.product-form__cart-submit,.add-to-cart,.cart-functions > button,.productitem--action-atc,.product-form--atc-button,.product-menu-button-atc,.product__add-to-cart,.product-add,.add-to-cart-button,#addToCart,.product-detail__form__action > button,.product-form-submit-wrap > input,.product-form input[type="submit"],input.submit,.add_to_cart,.product-item-quick-shop,#add-to-cart,.productForm-submit,.add-to-cart-btn,.product-single__add-btn,.quick-add--add-button,.product-page--add-to-cart,.addToCart,.product-form .form-actions,.button.add,.btn-cart,button#add,.addtocart,.AddtoCart,.product-add input.add,button#purchase,form[action="/cart/add"] input[type="button"],form[action="/cart/add"] input[type="submit"],form[action="/cart/add"] button[type="submit"],.product__form button[type="submit"],#AddToCart--product-template,.product-form__add-to-cart,form[action="/cart/add*"] input[type="button"],form[action="/cart/add*"] input[type="submit"],form[action*="/cart/add*"] button[type="submit"],.product__form button[type="submit"],.collection-buttons-container,.product-form,variant-selects.no-js-hidden{display:none !important;visibility: hidden !important;opacity: 0 !important;}
+</style>
+<style type="text/css">.storeify-button-grid button{width:100%;color:#131f2a;}.list_product_quote img{max-width: 100px;margin-bottom: 10px;} .product---template .ify-quote-group{overflow: visible;}</style>
+{% comment %}<script src="{{ "storeify-requestaquote-optimization.js" | asset_url }}"></script>{% endcomment %}
+<script id="request-quote-resource-json" type="application/json">
+	{
+  "data": [
+    {
+      "name": "link",
+      "url": "//cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/tempusdominus-bootstrap-4.min.css",
+      "prepare": "preload"
+    },
+    {
+      "name": "link",
+      "url": "//cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/storeify-requestaquote-styles.css",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/jquery.validate.min.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/additional-methods.min.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/moment.min.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/popper.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/bootstrap-4.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/tempusdominus-bootstrap-4.min.js",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://quote.storeify.app/js/stores/stories-flooring.myshopify.com/storeify-requestaquote-params.js?v=1710250373",
+      "prepare": "preload"
+    },
+    {
+      "name": "script",
+      "url": "https://cdn.shopify.com/extensions/255c3398-f5c2-43b2-be4b-12f11ccae24b/s-request-a-quote-hide-price-27/assets/storeify-requestaquote-v2-mode-0.js",
+      "prepare": "preload"
+    }
+  ]
+}
+</script>
+
+<script id="request-quote-initial">
+    document.addEventListener('DOMContentLoaded', function() {
+        var requestQuoteResourceJsonEl = document.getElementById('request-quote-resource-json');
+        if(!requestQuoteResourceJsonEl) {
+            return;
+        }
+        var requestQuoteResources = {};
+        try {
+            requestQuoteResources = JSON.parse(requestQuoteResourceJsonEl.innerText);
+        } catch (e) {
+            console.log(e);
+        }
+        const regex = /storeify-requestaquote-styles\.css/;
+        requestQuoteResources.data.forEach(function (resource, index) {
+            if(regex.test(resource.url)) {
+                resource.url = '{{ "storeify-requestaquote-styles.css" | asset_url }}'
+            }
+        });
+
+        // console.log(requestQuoteResources);
+        /*if(SHOP_DATA_STORAGE.pageType === 'collection'
+            || productConditionsUltis.checkConditions(
+                requestQuoteResources.conditionsView,
+                storeifyRequestaquote.product,
+                storeifyRequestaquote.product.collection
+            )) {
+        }*/
+
+        resourceManager.loadResourceOnInteractive(requestQuoteResources.data, {
+            triggerEvents: {
+                readyInteractive: true,
+                elementsIntersection: 'product-quantity-input, variant-selects, .main-collection-product-grid, .out-of-stock-area'
+            }
+        });
+    });
+</script>
+{% else %}
+<style type="text/css">.ify-hide{display:none;}</style>
+{% endif %}

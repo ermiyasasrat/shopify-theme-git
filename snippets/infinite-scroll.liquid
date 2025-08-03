@@ -1,0 +1,22 @@
+<script src=  "{{ 'ajaxinate.js' | asset_url }}" defer></script>
+<script src=  "{{ 'infinite-scroll-pagination.js' | asset_url }}" defer></script>
+<style>
+  .infinite-scroll-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+  .infinite-scroll-pagination .loading__spinner {
+    display: block;
+    position: relative;
+    margin-left: 20px;
+  }
+  .infinite-scroll-pagination .loading__spinner svg {
+    width: 40px;
+    height: 40px;
+  }
+  .infinite-scroll-pagination .loading__spinner svg .path {
+    stroke: #1b2c3d;
+  }
+</style>

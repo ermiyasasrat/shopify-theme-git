@@ -1,0 +1,198 @@
+{% schema %}
+    {
+        "name": "Hero",
+        "settings": [
+            {
+                "type": "text",
+                "id": "contact_hero_title",
+                "label": "Title"
+            },
+            {
+                "type": "richtext",
+                "id": "contact_hero_content",
+                "label": "Content"
+            },
+            {
+                "type": "url",
+                "id": "contact_hero_link",
+                "label": "Link"
+            },
+            {
+                "type": "text",
+                "id": "contact_hero_link_text",
+                "label": "Link text"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "contact_hero_icons",
+                "name": "Hero icons",
+                "settings": [
+                    {
+                        "type": "select",
+                        "id": "contact_hero_icons_icon",
+                        "label": "Icon",
+                        "options": [
+                            {
+                                "value": "icon-telephone-outline",
+                                "label": "Phone"
+                            },
+                            {
+                                "value": "icon-chat",
+                                "label": "Chat"
+                            },
+                            {
+                                "value": "icon-email",
+                                "label": "Email"
+                            },
+                            {
+                                "value": "icon-location",
+                                "label": "Location"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "id": "contact_hero_icons_text",
+                        "label": "Text"
+                    },
+                    {
+                        "type": "select",
+                        "id": "contact_hero_icons_link_type",
+                        "label": "Link Type",
+                        "options": [
+                            {
+                                "value": "none",
+                                "label": "No link"
+                            },
+                            {
+                                "value": "phone",
+                                "label": "Phone number"
+                            },
+                            {
+                                "value": "email",
+                                "label": "Email"
+                            },
+                            {
+                                "value": "url",
+                                "label": "URL"
+                            },
+                            {
+                                "value": "anchor",
+                                "label": "Anchor"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "id": "contact_hero_icons_link",
+                        "label": "Link"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.contact_hero_title == blank
+    and section.settings.contact_hero_content == blank
+    and section.settings.contact_hero_link == blank
+    and section.settings.contact_hero_link_text == blank
+    and section.blocks
+%}
+    <section class="image-text-split image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless
+                    section.settings.contact_hero_title == blank
+                    and section.settings.contact_hero_content == blank
+                    and section.settings.contact_hero_link == blank
+                    and section.settings.contact_hero_link_text == blank
+                    and section.settings.home_split_text_link_two == blank
+                    and section.settings.home_split_text_link_text_two == blank
+                %}
+                    <div class="image-text-split__content">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                {% unless section.settings.contact_hero_title == blank %}
+                                    <h2 class="title title--small image-text-split__title">
+                                        {{- section.settings.contact_hero_title -}}
+                                    </h2>
+                                {% endunless %}
+                                {% unless section.settings.contact_hero_content == blank %}
+                                    <div class="para image-text-split__para">
+                                        {{- section.settings.contact_hero_content -}}
+                                    </div>
+                                {% endunless %}
+                                {% unless section.settings.contact_hero_link == blank and section.settings.home_split_text_link_two == blank %}
+                                    <div class="image-text-split__buttons">
+                                        {% unless section.settings.contact_hero_link == blank and section.settings.contact_hero_link_text == blank %}
+                                            <a class="button" title="{{ section.settings.contact_hero_link_text }}" href="{{- section.settings.contact_hero_link -}}">
+                                                {{- section.settings.contact_hero_link_text -}}
+                                            </a>
+                                        {% endunless %}
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+                {% unless section.blocks == blank %}
+                    <div class="image-text-split__content">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                <div class="icon-grid">
+                                    {% for icon in section.blocks %}
+                                        <div class="icon-grid__item">
+                                            {% if icon.settings.contact_hero_icons_icon == 'icon-chat' %}
+                                                <div class="inline-icon-text inline-icon-text--chat">
+                                                    <span class="inline-icon-text__icon">
+                                                        <div data-id="VTn0hv6cKc" class="livechat_button">
+                                                            <a href="https://www.livechat.com/?utm_source=chat_button&utm_medium=referral&utm_campaign=lc_9218565" class="inline-icon-text__icon">
+                                                                {% include 'icon-chat' %}
+                                                            </a>
+                                                        </div>
+                                                    </span>
+                                                    <span class="inline-icon-text__text">
+                                                        <div data-id="TTduoZjnkBL" class="livechat_button">
+                                                            <a href="https://www.livechat.com/?utm_source=chat_button&utm_medium=referral&utm_campaign=lc_9218565">
+                                                                Live Chat
+                                                            </a>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            {% else %}
+                                                {% if icon.settings.contact_hero_icons_link_type == 'url' %}
+                                                    <a class="link-inline-icon" href="{{ icon.settings.contact_hero_icons_link }}">
+                                                {% elsif icon.settings.contact_hero_icons_link_type == 'email' %}
+                                                    <a class="link-inline-icon" href="mailto:{{ icon.settings.contact_hero_icons_link }}">
+                                                {% elsif icon.settings.contact_hero_icons_link_type == 'phone' %}
+                                                    <a class="link-inline-icon" href="tel:{{ icon.settings.contact_hero_icons_link }}">
+                                                {% elsif icon.settings.contact_hero_icons_link_type == 'anchor' %}
+                                                    <a data-scroll class="link-inline-icon" href="{{ icon.settings.contact_hero_icons_link }}">
+                                                {% endif %}
+                                                    {% include 'inline-icon-text' with
+                                                        text: icon.settings.contact_hero_icons_text,
+                                                        icon: icon.settings.contact_hero_icons_icon
+                                                    %}
+                                                {% if
+                                                    icon.settings.contact_hero_icons_link_type == 'url'
+                                                    or icon.settings.contact_hero_icons_link_type == 'email'
+                                                    or icon.settings.contact_hero_icons_link_type == 'phone'
+                                                    or icon.settings.contact_hero_icons_link_type == 'anchor'
+                                                %}
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}

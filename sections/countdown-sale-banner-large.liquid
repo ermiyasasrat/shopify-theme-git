@@ -1,0 +1,332 @@
+{% if section.settings.show_banner %}
+    {% assign current_timestamp = 'now' | date: '%s' | plus: 0 %}
+    {% assign start_timestamp = section.settings.start_date
+        | append: ' ' | append: section.settings.start_time | date: '%s' | plus: 0 %}
+
+    {% assign end_timestamp = section.settings.end_date
+        | append: ' ' | append: section.settings.end_time | date: '%s' | plus: 0 %}
+
+    {% if current_timestamp >= start_timestamp and current_timestamp < end_timestamp %}
+        {% assign seconds_left = end_timestamp | minus: current_timestamp %}
+
+        {% assign timerDays = seconds_left | divided_by: 86400 %}
+        {% assign seconds_left = seconds_left | modulo: 86400 %}
+        {% assign timerHours = seconds_left | divided_by: 3600 %}
+        {% assign seconds_left = seconds_left | modulo: 3600 %}
+        {% assign timerMinutes = seconds_left | divided_by: 60 %}
+        {% assign timerSeconds = seconds_left | modulo: 60 %}
+
+        
+        <link rel="stylesheet" href="{{ 'countdown-banner-style-large.css' | asset_url }}">
+        <style>
+            #hero {
+                display: none;
+            }
+
+            .section-countdown-sale-banner-large {
+                background: {{ section.settings.banner_bg_color }};
+            }
+
+            .sale-banner__extra-item-timer .timer-item--value,
+            .sale-banner__extra-item-timer .timer-item--label {
+                color: {{ section.settings.banner_bg_color }};
+            }
+
+            .sale-banner__extra-item-actions.button-action-container a.button {
+                width: {{ section.settings.btn_action_width }}px;
+                min-width: 200px;
+                background-color: {{ section.settings.btn_action_bg_color }};
+                color: {{ section.settings.btn_action_color }};
+            }
+
+            .sale-banner__extra-item-actions.button-action-container a.button:hover {
+                background-color: {{ section.settings.btn_action_hover_color }} !important;
+            }
+
+            .sale-banner__item-ribbon .ui-ribbon {
+                background-color: {{ section.settings.ribbon_bg_color }};
+                color: {{ section.settings.ribbon_text_color }};
+            }
+
+            .sale-banner__item-ribbon .ui-ribbon:before {
+                border-bottom-color: {{ section.settings.ribbon_sd_color }};
+            }
+
+            .sale-banner__item-ribbon .ui-ribbon:after {
+                border-left-color: {{ section.settings.ribbon_bg_color }};
+                border-right-color: {{ section.settings.ribbon_bg_color }};
+            }
+        </style>
+        <div class="section-countdown-sale-banner-large custom-layout image-text-split image-text-split--dark">
+            <div class="site-wrap site-wrap--max">
+                <div class="sale-banner__main md-whiteframe-24dp {% unless section.settings.banner_image %} has-no-image{% endunless %}">
+                    {% if section.settings.banner_link %}
+                        <a href="{{ section.settings.banner_link }}" class="sale-banner__item sale-banner__item-link"
+                           aria-label="Sale"></a>
+                    {% endif %}
+                    {% if section.settings.banner_image %}
+                        <div class="sale-banner__item sale-banner__item-image">
+                            {% render 'luis-sale-banner-picture',
+                                image: section.settings.banner_image,
+                                mobile_image: section.settings.banner_image,
+                                image_title: section.settings.banner_title %}
+                        </div>
+                    {% endif %}
+                    <div class="sale-banner__item sale-banner__item-title">
+                        <div class="sale-banner__item-title-top">
+                            {{ section.settings.banner_title_html }}
+                        </div>
+                        <div class="sale-banner__item-title-bottom">
+                            {{ section.settings.banner_extra_title_html }}
+                        </div>
+                    </div>
+                    <div class="sale-banner__item sale-banner__item-ribbon">
+                        <div class="ui-ribbon ui-ribbon-type-2">
+                            {{ section.settings.banner_sale_html }}
+                        </div>
+                    </div>
+                </div>
+                <div class="sale-banner__extra">
+                    <div class="sale-banner__extra-item countdown-banner-timer-label">
+                        <div class="countdown-banner-timer-inner-label md-whiteframe-4dp">
+                            {{ section.settings.banner_timer_title_html }}
+                        </div>
+                    </div>
+                    <div class="sale-banner__extra-item sale-banner__extra-item-timer">
+                        <div class="countdown-banner-timer-container md-whiteframe-4dp">
+                            {% comment %}<div class="countdown-banner-timer-inner-label">
+                                {{ section.settings.banner_timer_title_html }}
+                            </div>{% endcomment %}
+                            {% render 'countdown-banner-timer',
+                                id: 'countdown-large-banner__timer',
+                                class: '',
+                                timerDays: timerDays,
+                                timerHours: timerHours,
+                                timerMinutes: timerMinutes,
+                                timerSeconds: timerSeconds,
+                                end_timestamp: end_timestamp,
+                                showColon: true
+                            %}
+                        </div>
+                    </div>
+
+                    <div class="sale-banner__extra-item sale-banner__extra-item-actions button-action-container">
+                        {% if section.settings.btn_action_collections.count %}
+                            {%- for collection in section.settings.btn_action_collections -%}
+                                <a class="button button-action" href="{{ collection.url }}">
+                                    SHOP {{ collection.title }}
+                                </a>
+                            {%- endfor -%}
+                        {% endif %}
+                        {% for block in section.blocks %}
+                            {% if block.type == 'btn_action' %}
+                                {% assign btnActionItemSettings = block.settings %}
+                                <a class="button button-action" href="{{ btnActionItemSettings.url }}">
+                                    {{ btnActionItemSettings.title }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                    {% if section.settings.banner_products.count %}
+                        <div
+                            class="sale-banner__extra-item sale-banner__extra-item-list-product flex-container flex-row justify-between">
+                            {%- for product in section.settings.banner_products -%}
+                                {% render 'card-banner-product',
+                                    card_product: product
+                                %}
+                            {%- endfor -%}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var countdownTimer = new CountdownTimer('#countdown-large-banner__timer', {
+                endTimestamp: "{{ end_timestamp | date: '%Y-%m-%dT%H:%M:%S' }}",
+                timezone: "{{ end_timestamp | date: '%z' }}",
+                onFinish: () => {
+                    var countdownBanner = document.querySelector('#countdown-banner');
+                    if (countdownBanner) {
+                        countdownBanner.classList.add('time-ended');
+                    }
+                }
+            });
+
+            countdownTimer.startCountdown();
+          });
+        </script>
+    {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "presets": [
+    {
+      "name": "Countdown Large Banner",
+      "category": "Home",
+      "settings": {}
+    }
+  ],
+  "blocks": [
+    {
+      "type": "btn_action",
+      "name": "Custom Button Action",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Url"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show Countdown Sale Banner",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "color",
+      "id": "banner_bg_color",
+      "label": "Banner Background Color",
+      "default": "#3fa28e"
+    },
+    {
+      "type": "color",
+      "id": "banner_text_color",
+      "label": "Banner Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Image",
+      "info": "Recommended image size: 1024 x 1024. Recommended image without background."
+    },
+    {
+      "type": "html",
+      "id": "banner_title_html",
+      "label": "Banner Title HTML",
+      "info": "HTML allowed"
+    },
+    {
+      "type": "html",
+      "id": "banner_extra_title_html",
+      "label": "Banner Extra Title HTML",
+      "info": "HTML allowed"
+    },
+    {
+      "type": "html",
+      "id": "banner_timer_title_html",
+      "label": "Banner Timer Title HTML",
+      "info": "HTML allowed"
+    },
+    {
+      "type": "html",
+      "id": "banner_sale_html",
+      "label": "Banner SALE HTML",
+      "info": "HTML allowed"
+    },
+    {
+      "type": "color",
+      "id": "ribbon_bg_color",
+      "label": "Ribbon Background Color",
+      "default": "#f47530"
+    },
+    {
+      "type": "color",
+      "id": "ribbon_sd_color",
+      "label": "Ribbon Shadow Color",
+      "default": "#8d5a20"
+    },
+    {
+      "type": "color",
+      "id": "ribbon_text_color",
+      "label": "Ribbon Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "collection_list",
+      "id": "btn_action_collections",
+      "label": "Button Actions",
+      "info": "Select Collections For The Button Actions"
+    },
+    {
+      "type": "range",
+      "id": "btn_action_width",
+      "label": "Button Action Width",
+      "info": "Select Width For The Button Actions",
+      "step": 10,
+      "min": 100,
+      "max": 500,
+      "default": 330
+    },
+    {
+      "type": "color",
+      "id": "btn_action_bg_color",
+      "label": "Button Action Background Color",
+      "default": "#ff877a"
+    },
+    {
+      "type": "color",
+      "id": "btn_action_color",
+      "label": "Button Action Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn_action_hover_color",
+      "label": "Button Action Hover Color",
+      "default": "#ffc4bd"
+    },
+    {
+      "type": "product_list",
+      "id": "banner_products",
+      "label": "Products",
+      "info": "List Product to show at the bottom of home banner"
+    },
+    {
+      "type": "text",
+      "id": "start_date",
+      "label": "Start Date",
+      "info": "Format Y-m-d, for example: 2024-03-01",
+      "default": "2024-01-01"
+    },
+    {
+      "type": "text",
+      "id": "start_time",
+      "label": "Start Time",
+      "info": "Format H:M, for example: 08:00",
+      "default": "00:00"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date",
+      "info": "Format Y-m-d, for example: 2024-03-06",
+      "default": "2024-01-01"
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "End Time",
+      "info": "Format H:M, for example: 23:00",
+      "default": "00:00"
+    }
+  ]
+}
+{% endschema %}

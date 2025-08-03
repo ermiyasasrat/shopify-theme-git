@@ -1,0 +1,32 @@
+<div class="site-wrap site-wrap--narrow collection-read-more-container">
+	{% if collection.metafields.collection.read_more_content %}
+		<div id="collection-read-more" class="wysiwyg wysiwyg--collection">
+  			{{ collection.metafields.collection.read_more_content }}
+			{% if template.suffix contains 'desc-top' %}
+				<div class="read-less-button">
+					<a class="button button--secondary" title="Read Less" href="#collection-read-more">
+						{{ 'sections.collection_template.read_less' | t }}
+					</a>
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+{% schema %}
+
+{
+    "name": "Collection Read More",
+    "class": "section-collection-read-more",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Collection Read More",
+        "category": "Collection Page",
+        "settings": {}
+      }
+    ]
+}
+
+{% endschema %}

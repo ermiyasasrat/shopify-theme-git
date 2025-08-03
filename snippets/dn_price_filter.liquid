@@ -1,0 +1,124 @@
+{% assign dn_price_from = 13.99 %}
+{% assign dn_price_to = 300.99 %}
+
+{% assign dn_price_from_max = 299.99 %}
+{% assign dn_price_to_min = 14.99 %}
+
+
+{% comment %}
+{% for tag in collection.all_tags %}
+  {% if tag contains 'type_Engineered Wood' %}
+
+      {% assign dn_price_from = 24.99 %}
+      {% assign dn_price_to = 76.99 %}
+
+      {% assign dn_price_from_max = 75.99 %}
+      {% assign dn_price_to_min = 25.99 %}
+
+  {% endif %}
+
+  {% if tag contains 'type_LVT' %}
+
+      {% assign dn_price_from = 15.99 %}
+      {% assign dn_price_to = 76.99 %}
+
+      {% assign dn_price_from_max = 75.99 %}
+      {% assign dn_price_to_min = 16.99 %}
+
+  {% endif %}
+
+{% endfor %}
+{% endcomment %}
+
+  {% if collection.all_tags contains 'type_LVT' %}
+
+      {% assign dn_price_from = 15.99 %}
+      {% assign dn_price_to = 76.99 %}
+
+      {% assign dn_price_from_max = 75.99 %}
+      {% assign dn_price_to_min = 16.99 %}
+
+  {% endif %}
+
+  {% if collection.all_tags contains 'type_Engineered Wood' %}
+
+      {% assign dn_price_from = 24.99 %}
+      {% assign dn_price_to = 76.99 %}
+
+      {% assign dn_price_from_max = 75.99 %}
+      {% assign dn_price_to_min = 25.99 %}
+
+  {% endif %}
+
+
+
+  {% if collection.all_tags contains 'type_Laminate' %}
+
+      {% assign dn_price_from = 10.95 %}
+      {% assign dn_price_to = 32.99 %}
+
+      {% assign dn_price_from_max = 31.99 %}
+      {% assign dn_price_to_min = 11.95 %}
+
+  {% endif %}
+
+
+  {% if collection.all_tags contains 'type_Solid Wood' %}
+
+      {% assign dn_price_from = 34.49 %}
+      {% assign dn_price_to = 98.99 %}
+
+      {% assign dn_price_from_max = 97.99 %}
+      {% assign dn_price_to_min = 34.49 %}
+
+  {% endif %}
+
+  {% if collection.all_tags contains 'type_LVT' and collection.all_tags contains 'type_SPC' %}
+
+      {% assign dn_price_from = 15.99 %}
+      {% assign dn_price_to = 76.99 %}
+
+      {% assign dn_price_from_max = 75.99 %}
+      {% assign dn_price_to_min = 16.99 %}
+
+  {% endif %}
+
+	{% comment %} Kahrs Collection {% endcomment %}
+  {% if collection.all_tags contains 'type_LVT' and collection.all_tags contains 'type_Engineered Wood' %}
+
+      {% assign dn_price_from = 19.99 %}
+      {% assign dn_price_to = 109.99 %}
+
+      {% assign dn_price_from_max = 108.99 %}
+      {% assign dn_price_to_min = 20.99 %}
+
+  {% endif %}
+
+   {% comment %} Carpet Collection {% endcomment %}
+  {% if collection.all_tags contains 'type_Engineered Wood' and collection.all_tags contains 'type_Laminate' and collection.all_tags contains 'type_LVT' and collection.all_tags contains 'type_Solid Wood' and collection.all_tags contains 'type_SPC' %}
+
+      {% assign dn_price_from = 14.99 %}
+      {% assign dn_price_to = 140.99 %}
+
+      {% assign dn_price_from_max = 139.99 %}
+      {% assign dn_price_to_min = 15.99 %}
+
+  {% endif %}
+
+
+
+
+
+{% unless collection.handle contains 'flooring-accessories' %}
+<div class="range-slider">
+  <div class="val">
+    <input class="dn_price_from dn_price_range" type="number" value="{{ dn_price_from }}" min="{{ dn_price_from }}" max="{{ dn_price_from_max }}"/>
+    <span>-</span>
+    <input class="dn_price_to dn_price_range" type="number" value="{{ dn_price_to }}" min="{{ dn_price_to_min }}" max="{{ dn_price_to }}"/>
+  </div>
+  <div class="range-both">
+    <input class="dn_price_from dn_price_range" value="{{ dn_price_from }}" min="{{ dn_price_from }}" max="{{ dn_price_from_max }}" step="1" type="range"/>
+    <input class="dn_price_to dn_price_range" value="{{ dn_price_to }}" min="{{ dn_price_to_min }}" max="{{ dn_price_to }}" step="1" type="range"/> 
+  </div>
+</div> 
+{% endunless %}

@@ -1,0 +1,65 @@
+<div class="dn_delivery_datepicker">
+  <div class="title">Preferred Delivery Date</div>
+  <div id="dn_date"></div>
+  <input type="hidden" id="dn_delivery_date_input" type="text" name="attributes[Preferred Delivery Date]">
+</div>
+
+<style>
+.dn_delivery_datepicker .title {
+    font-size: 20px;
+    font-weight: 600;
+}
+span.ui-icon.ui-icon-circle-triangle-w, span.ui-icon.ui-icon-circle-triangle-e {
+    color: transparent;
+}
+div#dn_date .ui-datepicker-inline {
+    margin-left: auto;
+}
+.ui-datepicker .ui-datepicker-header {
+    background: #ff001e;
+    border-color: #ff001e;
+} 
+/* .ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    
+    background: #ddd !important;
+    font-weight: 700;
+    color: #c77405;
+} */
+  
+  .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus,
+  .ui-datepicker-next.ui-corner-all.ui-state-hover.ui-datepicker-next-hover{
+/*   	background:transparent !important; */
+    border:0;
+  }
+  
+  
+  .ui-state-hover .ui-icon, .ui-state-focus .ui-icon{
+  	background-image:url(https://app.identixweb.com/order-delivery-date/assets/css/images/ui-icons_ffffff_256x240.png);
+  }
+  .ui-icon, .ui-widget-content .ui-icon{
+  	background-image: url(https://app.identixweb.com/order-delivery-date/assets/css/images/ui-icons_ffffff_256x240.png);
+  }
+  .ui-datepicker-next.ui-corner-all.ui-state-hover.ui-datepicker-next-hover {
+    background: none !important;
+}
+
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
+    background-image: url(https://app.identixweb.com/order-delivery-date/assets/css/images/ui-icons_ffffff_256x240.png) !important;
+}
+  .ui-datepicker .ui-datepicker-prev-hover{
+  	left:2px;
+  }
+  .ui-datepicker .ui-datepicker-next-hover{
+  	right:2px;
+  }
+  
+  td a.ui-state-hover{
+  	background: blue;
+  }
+  
+</style>

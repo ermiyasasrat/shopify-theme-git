@@ -1,0 +1,197 @@
+{% comment %}
+	CHANGE PRICE TO current_variant.price IN DATA-PRICE
+{% endcomment %}
+
+<product-quantity-input
+	data-units="0"
+	data-price="{{ squareMetrePence }}"
+	data-price-per-metres-squared="{{ productPricePerMetresSquared }}"
+	data-pack-size="{{ productPackSize }}"
+	data-pack-price="{{ packPrice }}"
+	data-min-qty="{{ productMinQty }}"
+	data-even-packs="{{ evenPackRestriction }}"
+	data-type="{{ type }}"
+	data-product-roll-width="{{ productRollWidth }}"
+	data-board-size="{{ boardSize }}"
+	data-product-title="{{ product.title }}"
+	data-variant-title="{{ variantTitle }}"
+	data-width="{{ width }}"
+	data-length={{ length }}
+	data-tiles-per-pack={{ piecesPerPack }}
+>
+	<div class="product-basket">
+		<div class="product-basket__tool">
+			<div class="product-basket__tool-inner">
+				<div class="product-basket-area-coverage-container">
+					<label class="product-basket__label" for="required-metres-squared">
+                        <img
+							src="{{ 'info-icon.svg' | asset_url }}"
+							class="info-icon"
+							alt="Measuring Guide"
+							id="measuring-guide-overlay-open"
+							width="16"
+							height="16"
+						/>
+						{%- if type == "Pack" -%}
+							{{ 'products.product.product_types.pack' | t }}
+						{%- elsif type == "Box" and product.title contains "Job Lot" -%}
+							{{ 'products.product.product_types.job_lot' | t }}
+						{%- elsif type == "Box" -%}
+							{{ 'products.product.product_types.box' | t }}
+						{%- elsif type == "Roll" -%}
+							{{ 'products.product.product_types.roll' | t }}
+						{%- elsif type == "Board" -%}
+							{{ 'products.product.product_types.board' | t }}
+						{%- elsif type == "Tile" -%}
+							{{ 'products.product.product_types.tile' | t }}
+						{%- endif -%}
+					</label>
+					{%- assign evenPackRestriction = false -%}
+					{%- for tag in product.tags -%}
+						{%- if tag == "EvenPackRestriction" -%}
+							{%- assign evenPackRestriction = true -%}
+						{%- endif -%}
+					{%- endfor -%}
+					<input
+						type="number"
+						class="product-basket__input"
+						data-even-packs="{{ evenPackRestriction }}"
+						id="required-metres-squared"
+						name="required-metres-squared"
+						value="0"
+						min="1"
+						{%- if selectedVariant.available == false -%}
+							disabled
+						{%- elsif accessoryRestriction == true -%}
+							disabled
+						{%- endif -%}
+					>
+					{% if productMinQty %}
+						<div
+							class="product-basket__notice"
+							id="product-minimum-quantity-notice"
+							{% if type == "Pack" %}
+							style="display: none;"
+							{% endif %}
+						>
+							{%- if type == "Pack" -%}
+								{%- assign minMetre = productMinQty | times: productPackSize -%}
+								{{ 'products.product.minimums.pack' | t: minPack: productMinQty, minMetre: minMetre }}
+							{%- elsif type == "Box" or type == "Tile" -%}
+								{{ 'products.product.minimums.box' | t: minPack: productMinQty }}
+							{%- elsif type == "Roll" -%}
+								{{ 'products.product.minimums.roll' | t: minPack: productMinQty }}
+							{%- elsif type == "Board" -%}
+								{%- assign minMetre = productMinQty | times: productPackSize -%}
+								{{ 'products.product.minimums.board' | t: minPack: productMinQty, minMetre: minMetre }}
+							{%- else -%}
+								{{ 'products.product.minimums.box' | t: minPack: productMinQty }}
+							{%- endif -%}
+						</div>
+					{% endif %}
+				</div>
+				{%- if type == "Tile" -%}
+					<div class="alternative-metre-input-outer-container">
+						<span class="alternative-metre-input-or">
+							{{ 'products.product.product_types.or' | t }}
+						</span>
+						<div class="alternative-metre-input-inner-container">
+							<label class="alternative-metre-input-label">
+								{{ 'products.product.product_types.square-metres' | t }}
+							</label>
+							<div class="alternative-metre-input-element-container">
+								<input
+									type="number"
+									class="product-basket__input"
+									data-even-packs="{{ evenPackRestriction }}"
+									id="required-metres-squared-alternative"
+									name="required-metres-squared-alternative"
+									value="0"
+									min="1"
+									{%- if selectedVariant.available == false -%}
+										disabled
+									{%- elsif accessoryRestriction == true -%}
+										disabled
+									{%- endif -%}
+								>
+							</div>
+						</div>
+					</div>
+				{%- elsif type == "Pack" -%}
+					<div {% if current_variant.metafields.product_config.add_pack_input != true %}style="display: none;"{% endif %} class="alternative-metre-input-outer-container">
+						<span class="alternative-metre-input-or">
+							{{ 'products.product.product_types.or' | t }}
+						</span>
+						<div class="alternative-metre-input-inner-container">
+							<label class="alternative-metre-input-label">
+								{{ 'products.product.product_types.packs-alt' | t }}
+							</label>
+							<div class="alternative-metre-input-element-container">
+								<input
+									type="number"
+									class="product-basket__input"
+									data-even-packs="{{ evenPackRestriction }}"
+									id="required-metres-squared-alternative"
+									name="required-metres-squared-alternative"
+									value="0"
+									min="1"
+									{%- if selectedVariant.available == false -%}
+										disabled
+									{%- elsif accessoryRestriction == true -%}
+										disabled
+									{%- endif -%}
+								>
+							</div>
+						</div>
+					</div>
+				{%- endif -%}
+				<div {% if type == "Box" or type == "Tile" %}style="display: none;"{% endif %} class="product-basket__wastage input-checkbox">
+					<input
+						type="checkbox"
+						class="input-checkbox__input"
+						id="wastage-fee"
+					>
+					<label
+						class="input-checkbox__label"
+						for="wastage-fee"
+					>
+						{{ 'products.product.cuts_wasteage.title' | t }}
+					</label>
+				</div>
+			</div>
+			<div class="product-basket__total">
+				<div class="product-basket__total-text">
+					Total:
+				</div>
+				<div>
+					<span class="product-basket__total-price">
+						£<span id="total-price">0.00</span>
+					</span>
+					<span>Inc VAT</span>
+					<div
+						class="product-basket__tooltip"
+						id="product-tooltip"
+					>
+					</div>
+					<div id="rrp-savings" class="product-basket__savings">
+						You have saved £0 from the RRP
+					</div>
+				</div>
+			</div>
+			<div id="bulk-pricing" class="product-basket__bulk">
+				<div class="product-basket__label">Bulk discount</div>
+				<div
+					id="bulk-pricing-metres-squared"
+					class="product-basket__bulk-price"
+				>
+					£{{- productPricePerMetresSquared -}}/m²
+				</div>
+				<div
+					class="product-bulk-pricing"
+					id="bulk-pricing-wrapper"
+				>
+				</div>
+			</div>
+		</div>
+	</div>
+</product-quantity-input>

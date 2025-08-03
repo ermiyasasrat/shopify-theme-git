@@ -1,0 +1,58 @@
+{{ 'blog.css' | asset_url | stylesheet_tag }}
+
+{% render 'blog-rich-snippet' %}
+
+<div class="site-wrap">
+    <div class="blog-detail custom-design-blogs">
+        <div class="blog-detail__intro" style="background-image:url({{ article.image | img_url: '' }})">
+          <div class="inside">
+               <div class="blog-detail__additional blog-detail__additional--center">
+                 {% comment %} {{ article.published_at | date: "%d.%m.%y" }}
+                  {% if article.tags.first %}
+                      <span class="blog-detail__splitter"></span>
+                      {{ article.tags | first }}
+                  {% endif %}
+                  {% endcomment %}
+                   <div class="tag-rot">
+                     {% for tag in article.tags %}
+                       {% if tag contains 'Type_' %}
+                          {% assign thisTag = tag | split: '_' %}
+                          {{ thisTag[1] }}
+                          {% break %}
+                       {% endif %}
+                     {% endfor %}
+                   </div>
+              </div>
+              <h2 class="blog-detail__title">
+                  {{ article.excerpt }}
+              </h2>
+			 <a href="#blogAuthor" class="blog-author-written-by" title="{{ article.title }}">Written by: <span>{{ article.author }}</span></a>
+			 <h3 class="published-at">
+				Published on: {{ article.published_at | date: '%B %d, %Y' }}
+			</h3>
+		  </div>
+        </div>
+     
+        <div class="blog-detail__grid">
+            <div class="blog-detail__content">
+              
+        <h1 class="blog-detail__title">
+          {{ article.title }}
+        </h1>              
+              
+                <div class="wysiwyg">
+                    {{ article.content }}
+                </div>
+                {% render 'social-share' with
+                    title: 'Share this article'
+                    post: article
+                %}
+            </div>
+            {% include 'related-articles' %}
+        </div>
+    </div>
+</div>
+
+{%- if article.metafields.custom.woolley_s_schema_markup != blank -%}
+	{{ article.metafields.custom.woolley_s_schema_markup }}
+{%- endif -%}

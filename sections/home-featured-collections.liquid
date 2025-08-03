@@ -1,0 +1,91 @@
+<section class="featured-collections">
+  <div class="site-wrap">
+    <div class="heading">
+      <h2>{{ section.settings.heading }}</h2>
+      <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+    </div>
+    <div class="featured-collections-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'collection' %}
+          <div class="collection-box">
+            <a href="{{ block.settings.link }}">
+              <img width="421" height="559" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}">
+            </a>
+            <div class="collection-content">
+              <a href="{{ block.settings.link }}">
+                <h3>{{ block.settings.title }}</h3>
+              </a>
+              <span>{{ block.settings.content }}</span>
+              <a href="{{ block.settings.link }}">
+                <p>{{ block.settings.button_text }}</p>
+              </a>
+            </div>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured Collections",
+    "max_blocks": 3,
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+      },
+    ],
+    "blocks": [
+      {
+        "name": "Featured Collections",
+        "type": "collection",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Collection Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Collection Title"
+          },
+          {
+            "type": "text",
+            "id": "content",
+            "label": "Collection Content"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Collection Button Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Collection Link"
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured Collections",
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,256 @@
+{% schema %}
+    {
+        "name": "About Us Page",
+        "settings": [
+            {
+                "type": "text",
+                "id": "about_title_section_one",
+                "label": "About hero title"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content_section_one",
+                "label": "About Us Content Section One"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_image_section_one",
+                "label": "Image for Section One",
+                "info": "Recommended image size: 720 x 720."
+            },
+            {
+                "type": "text",
+                "id": "about_title_section_two",
+                "label": "About Title Section Two"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content_section_two",
+                "label": "About Us Content Section Two"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_image_section_two",
+                "label": "Image for Section Two",
+                "info": "Recommended image size: 720 x 720."
+            },
+            {
+                "type": "text",
+                "id": "about_title_section_three",
+                "label": "About Title Section Three"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content_section_three",
+                "label": "About Us Content Section Three"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_image_section_three",
+                "label": "Image for Section Three",
+                "info": "Recommended image size: 720 x 720."
+            },
+            {
+                "type": "text",
+                "id": "about_title_section_four",
+                "label": "About Title Section Four"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content_section_four",
+                "label": "About Us Content Section Four"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_image_section_four",
+                "label": "Image for Section Four",
+                "info": "Recommended image size: 720 x 720."
+            },
+            {
+                "type": "text",
+                "id": "about_title_section_five",
+                "label": "About Title Section Five"
+            },
+            {
+                "type": "html",
+                "id": "about_hero_content_section_five",
+                "label": "About Us Content Section Five"
+            },
+            {
+                "type": "image_picker",
+                "id": "about_image_section_five",
+                "label": "Image for Section Five",
+                "info": "Recommended image size: 720 x 720."
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.about_title_section_one == blank
+    and section.settings.about_hero_content_section_one == blank
+    and section.settings.about_image_section_one == blank
+%}
+<section class="image-text-split image-text-split--dark">
+    <div class="image-text-split__wrap">
+        <div class="woolley-hero-image-text-split-left">
+            <div class="woolley-hero-image-text-split-content">
+                <div class="para image-text-split__para">
+                    <h2 class="title title--small image-text-split__title">{{- section.settings.about_title_section_one -}}</h2>
+                    {{- section.settings.about_hero_content_section_one -}}
+                </div>
+            </div>
+        </div>
+        <div class="woolley-hero-image-text-split-right about-image-section" style="background-image: url('{{ section.settings.about_image_section_one | img_url: 'master'}}');">
+        </div>
+    </div>
+</section>
+{% endunless %}
+
+
+{% unless
+section.settings.about_title_section_two == blank
+and section.settings.about_hero_content_section_two == blank
+%}
+<section class="image-text-split image-text-split--beige">
+    <div class="image-text-split__wrap">
+        <div class="woolley-hero-image-text-split-left about-image-section" style="background-image: url('{{ section.settings.about_image_section_two | img_url: 'master'}}');">
+        </div>
+        <div class="woolley-hero-image-text-split-right">
+            <div class="woolley-hero-image-text-split-content">
+                <div class="para image-text-split__para">
+                    <h2 class="title title--small image-text-split__title">{{- section.settings.about_title_section_two -}}</h2>
+                    {{- section.settings.about_hero_content_section_two -}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endunless %}
+
+
+{% unless
+section.settings.about_title_section_three == blank
+and section.settings.about_hero_content_section_three == blank
+%}
+<section class="image-text-split image-text-split--hero image-text-split--dark">
+    <div class="image-text-split__wrap">        
+        <div class="woolley-hero-image-text-split-left">
+            <div class="woolley-hero-image-text-split-content">                
+                <div class="para image-text-split__para">
+                    <h2 class="title title--small image-text-split__title">{{- section.settings.about_title_section_three -}}</h2>
+                    {{- section.settings.about_hero_content_section_three -}}
+                </div>
+            </div>
+        </div>
+
+        <div class="woolley-hero-image-text-split-right about-image-section" style="background-image: url('{{ section.settings.about_image_section_three | img_url: 'master'}}');">
+        </div>
+    </div>
+</section>
+{% endunless %}
+
+{% unless
+section.settings.about_title_section_four == blank
+and section.settings.about_hero_content_section_four == blank
+and section.settings.about_image_section_four == blank
+%}
+<section class="image-text-split image-text-split--beige">
+    <div class="image-text-split__wrap">
+        <div class="woolley-hero-image-text-split-left about-image-section" style="background-image: url('{{ section.settings.about_image_section_four | img_url: 'master'}}');">
+          
+        </div>
+
+        <div class="woolley-hero-image-text-split-right">
+            <div class="woolley-hero-image-text-split-content">                
+                <div class="para image-text-split__para">
+                    <h2 class="title title--small image-text-split__title">{{- section.settings.about_title_section_four -}}</h2>
+                    {{- section.settings.about_hero_content_section_four -}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endunless %}
+
+{% unless
+section.settings.about_title_section_five == blank
+and section.settings.about_hero_content_section_five == blank
+and section.settings.about_image_section_five == blank
+%}
+<section class="image-text-split image-text-split--hero image-text-split--dark">
+    <div class="image-text-split__wrap">
+        <div class="woolley-hero-image-text-split-left">
+            <div class="woolley-hero-image-text-split-content">
+                
+                <div class="para image-text-split__para">
+                    <h2 class="title title--small image-text-split__title">{{- section.settings.about_title_section_five -}}</h2>
+                    {{- section.settings.about_hero_content_section_five -}}
+                </div>
+            </div>
+        </div>
+
+        <div class="woolley-hero-image-text-split-right about-image-section" style="background-image: url('{{ section.settings.about_image_section_five | img_url: 'master'}}');">
+          {% comment %} <img loading="lazy" src="{{ section.settings.about_image_section_five | img_url: 'master'}}" alt="{{- section.settings.about_title_section_five -}}">{% endcomment %}
+        </div>
+    </div>
+</section>
+{% endunless %}
+
+<style type="text/css">
+
+.image-text-split__wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  min-height: 70vh;
+}
+
+.woolley-hero-image-text-split-right,
+.woolley-hero-image-text-split-left {
+    -ms-flex-preferred-size: 50%;
+    flex-basis: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.woolley-hero-image-text-split-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100%;
+    padding: 5% 15%;
+  text-align: justify;
+}
+
+.woolley-hero-image-text-split-content ul {
+    margin: 0 0 20px;
+}
+.woolley-hero-image-text-split-content ul li {
+    list-style: disc;
+    margin: 0 0 0 20px;
+}
+@media screen and (max-width: 992px) {
+  .woolley-hero-image-text-split-right,
+  .woolley-hero-image-text-split-left {
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  }
+  .image-text-split__wrap {
+      min-height: 50vh;
+  }
+
+  .woolley-hero-image-text-split-content {
+    padding: 5%;
+    text-align: left;
+  }
+
+  .about-image-section {
+    display: none;
+  }
+}
+</style>

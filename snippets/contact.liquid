@@ -1,0 +1,54 @@
+<div class="contact{% if modifier %} {{ modifier }}{% endif %}">
+    {% if title %}
+        {% if titleSans %}
+            <h2 class="title-sans title-sans--small contact__title">{{ title }}</h2>
+        {% else %}
+            <h2 class="title title--small contact__title">{{ title }}</h2>
+        {% endif %}
+    {% endif %}
+    <div class="contact__options">
+        <div class="contact__option">
+            <a class="contact__option-link" href="tel:{{ shop.phone | remove: ' ' }}"  title="Call us">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-telephone',
+                    text: shop.phone,
+                    modifier: 'inline-icon-text--contact inline--icon-text--peach'
+                } %}
+            </a>
+        </div>
+        <div class="contact__option">
+            <div class="contact__option-link">
+                <div class="inline-icon-text inline-icon-text--contact inline-icon-text--chat">
+                    <span class="inline-icon-text__icon">
+                        <div data-id="VTn0hv6cKc" class="livechat_button">
+                            <a href="https://www.livechat.com/?utm_source=chat_button&utm_medium=referral&utm_campaign=lc_9218565">
+                                {% include 'icon-chat' %}
+                            </a>
+                        </div>
+                    </span>
+                    <span class="inline-icon-text__text">
+                        <div data-id="TTduoZjnkBL" class="livechat_button">
+                            <a href="https://www.livechat.com/?utm_source=chat_button&utm_medium=referral&utm_campaign=lc_9218565">
+                                Live Chat
+                            </a>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="contact__option">
+            <a class="contact__option-link" href="mailto:{{ shop.metafields.global.email }}" title="Email us">
+                {% include 'inline-icon-text' with {
+                    icon: 'icon-email',
+                    text: 'Email us',
+                    modifier: 'inline-icon-text--contact'
+                } %}
+            </a>
+        </div>
+    </div>
+    {% if videoAppointmentCta %}
+        <div class="contact__button">
+            <a class="button" href="/pages/book-an-appointment" title="Book a video appointment">Book a video appointment</a>
+        </div>
+    {% endif %}
+</div>

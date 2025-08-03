@@ -1,0 +1,22 @@
+<script type="text/html" id="highlight-bar-template">
+{% render 'highlight-bar' %}
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    function insertHighlightBarTo(containerSelector) {
+      const container = document.querySelector(containerSelector);
+      const highlightBarTemplateEl = document.getElementById('highlight-bar-template');
+      if(container && highlightBarTemplateEl && !container.classList.contains('has-highlight-bar')) {
+        const highlightBarLi = document.createElement('li');
+        highlightBarLi.classList.add('grid-item__highlight-bar');
+        highlightBarLi.innerHTML = highlightBarTemplateEl.innerHTML;
+
+        container.classList.add('has-highlight-bar');
+        container.appendChild(highlightBarLi);
+
+        highlightBarTemplateEl.parentNode.removeChild(highlightBarTemplateEl);
+      }
+    }
+    insertHighlightBarTo('.main-collection-product-grid');
+  });
+</script>

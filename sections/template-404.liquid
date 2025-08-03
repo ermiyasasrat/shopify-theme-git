@@ -1,0 +1,147 @@
+{%- comment -%}
+{% section '404-hero' %}
+{% section 'key-collections-slider' %}
+{% section 'home-image-quote-split' %}
+{%- endcomment -%}
+{% schema %}
+    {
+        "name": "404 hero",
+        "settings": [
+            {
+                "type": "text",
+                "id": "error_hero_title",
+                "label": "Error hero title"
+            },
+            {
+                "type": "html",
+                "id": "error_hero_content",
+                "label": "Error hero content"
+            },
+            {
+                "type": "url",
+                "id": "error_hero_link_one",
+                "label": "Error hero link one"
+            },
+            {
+                "type": "text",
+                "id": "error_hero_link_text_one",
+                "label": "Error hero link text one"
+            },
+            {
+                "type": "url",
+                "id": "error_hero_link_two",
+                "label": "Error hero link two"
+            },
+            {
+                "type": "text",
+                "id": "error_hero_link_text_two",
+                "label": "Error hero link text two"
+            },
+            {
+                "type": "image_picker",
+                "id": "error_image",
+                "label": "Image",
+                "info": "Recommended image size: 1920 x 1600."
+            },
+            {
+                "type": "text",
+                "id": "error_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}
+
+{% unless
+    section.settings.error_hero_title == blank
+    and section.settings.error_hero_content == blank
+    and section.settings.error_hero_link_one == blank
+    and section.settings.error_hero_link_text_one == blank
+    and section.settings.error_hero_link_two == blank
+    and section.settings.error_hero_link_text_two == blank
+    and section.settings.error_image == blank
+%}
+    <section id="hero" class="image-text-split image-text-split--dark">
+        <div class="site-wrap site-wrap--max">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.error_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--hero">
+                        {% assign image_small_1x = section.settings.error_image | img_url: '360x260' %}
+                        {% assign image_small_2x = section.settings.error_image | img_url: '720x520' %}
+                        {% assign image_medium_1x = section.settings.error_image | img_url: '683x520' %}
+                        {% assign image_medium_2x = section.settings.error_image | img_url: '1366x1040' %}
+                        {% assign image_large_1x = section.settings.error_image | img_url: '960x800' %}
+                        {% assign image_large_2x = section.settings.error_image | img_url: '1920x1600' %}
+                        {% include 'picture',
+                            small1x: image_small_1x,
+                            small2x: image_small_2x,
+                            medium1x: image_medium_1x,
+                            medium2x: image_medium_2x,
+                            large1x: image_large_1x,
+                            large2x: image_large_2x,
+                            alt: section.settings.error_image_alt
+                        %}
+                    </div>
+                {% endunless %}
+                {% unless
+                    section.settings.error_hero_title == blank
+                    and section.settings.error_hero_content == blank
+                    and section.settings.error_hero_link_one == blank
+                    and section.settings.error_hero_link_text_one == blank
+                    and section.settings.error_hero_link_two == blank
+                    and section.settings.error_hero_link_text_two == blank
+                %}
+                    <div class="image-text-split__content image-text-split__content--hero image-text-split__content--home">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                <img class="image-text-split__background-sig" src="{{ 'icon-hero-sig.svg' | asset_url }}" alt="">
+                                {% unless section.settings.error_hero_title == blank %}
+                                    <h1 class="title title--medium image-text-split__title image-text-split__title--home">
+                                        {{- section.settings.error_hero_title -}}
+                                    </h1>
+                                {% endunless %}
+                                {% unless section.settings.error_hero_content == blank %}
+                                    <div class="image-text-split__content-indent">
+                                        <div class="para image-text-split__para">
+                                            {{- section.settings.error_hero_content -}}
+                                        </div>
+                                    </div>
+                                {% endunless %}
+                                {% unless
+                                    section.settings.error_hero_link_one == blank
+                                    and section.settings.error_hero_link_text_one == blank
+                                    and section.settings.error_hero_link_two == blank
+                                    and section.settings.error_hero_link_text_two == blank
+                                %}
+                                    <div class="image-text-split__content-indent">
+                                        <div class="image-text-split__buttons-stacked">
+                                            {% unless
+                                                section.settings.error_hero_link_one == blank
+                                                or section.settings.error_hero_link_text_one == blank
+                                            %}
+                                                <a class="button" href="{{- section.settings.error_hero_link_one -}}">
+                                                    {{- section.settings.error_hero_link_text_one -}}
+                                                </a>
+                                            {% endunless %}
+                                            {% unless
+                                                section.settings.error_hero_link_two == blank
+                                                or section.settings.error_hero_link_text_two == blank
+                                            %}
+                                                <a class="button" href="{{- section.settings.error_hero_link_two -}}">
+                                                    {{- section.settings.error_hero_link_text_two -}}
+                                                </a>
+                                            {% endunless %}
+                                        </div>
+                                    </div>
+                                {% endunless %}
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}
+
+<script id="esc-redirects-404-script" src="https://redirects.eastsideco.io/js/app.js"></script>
+ 

@@ -1,0 +1,22 @@
+<div class="social-share">
+    <h3 class="social-share__title">
+        {{ title }}
+    </h3>
+    <ul class="social-share__list">
+        <li class="social-share__item">
+            <a class="social-share__link js-social-share" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ post.url }}" title="Share on Facebook">
+                {% render 'icon-social-facebook' %}
+            </a>
+        </li>
+        <li class="social-share__item">
+            <a class="social-share__link js-social-share" href="https://twitter.com/intent/tweet?text={{ post.title }}&url={{ shop.url }}{{ post.url }}" title="Share on Twitter">
+                {% render 'icon-social-twitter' %}
+            </a>
+        </li>
+        <li class="social-share__item">
+            <a class="social-share__link js-social-share" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ post.url }}&title={{ post.title }}" title="Share on LinkedIn">
+                {% render 'icon-social-linkedin' %}
+            </a>
+        </li>
+    </ul>
+</div>

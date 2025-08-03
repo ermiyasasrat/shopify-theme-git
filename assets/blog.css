@@ -1,0 +1,127 @@
+.custom-design-blogs .blog-detail__intro {
+    margin: 0 0 5rem;
+    max-width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+    text-align: center;
+  overflow:hidden;
+  position:relative;
+
+}
+  
+  .custom-design-blogs .blog-detail__intro .inside {
+    background-color: rgba(36,72,109,0.8);
+    text-align: center;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 40px;
+    padding-bottom:40px;
+}
+
+.custom-design-blogs .blog-detail__intro .inside .blog-detail__title {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 0;
+}
+  
+  
+  .tag-rot {
+       display: inline-block;
+    background: #ff877a;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    /* display: flex; */
+    /* align-items: end; */
+    justify-content: center;
+    -webkit-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+    top: -90px;
+    left: -110px;
+    padding-top: 160px;
+    padding-bottom: 15px;
+    padding-left: 40px;
+    color: #fff;
+    text-transform: uppercase;
+    padding-right: 35px;
+    font-size: 1.9rem;
+    font-family: Bogue-Light,"sans-serif";
+}
+  .custom-design-blogs .blog-detail__intro .inside  a{
+   color:#fff;
+    display:inline-block;
+    padding-top:10px;
+  }
+  @media (max-width: 767px){
+  	.custom-design-blogs .blog-detail__intro .inside {
+		padding-left: 20px;
+        padding-right: 20px;
+    }
+    .custom-design-blogs .blog-detail__intro{
+    	padding-left: 20px;
+        padding-right: 20px;
+    }
+  }
+
+  .blog-author-written-by {
+	  text-decoration-line: none;
+  }
+
+  .blog-author-written-by span {
+	  text-decoration-line: underline;
+  }
+
+  
+  @media (min-width: 80em){
+    .ftr-img-overlay{
+    	padding-left:5%;
+      padding-right:5%;
+    }
+    .ftr-img-overlay .image-text-split__content--hero {
+    padding-left: 0;
+    padding-right: 0;
+    }
+  }
+
+  .published-at {
+	  color: #FFFFFF;
+	  margin-top: 10px;
+  }
+
+
+.wool-blog-box {
+  width: 100%;
+  padding: 0 0 50%;
+  position: relative;
+  margin: 10px 0 20px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.wool-blog-box.engineered {
+  background-image:url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Lusso_Flooring_Collection_for_Blogs_Engineered.jpg?v=1674576227');
+}
+.wool-blog-box.lvt {
+  background-image:url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Lusso_Flooring_Collection_Blogs_LVT.jpg?v=1674576227');
+}
+.wool-blog-box.herringbone {
+  background-image:url('https://cdn.shopify.com/s/files/1/0418/4568/6426/files/Lusso_Flooring_Collection_for_Blogs_Herringbone.jpg?v=1674576227');
+}
+.wool-blog-box-content {
+  color: #e2d2c3;
+  padding: 2%;
+  background: #363249a3;
+  font-family: Bogue-Light,sans-serif;
+  font-size: 2.5rem;
+  line-height: 2.7rem;
+}
+.wool-blog-box-content p{
+  margin: 0;
+}
+a.wool-blog-box-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

@@ -1,0 +1,229 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Themekit template theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https:\/\/github.com\/Shopify\/themekit",
+    "theme_support_url": "https:\/\/github.com\/Shopify\/themekit\/issues"
+  },
+  {
+    "name": "Top Menu Sales",
+    "settings": [
+      {
+        "type": "text",
+        "id": "top_sale_link",
+        "label": "Sale Link",
+        "default": "https:\/\/storiesflooring.co.uk\/collections\/clearance"
+      },
+      {
+        "type": "text",
+        "id": "top_sale_text",
+        "label": "Sale Label",
+        "default": "View Our Sale"
+      },
+      {
+        "type": "html",
+        "id": "top_sale_display",
+        "label": "Sale Display CSS",
+        "default": "visibility:visible"
+      }
+    ]
+  },
+  {
+    "name": "Delivery Date",
+    "settings": [
+      {
+        "type": "html",
+        "id": "disabled-dates",
+        "label": "Disable Dates",
+        "info": "Example input 01-01-2030, 29-12-2030. Make sure you enclose each date with double quotation"
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "discontinued_product_text",
+        "label": "Discontinued Product Text"
+      },
+      {
+        "type": "text",
+        "id": "offline_product_text",
+        "label": "Offline Product Text"
+      }
+    ]
+  },
+  {
+    "name": "Blog",
+    "settings": [
+      {
+        "type": "article",
+        "id": "featured_blog",
+        "label": "Featured Blog Post"
+      }
+    ]
+  },
+  {
+    "name": "Guide",
+    "settings": [
+      {
+        "type": "page",
+        "id": "guide_landing",
+        "label": "Guide Landing Page"
+      }
+    ]
+  },
+  {
+    "name": "Google Maps settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "google_maps_api_key",
+        "label": "API key",
+        "info": "This can be found in your Google Maps API account, https:\/\/console.developers.google.com"
+      }
+    ]
+  },
+  {
+    "name": "One Sq Meter Rules settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "one_sq_meter_var_id",
+        "label": "Default One Sq Meter Variant Id"
+      },
+      {
+        "type": "textarea",
+        "id": "one_sq_meter_custom_rules",
+        "label": "One Sq Meter Custom Rules"
+      }
+    ]
+  },
+  {
+    "name": "Cart Settings",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "page",
+            "label": "Page"
+          }
+        ],
+        "default": "drawer",
+        "label": "Drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "t:settings_schema.cart.settings.show_vendor.label",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_note",
+        "label": "t:settings_schema.cart.settings.show_cart_note.label",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.cart.settings.cart_drawer.header"
+      },
+      {
+        "type": "collection",
+        "id": "cart_drawer_collection",
+        "label": "t:settings_schema.cart.settings.cart_drawer.collection.label",
+        "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
+      }
+    ]
+  },
+  {
+    "name": "Google",
+    "settings": [
+      {
+        "type": "text",
+        "default": "gclid",
+        "id": "google_click_identifier_key",
+        "label": "Google Click Identifier Key"
+      }
+    ]
+  },
+  {
+    "name": "Optimization settings",
+    "settings": [
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "optimize_product_samples_enabled",
+        "label": "Enable optimization for Product Samples"
+      },
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "optimize_inbox_chat_enabled",
+        "label": "Enable optimization for Inbox Chat"
+      },
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "optimize_gorgias_inbox_chat_enabled",
+        "label": "Enable optimization for Gorgias Inbox Chat"
+      },
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "optimize_storeify_quote_enabled",
+        "label": "Enable optimization for S:Request a Quote & Hide Price"
+      },
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "optimize_new_sample_app_enabled",
+        "label": "Enable new Sample App"
+      },
+      {
+        "type": "checkbox",
+        "default": true,
+        "id": "enable_redirect_to_without_slash",
+        "label": "Enable Redirect URL To Without Slash"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.search_input.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.search_input.settings.header.content"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "default": true,
+        "label": "t:settings_schema.search_input.settings.predictive_search_enabled.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "default": false,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_vendor.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_vendor.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "default": false,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_price.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_price.info"
+      }
+    ]
+  }
+]

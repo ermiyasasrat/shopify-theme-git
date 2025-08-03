@@ -1,0 +1,102 @@
+
+<ul id="guarantee-accordion" class="accordion luis-accordion__container" aria-label="Accordion Control Group Buttons">
+  {% for guarantee in shop.metaobjects.guarantee_object.values %}
+    <li class="accordion__item js-accordion-item {% if guarantee.sort_order.value %} order-{{ guarantee.sort_order.value }}{% endif %}">
+      <button class="accordion__toggle js-accordion-toggle button-reset" type="button" aria-controls="accordion-1" aria-expanded="false">
+          <span class="accordion__title-icon">
+            <img src="{{ guarantee.icon.value | image_url: width: auto, height: auto }}" alt="{{ guarantee.title.value }}" width="20" height="20">
+          </span>
+          <span class="accordion__title">
+            {{ guarantee.title.value }}
+          </span>
+          <span class="accordion__link-arrow">
+              {% render 'icon-accordion-arrow-new' %}
+          </span>
+      </button>
+      <div class="accordion__content-container js-accordion-content-container" aria-hidden="true" id="accordion-1">
+          <div class="accordion__content js-accordion-content">
+            {{ guarantee.content.value }}
+          </div>
+      </div>
+  </li>
+  {% endfor %}
+</ul>
+<style>
+  .luis-accordion__container {
+    display: flex;
+    flex-direction: column;
+  }
+  .luis-accordion__container .accordion__item {
+      border-top: 0;
+  }
+  .luis-accordion__container .accordion__title {
+    font-size: 1.7rem;
+  }
+  .luis-accordion__container .accordion__content {
+    font-size: 1.6rem;
+  }
+  .luis-accordion__container .accordion__link-arrow svg {
+    width: 2.4rem;
+    height: 1.2rem;
+  }
+  .luis-accordion__container .accordion__toggle {
+    padding: 1.2rem 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .luis-accordion__container .accordion__title-icon {
+    width: auto;
+    height: auto;
+    margin-right: 6px;
+  }
+  .luis-accordion__container .accordion__content-container {
+    height: 0;
+    transition: width .4s .4s, border-radius .4s .4s, padding .4s .4s, height .4s .4s, color .4s .4s;
+  }
+  .luis-accordion__container .is-active .accordion__content-container {
+    height: auto;
+  }
+  .luis-accordion__container .is-active .accordion__toggle {
+    margin-bottom: 1.2rem;
+  }
+  .luis-accordion__container .accordion__item.is-active {
+    padding-bottom: 1.2rem;
+  }
+  @media (min-width: 40em) {
+    .luis-accordion__container .accordion__title {
+      font-size: 1.8rem;
+    }
+    .luis-accordion__container .accordion__title-icon {
+      margin-right: 8px;
+    }
+  }
+  @media (min-width: 64em) {
+    .luis-accordion__container .accordion__link-arrow svg {
+      width: 2.4rem;
+      height: 1.2rem;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    const accordionContainers = document.querySelectorAll('.luis-accordion__container');
+
+    accordionContainers.forEach(accordionContainer => {
+      accordionContainer.addEventListener('click', (event) => {
+        if (event.target.matches('.js-accordion-toggle, .js-accordion-toggle *')) {
+          const accordionItem = event.target.closest('.js-accordion-item');
+          if(accordionItem.classList.contains('is-active')) {
+            accordionItem.classList.remove('is-active');
+          } else {
+            const accordionActivedItems = accordionContainer.querySelectorAll('.js-accordion-item.is-active');
+            accordionActivedItems.forEach(item => {
+                item.classList.remove('is-active');
+            });
+            accordionItem.classList.add('is-active');
+          }
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,98 @@
+{%- if link.title contains "Garden" -%}
+  {%- assign gardenLink = true -%}
+{%- else -%}
+  {%- assign gardenLink = false -%}
+{%- endif -%}
+<div class="mega-menu-outer-container {% if link.title contains "[layers]" %}mega-menu-sidebar-flex{% endif %}">
+  {%- if link.title contains "[layers]" -%}
+    {%- for childLink in link.links -%}
+      {%- if childLink.title contains "[layer-1]" -%}
+        {%- assign layer1Title = childLink.title | replace: '[layer-1]', '' -%}
+        {%- assign layer1Link = childLink.url -%}
+      {%- elsif childLink.title contains "[layer-2]" -%}
+        {%- assign layer2Title = childLink.title | replace: '[layer-2]', '' -%}
+        {%- assign layer2Link = childLink.url -%}
+      {%- endif -%}
+    {%- endfor -%}
+    <div class="mega-menu-sidebar-container">
+      <a href="{{ layer1Link }}" data-layer="layer-1" title="{{ layer1Title }}"
+         class="mega-menu-sidebar-container-element mega-menu-sidebar-element-active">
+        <h2>{{ layer1Title }}</h2>
+        <span class="mega-menu-sidebar-chevron">{% render 'icon-nav-arrow-down' %}</span>
+      </a>
+      <a href="{{ layer2Link }}" title="{{ layer2Title }}" data-layer="layer-2" class="mega-menu-sidebar-container-element">
+        <h2>{{ layer2Title }}</h2>
+        <span class="mega-menu-sidebar-chevron">{% render 'icon-nav-arrow-down' %}</span>
+      </a>
+    </div>
+  {%- endif -%}
+  <div class="mega-menu-inner-container {% if gardenLink == true and enalebMegaMenuImages == false %}mega-menu-column{% endif %}">
+    {%- for childLink in link.links -%}
+      {%- if childLink.title contains "layer-1" -%}
+        {%- assign layerLevel = "layer-1" -%}
+      {%- elsif childLink.title contains "layer-2" -%}
+        {%- assign layerLevel = "layer-2" -%}
+      {%- endif -%}
+
+      {%- unless childLink.title == "Images" or childLink.title contains "layer" -%}
+        {%- unless enalebMegaMenuImages == false and childLink.title contains "[product]" or childLink.title contains "[collection]" and gardenLink == false -%}
+          {% assign menuElContainerClass = 'mega-menu-element-wide-width' %}
+          {% if link.links.size > 5 %}{% assign menuElContainerClass = 'mega-menu-element-small-width' %}{% endif %}
+          {% if childLink.links.size > 7 %}{% assign menuElContainerClass = menuElContainerClass | append: ' child-el-small-height' %}{% endif %}
+          {% if layerLevel != "layer-1" and layerLevel != blank %}{% assign menuElContainerClass = menuElContainerClass | append: ' mega-menu-element-container-hidden' %}{% endif %}
+
+          <div {% if layerLevel != blank %}data-layer="{{ layerLevel }}"{% endif %}
+               class="{{ forloop.index }} mega-menu-element-container {{ menuElContainerClass }}">
+            <div class="mega-menu-element-title-container">
+              <h3>{{ childLink.title | replace: "[title]", "" }}</h3>
+            </div>
+            {% render 'luis-menu-type-stretch-1column', link: childLink %}
+          </div>
+        {%- endunless -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+  {%- if enalebMegaMenuImages == true -%}
+    <div class="mega-menu-images-container">
+      <ul class="mega-menu-images-ul">
+        {%- for childLink in link.links -%}
+          {%- if childLink.title == "Images" -%}
+            {%- for sublink in childLink.links -%}
+              <li class="mega-menu-images-element-container">
+                {%- assign sublinkTitle = sublink.title | replace: '[i]', '' -%}
+                {%- assign sublinkAlt = sublinkTitle | replace: "[noicon]", "" -%}
+                <a href="{{ sublink.url }}" title="{{ sublinkTitle | replace: "[noicon]", "" }}">
+                  {% render 'responsive-image', image: sublink.object.image, image_class: "mega-menu-image-element",
+                      alt: sublinkAlt, lazy: false %}
+                  <span>{{ sublinkTitle }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+{%- if enalebMegaMenuImages == false -%}
+  {%- if link.title contains "[layers]" -%}
+    <div data-layer="layer-1" class="mega-menu-no-images-button-container mega-menu-no-images-button-container-layers">
+      <a title="{{ layer1Title }}" class="button" href="{{ layer1Link }}">Browse The Full {{ layer1Title }} Collection</a>
+    </div>
+    <div data-layer="layer-2" class="mega-menu-no-images-button-container mega-menu-element-container-hidden mega-menu-no-images-button-container-layers">
+      <a title="{{ layer2Title }}" class="button" href="{{ layer2Link }}">Browse The Full {{ layer2Title }} Collection</a>
+    </div>
+  {%- else -%}
+    <div class="mega-menu-view-collection-card">
+  <div class="view-collection-image" style="background-image: url('{{ 'menu-colleciton.svg' | asset_url }}');">
+    <div class="view-collection-overlay">
+      <div class="view-collection-text">View the full collection</div>
+      <a href="/collections/all" class="view-collection-btn">Shop Now</a>
+    </div>
+  </div>
+</div>
+    <div class="mega-menu-no-images-button-container">
+      <a title="{{ link.title | replace: '[layers]', '' }}" class="button" href="{{ link.url }}">View full collection</a>
+    </div>
+  {%- endif -%}
+{%- endif -%}

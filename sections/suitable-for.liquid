@@ -1,0 +1,152 @@
+<link href="{{ 'floating-ui-core-1.6.2.js' | asset_url }}"
+    rel="prefetch"
+    as="script"
+>
+<link href="{{ 'floating-ui-dom-1.6.5.js' | asset_url }}"
+    rel="prefetch"
+    as="script"
+>
+<link href="{{ 'floating-ui-init.js' | asset_url }}"
+    rel="prefetch"
+    as="script"
+>
+<script>
+	resourceManager.loadResourceOnInteractive([
+		{ "name": "script", "url": '{{ 'floating-ui-core-1.6.2.js' | asset_url }}' },
+		{ "name": "script", "url": '{{ 'floating-ui-dom-1.6.5.js' | asset_url }}' },
+		{ "name": "script", "url": '{{ 'floating-ui-init.js' | asset_url }}' },
+	], {
+		triggerEvents: {
+			readyInteractive: true,
+		}
+	});
+</script>
+<style>
+	.tooltip-target {
+		position: relative;
+	}
+
+	.tooltip-target .tooltip {
+		display: none;
+		width: max-content;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 10;
+		max-width: 300px;
+		background:#24486d;
+		color: #fff;
+		padding: 15px;
+		border-radius: 10px;
+		font-size: 90%;
+		box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+	}
+	.tooltip-target:hover .tooltip {
+		display: block;
+	}
+	.tooltip-target .arrow {
+		position: absolute;
+		background: #24486d;
+		width: 8px;
+		height: 8px;
+		transform: rotate(45deg);
+	}
+	.tooltip__title {
+		font-size: 1.8rem;
+		font-weight: 700;
+	}
+	.tooltip__content {
+		margin-top: 10px;
+		font-size: 1.4rem;
+	}
+
+	.product-icons-element .tooltip,
+	.product-icons-element .arrow {
+		background: {{ section.settings.tooltip_bg_color }};
+	}
+</style>
+{%- assign productAttributesShared = product.metafields.filters.rooms -%}
+<div class="site-wrap">
+  <div class="product-icons-outer-container" data-productAttributesShared="{{ productAttributesShared.value }}">
+	{%- for attribute in productAttributesShared.value -%}
+		{%- if attribute contains "room" -%}
+			{%- assign suitableFor = true -%}
+		{%- endif -%}
+	{%- endfor -%}
+	{%- if suitableFor == true -%}
+		<h2>
+			{{ 'products.suitable_for.title' | t }}
+		</h2>
+	{%- endif -%}
+	<div class="product-icons-inner-container">
+	{%- for attribute in productAttributesShared.value -%}
+		{%- assign roomHandle = attribute | handle -%}
+		{%- assign roomInstance = shop.metaobjects.room_object[roomHandle] -%}
+		{%- if roomInstance != blank -%}
+			<div class="product-icons-element tooltip-target">
+				<img
+					src="{{ roomInstance.icon | image_url: width: 32, height: 32 }}"
+					class="room-icon"
+					alt="{{ roomInstance.title }} Icon"
+					width="32"
+					height="32"
+				/>
+				<span>
+					{{ roomInstance.title }}
+				</span>
+				{%- if  section.settings.tooltip_prefix != blank -%}
+					{%- assign tooltipTitle = section.settings.tooltip_prefix | append: ' ' | append: roomInstance.title -%}
+				{%- else -%}
+				{%- assign tooltipTitle = roomInstance.title -%}
+				{%- endif -%}
+				
+				{% render 'tooltip', placement: section.settings.tooltip_pos, title: tooltipTitle, content: roomInstance.description %}
+			</div>
+		{%- endif -%}
+	{%- endfor -%}
+	</div>
+  </div>
+</div>
+
+{% schema %}
+	{
+		"name": "Suitable For",
+		"class": "suitable-for",
+		"settings": [
+			{
+				"type": "color",
+				"id": "tooltip_bg_color",
+				"label": "Tooltip Background Color",
+				"default": "#24486d"
+			},
+			{
+				"type": "text",
+				"id": "tooltip_prefix",
+				"label": "Tooltip Title Prefix",
+				"default": "Suitable for"
+			},
+			{
+				"type": "select",
+				"id": "tooltip_pos",
+				"label": "Tooltip Pos",
+				"options": [
+					{
+						"value": "top",
+						"label": "Top"
+					},
+					{
+						"value": "right-start",
+						"label": "Right"
+					}
+				],
+				"default": "top"
+			}
+		],
+		"presets": [
+			{
+				"name": "Suitable For",
+				"category": "Product Page"
+			}
+		]
+	}
+{% endschema %}

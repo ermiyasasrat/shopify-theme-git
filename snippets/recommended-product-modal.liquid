@@ -1,0 +1,41 @@
+{% comment %}
+	New recommended products using metafield `shopify--discovery--product_recommendation.related_products`
+{% endcomment %}
+
+{%- assign relatedProductsMetafield = product.metafields['shopify--discovery--product_recommendation']['related_products'].value -%}
+
+<div class="recommended-product-modal-outer-container {% if relatedProductsMetafield == blank %}recommeded-product-modal-none{% endif %}">
+	<div class="recommended-product-modal-inner-container">
+		<img
+			src="{{ 'icon-cross.svg' | asset_url }}"
+			class="recommeded-product-modal-exit"
+			alt="Exit"
+			onclick="closeRecModal()"
+		/>
+		<div class="recommended-product-modal-body-container">
+			<div class="recommended-product-modal-title-container">
+				<p class="recommended-product-modal-inner-container-title">
+					{{ 'products.product.recommended-product-modal.title' | t }}
+				</p>
+				<p class="recommended-product-modal-inner-container-body-text">
+					{{ 'products.product.recommended-product-modal.description' | t }}
+				</p>
+			</div>
+			<div class="recommended-product-modal-products-container">
+				
+					{%- for product_handle in product.metafields.shopify--discovery--product_recommendation.related_products.value limit: 4 -%}
+						{%- render 'recommended-product-modal-card',
+							product_handle: product_handle
+						-%}
+					{%- endfor -%}
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function closeRecModal() {
+		$(".recommended-product-modal-outer-container").addClass("recommeded-product-modal-none");
+	}
+</script>

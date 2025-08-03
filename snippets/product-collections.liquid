@@ -1,0 +1,14 @@
+{%- assign productAttributesShared = product.metafields.filters.rooms -%}
+<div class="product-collections">
+  {%- for attribute in productAttributesShared.value -%}
+      {%- assign roomHandle = attribute | handle -%}
+      {%- assign roomInstance = shop.metaobjects.room_object[roomHandle] -%}
+      {%- if roomInstance != blank -%}
+          <div class="product-collection">
+              <span>
+                  {{ roomInstance.title }}
+              </span>
+          </div>
+      {%- endif -%}
+  {%- endfor -%}
+</div>

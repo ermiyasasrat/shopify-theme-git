@@ -1,0 +1,55 @@
+{% unless
+    section.settings.guide_text_indent_split_content == blank
+    and section.settings.guide_text_indent_split_image == blank
+%}
+    <section class="image-text-split image-text-split--beige image-text-split-indent-container">
+        <div class="site-wrap">
+            <div class="image-text-split__wrap">
+                {% unless section.settings.guide_text_indent_split_image == blank %}
+                    <div class="image-text-split__image image-text-split__image--indent">
+						<img
+							src="{{ section.settings.guide_text_indent_split_image | img_url: 'master' }}"
+							class=""
+							alt="{{ section.settings.guide_text_indent_split_image_alt }}"
+						/>
+                    </div>
+                {% endunless %}
+                {% unless section.settings.guide_text_indent_split_content == blank %}
+                    <div class="image-text-split__content image-text-split__content--indent">
+                        <div class="image-text-split__content__container">
+                            <div class="image-text-split__content__inner">
+                                <div class="para">
+                                    {{- section.settings.guide_text_indent_split_content -}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </section>
+{% endunless %}
+
+{% schema %}
+    {
+        "name": "Guide text split indent",
+        "settings": [
+            {
+                "type": "richtext",
+                "id": "guide_text_indent_split_content",
+                "label": "Guide text indent split content"
+            },
+            {
+                "type": "image_picker",
+                "id": "guide_text_indent_split_image",
+                "label": "Image",
+                "info": "Recommended image size: 1390 x 926."
+            },
+            {
+                "type": "text",
+                "id": "guide_text_indent_split_image_alt",
+                "label": "Image alt"
+            }
+        ]
+    }
+{% endschema %}

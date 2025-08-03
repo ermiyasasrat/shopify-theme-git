@@ -1,0 +1,5 @@
+{% if request.page_type == 'collection' %}
+    {% render 'prepare-collection-resources' %}
+{% elsif request.page_type == 'product' %}
+    {% render 'prepare-product-resources' %}
+{% endif %}
