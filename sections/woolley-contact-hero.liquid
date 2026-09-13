@@ -172,10 +172,7 @@
                                                 {% elsif icon.settings.contact_hero_icons_link_type == 'anchor' %}
                                                     <a data-scroll class="link-inline-icon" href="{{ icon.settings.contact_hero_icons_link }}">
                                                 {% endif %}
-                                                    {% include 'inline-icon-text' with
-                                                        text: icon.settings.contact_hero_icons_text,
-                                                        icon: icon.settings.contact_hero_icons_icon
-                                                    %}
+                                                    {% include 'inline-icon-text' with text, text: icon.settings.contact_hero_icons_text, icon: icon.settings.contact_hero_icons_icon %}
                                                 {% if
                                                     icon.settings.contact_hero_icons_link_type == 'url'
                                                     or icon.settings.contact_hero_icons_link_type == 'email'
@@ -196,3 +193,18 @@
         </div>
     </section>
 {% endunless %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'inline-icon-text' with
+                                                            text: icon.settings.contact_hero_icons_text,
+                                                            icon: icon.settings.contact_hero_icons_icon
+                                                        %}
+  to: "{% include 'inline-icon-text' with text, text: icon.settings.contact_hero_icons_text,
+    icon: icon.settings.contact_hero_icons_icon %}"
+  position: 9138..9270
+{% endcomment %}

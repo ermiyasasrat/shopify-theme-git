@@ -75,42 +75,27 @@
     <ul class="site-usp-banner__wrap" id="usp-carousel">
         <li class="site-usp-banner__slide is-active">
             <a title="{{ section.settings.usp_delivery }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_delivery_link }}">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-delivery',
-                    text: section.settings.usp_delivery
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-delivery', text: section.settings.usp_delivery %}
             </a>
         </li>
         <li class="site-usp-banner__slide">
             <a title="{{ section.settings.usp_sample }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_sample_link }}">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-samples',
-                    text: section.settings.usp_sample
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-samples', text: section.settings.usp_sample %}
             </a>
         </li>
         <li class="site-usp-banner__slide">
             <a title="{{ section.settings.usp_returns }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_returns_link }}">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-returns',
-                    text: section.settings.usp_returns
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-returns', text: section.settings.usp_returns %}
             </a>
         </li>
         <li class="site-usp-banner__slide">
             <a title="{{ section.settings.usp_rrp }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_rrp_link }}">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-savings',
-                    text: section.settings.usp_rrp
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-savings', text: section.settings.usp_rrp %}
             </a>
         </li>
         <li class="site-usp-banner__slide">
             <a title="{{ section.settings.usp_guarantee }}" class="site-usp-banner__link" rel="nofollow" href="{{ section.settings.usp_guarantee_link }}">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-guarantee',
-                    text: section.settings.usp_guarantee
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-guarantee', text: section.settings.usp_guarantee %}
             </a>
         </li>
         <li class="site-usp-banner__slide klarna-announcement klarna-mobile-only">
@@ -134,4 +119,50 @@
         <span class="site-usp-banner__indicator klarna-mobile-only"></span>
     </div>
 </div>
-{%- endif -%}
+{%- endif -%}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-delivery',
+                        text: section.settings.usp_delivery
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-delivery', text: section.settings.usp_delivery
+    %}"
+  position: 7480..7572
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-samples',
+                        text: section.settings.usp_sample
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-samples', text: section.settings.usp_sample
+    %}"
+  position: 7813..7902
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-returns',
+                        text: section.settings.usp_returns
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-returns', text: section.settings.usp_returns
+    %}"
+  position: 8145..8235
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-savings',
+                        text: section.settings.usp_rrp
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-savings', text: section.settings.usp_rrp
+    %}"
+  position: 8470..8556
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-guarantee',
+                        text: section.settings.usp_guarantee
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-guarantee', text: section.settings.usp_guarantee
+    %}"
+  position: 8803..8897
+{%- endcomment -%}

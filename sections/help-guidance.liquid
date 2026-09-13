@@ -112,10 +112,7 @@
                     {% for item in section.blocks %}
                         <li class="help-guidance__link">
                             <a href="{{ item.settings.help_guidance_block_link }}" class="button button--grey button--less-pad">
-                                {% include 'inline-icon-text' with {
-                                    icon: item.settings.help_guidance_block_icon,
-                                    text: item.settings.help_guidance_block_link_text
-                                } %}
+                                {% include 'inline-icon-text', icon: item.settings.help_guidance_block_icon, text: item.settings.help_guidance_block_link_text %}
                             </a>
                         </li>
                     {% endfor %}
@@ -124,3 +121,18 @@
         </div>
     </div>
 {% endunless %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'inline-icon-text' with {
+                                        icon: item.settings.help_guidance_block_icon,
+                                        text: item.settings.help_guidance_block_link_text
+                                    } %}
+  to: "{% include 'inline-icon-text', icon: item.settings.help_guidance_block_icon,
+    text: item.settings.help_guidance_block_link_text %}"
+  position: 4078..4207
+{% endcomment %}

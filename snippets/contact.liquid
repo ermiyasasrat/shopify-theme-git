@@ -9,11 +9,7 @@
     <div class="contact__options">
         <div class="contact__option">
             <a class="contact__option-link" href="tel:{{ shop.phone | remove: ' ' }}"  title="Call us">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-telephone',
-                    text: shop.phone,
-                    modifier: 'inline-icon-text--contact inline--icon-text--peach'
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-telephone', text: shop.phone, modifier: 'inline-icon-text--contact inline--icon-text--peach' %}
             </a>
         </div>
         <div class="contact__option">
@@ -38,11 +34,7 @@
         </div>
         <div class="contact__option">
             <a class="contact__option-link" href="mailto:{{ shop.metafields.global.email }}" title="Email us">
-                {% include 'inline-icon-text' with {
-                    icon: 'icon-email',
-                    text: 'Email us',
-                    modifier: 'inline-icon-text--contact'
-                } %}
+                {% include 'inline-icon-text', icon: 'icon-email', text: 'Email us', modifier: 'inline-icon-text--contact' %}
             </a>
         </div>
     </div>
@@ -52,3 +44,28 @@
         </div>
     {% endif %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-telephone',
+                        text: shop.phone,
+                        modifier: 'inline-icon-text--contact inline--icon-text--peach'
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-telephone', text: shop.phone, modifier:
+    'inline-icon-text--contact inline--icon-text--peach' %}"
+  position: 519..657
+- from: |-
+    {% include 'inline-icon-text' with {
+                        icon: 'icon-email',
+                        text: 'Email us',
+                        modifier: 'inline-icon-text--contact'
+                    } %}
+  to: "{% include 'inline-icon-text', icon: 'icon-email', text: 'Email us', modifier:
+    'inline-icon-text--contact' %}"
+  position: 1908..2017
+{% endcomment %}

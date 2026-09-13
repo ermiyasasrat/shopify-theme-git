@@ -134,12 +134,7 @@
                         </div>
                     </li>
                 </ul>
-            {% include 'contact' with {
-                modifier: "contact--large",
-                title: "Can’t find the answer you were looking for?",
-                titleSans: false,
-                videoAppointmentCta: true
-            } %}
+            {% include 'contact', modifier: "contact--large", title: "Can’t find the answer you were looking for?", titleSans: false, videoAppointmentCta: true %}
         </div>
     </div>
 </section>
@@ -167,4 +162,20 @@
             }
         ]
     }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'contact' with {
+                    modifier: "contact--large",
+                    title: "Can’t find the answer you were looking for?",
+                    titleSans: false,
+                    videoAppointmentCta: true
+                } %}
+  to: '{% include ''contact'', modifier: "contact--large", title: "Can’t find the
+    answer you were looking for?", titleSans: false, videoAppointmentCta: true %}'
+  position: 9417..9567
+{%- endcomment -%}

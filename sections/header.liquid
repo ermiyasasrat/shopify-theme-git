@@ -75,11 +75,7 @@
             <div class="site-header__inline-icon large-hide">
               <div class="site-header__icon site-header__phone">
                 <a rel="nofollow" href="tel:{{ '0113 320 0223' | remove: ' ' }}" title="Call us">
-                  {%
-                    include 'inline-icon-text' with {
-                    icon: 'icon-telephone-new'
-                    }
-                  %}
+                  {% include 'inline-icon-text', icon: 'icon-telephone-new' %}
                 </a>
               </div>
             </div>
@@ -87,12 +83,7 @@
           <div class="site-header__inline-icon large-show">
             <div class="site-header__icon site-header__phone">
               <a rel="nofollow" href="tel:{{ '0113 320 0223' | remove: ' ' }}" title="Call us">
-                {%
-                  include 'inline-icon-text' with {
-                  icon: 'icon-telephone-new',
-                  text: '0113 320 0223'
-                  }
-                %}
+                {% include 'inline-icon-text', icon: 'icon-telephone-new', text: '0113 320 0223' %}
               </a>
             </div>
           </div>
@@ -100,11 +91,7 @@
             <div class="site-header__inline-icon large-show">
               <div class="site-header__icon site-header__account">
                 <a rel="nofollow" href="{{ accountLink }}" title="My account">
-                  {%
-                    include 'inline-icon-text' with {
-                    icon: 'icon-account-new',
-                    }
-                  %}
+                  {% include 'inline-icon-text', icon: 'icon-account-new' %}
                 </a>
               </div>
             </div>
@@ -284,4 +271,36 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+                        include 'inline-icon-text' with {
+                        icon: 'icon-telephone-new'
+                        }
+                      %}
+  to: "{% include 'inline-icon-text', icon: 'icon-telephone-new' %}"
+  position: 3583..3643
+- from: |-
+    {%
+                      include 'inline-icon-text' with {
+                      icon: 'icon-telephone-new',
+                      text: '0113 320 0223'
+                      }
+                    %}
+  to: "{% include 'inline-icon-text', icon: 'icon-telephone-new', text: '0113 320
+    0223' %}"
+  position: 3966..4049
+- from: |-
+    {%
+                        include 'inline-icon-text' with {
+                        icon: 'icon-account-new',
+                        }
+                      %}
+  to: "{% include 'inline-icon-text', icon: 'icon-account-new' %}"
+  position: 4375..4433
+{%- endcomment -%}

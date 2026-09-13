@@ -90,7 +90,7 @@
                 <li class="breadcrumbs__list-item">
                     <a href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
                 </li>
-            {% when 'collection' and collection.handle %}
+            {% when 'collection' %}
                 {% unless collection.metafields.breadcrumb.parent_collection == blank %}
                     {% assign parentCollectionTitle = collections[collection.metafields.breadcrumb.parent_collection].title %}
                     <li class="breadcrumbs__list-item">
@@ -161,3 +161,13 @@
     {% endunless %}
 {% endif %}
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% when 'collection' and collection.handle %}"
+  to: "{% when 'collection' %}"
+  position: 2313..2336
+{% endcomment %}

@@ -229,12 +229,7 @@
 																	{%- assign objectImage = link.object.featured_image -%}
 																{%- endif -%}
 
-																{% 	render 'responsive-image'
-																	image: objectImage,
-																	image_class: "mega-menu-image-element",
-																	alt: {{ link.title | replace: "[noicon]", "" | replace: '[product]', '' | replace: '[collection]', '' }},
-																	lazy: false
-																%}
+																{% render 'responsive-image', image: objectImage, image_class: "mega-menu-image-element", alt: nil, replace: '[collection]', lazy: false %}
 																<span>
 																	{{ link.title | replace: '[product]', '' | replace: '[collection]', '' }}
 																</span>
@@ -353,12 +348,7 @@
 														<li class="mega-menu-images-element-container">
 															{%- assign sublinkTitle = sublink.title | replace: '[i]', '' -%}
 															<a href="{{ sublink.url }}" title="{{ sublinkTitle | replace: "[noicon]", "" }}">
-																{% 	render 'responsive-image'
-																	image: sublink.object.image,
-																	image_class: "mega-menu-image-element",
-																	alt: {{ sublinkTitle | replace: "[noicon]", "" }},
-																	lazy: false
-																%}
+																{% render 'responsive-image', image: sublink.object.image, image_class: "mega-menu-image-element", alt: nil, replace: "[noicon]", lazy: false %}
 																<span>
 																	{{ sublinkTitle }}
 																</span>
@@ -403,4 +393,24 @@
 			</div>
 		</div>
 	{% endif %}
-</li>
+</li>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% \trender 'responsive-image'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\timage:
+    objectImage,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\timage_class: \"mega-menu-image-element\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\talt:
+    {{ link.title | replace: \"[noicon]\", \"\" | replace: '[product]', '' | replace:
+    '[collection]', '' }},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlazy: false\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t%}"
+  to: '{% render ''responsive-image'', image: objectImage, image_class: "mega-menu-image-element",
+    alt: nil, replace: ''[collection]'', lazy: false %}'
+  position: 13193..13332
+- from: "{% \trender 'responsive-image'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\timage:
+    sublink.object.image,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\timage_class: \"mega-menu-image-element\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\talt:
+    {{ sublinkTitle | replace: \"[noicon]\", \"\" }},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlazy:
+    false\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t%}"
+  to: '{% render ''responsive-image'', image: sublink.object.image, image_class: "mega-menu-image-element",
+    alt: nil, replace: "[noicon]", lazy: false %}'
+  position: 19173..19317
+{%- endcomment -%}

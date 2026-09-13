@@ -40,12 +40,24 @@
                 <div class="wysiwyg">
                     {{ article.content }}
                 </div>
-                {% render 'social-share' with
-                    title: 'Share this article'
-                    post: article
-                %}
+                {% render 'social-share' with title, title: 'Share this article', post: article %}
             </div>
             {% include 'related-articles' %}
         </div>
     </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'social-share' with
+                        title: 'Share this article'
+                        post: article
+                    %}
+  to: "{% render 'social-share' with title, title: 'Share this article', post: article
+    %}"
+  position: 1914..1996
+{% endcomment %}

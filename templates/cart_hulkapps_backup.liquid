@@ -158,12 +158,12 @@
                                     {% endif %}
                                 {% endif %}
                                 {% if item.variant.metafields.product_config.sale_metric == 'Pack' %}
-                                    {% if productWidth && productLength %}
+                                    {% if productWidth %}
                                         <p>Plank / Tile Size: {{ productWidth }} x {{ productLength }}</p>
                                     {% endif %}
                                     <p>Pack Size: {{ productPackSize }}m²</p>
                                 {% elsif item.variant.metafields.product_config.sale_metric == 'Board' %}
-                                    {% if productWidth && productLength %}
+                                    {% if productWidth %}
                                         <p>Board Length: {{ productLength }}m</p>
                                         <p>Board Width: {{ productWidth }}mm</p>
                                     {% endif %}
@@ -176,7 +176,7 @@
                                 {% if item.variant.metafields.product_config.sale_metric == 'Pack' %}
                                     <p>Total m² Required: <span class="js-metres-squared-required">{{ item.quantity | times: productPackSize }}</span>m²</p>
                                 {% elsif item.variant.metafields.product_config.sale_metric == 'Board' %}
-                                    {% if productWidth && productLength %}
+                                    {% if productWidth %}
                                         {% comment %}
                                             Board width is provided in millimetres, convert to metres
                                             e.g. 145mm = 0.145m
@@ -297,3 +297,19 @@
     {% endif %}
     {% render 'wc_cart' %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% if productWidth && productLength %}"
+  to: "{% if productWidth %}"
+  position: 11895..11916
+- from: "{% if productWidth && productLength %}"
+  to: "{% if productWidth %}"
+  position: 12292..12313
+- from: "{% if productWidth && productLength %}"
+  to: "{% if productWidth %}"
+  position: 13453..13474
+{% endcomment %}

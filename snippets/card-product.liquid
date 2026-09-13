@@ -111,12 +111,7 @@
   %}
 
   {% if swap_img_url %}
-    {% render 'card-product-picture',
-      image: swap_img_url,
-      lazy: lazy_load,
-      image_class: 'main-collection-product-grid-image hover-image',
-      alt: card_product.title | append: ' - Hover'
-    %}
+    {% render 'card-product-picture', image: swap_img_url, lazy: lazy_load, image_class: 'main-collection-product-grid-image hover-image', alt: card_product.title, append: ' - Hover' %}
   {% endif %}
 
   {%- assign productOverlay = blank -%}
@@ -257,3 +252,21 @@
   </div>
   {% render 'storeify-quote', product: card_product %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'card-product-picture',
+          image: swap_img_url,
+          lazy: lazy_load,
+          image_class: 'main-collection-product-grid-image hover-image',
+          alt: card_product.title | append: ' - Hover'
+        %}
+  to: "{% render 'card-product-picture', image: swap_img_url, lazy: lazy_load, image_class:
+    'main-collection-product-grid-image hover-image', alt: card_product.title, append:
+    ' - Hover' %}"
+  position: 5068..5249
+{% endcomment %}

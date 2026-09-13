@@ -43,10 +43,7 @@
                 <div class="wysiwyg">
                     {{ article.content }}
                 </div>
-                {% render 'social-share' with
-                    title: 'Share this article'
-                    post: article
-                %}
+                {% render 'social-share' with title, title: 'Share this article', post: article %}
             </div>
             {% include 'related-articles' %}
         </div>
@@ -55,4 +52,18 @@
 
 {%- if article.metafields.custom.woolley_s_schema_markup != blank -%}
 	{{ article.metafields.custom.woolley_s_schema_markup }}
-{%- endif -%}
+{%- endif -%}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'social-share' with
+                        title: 'Share this article'
+                        post: article
+                    %}
+  to: "{% render 'social-share' with title, title: 'Share this article', post: article
+    %}"
+  position: 1798..1880
+{%- endcomment -%}
